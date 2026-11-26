@@ -1,0 +1,12 @@
+{
+    "kill_impulse": 150,
+    "body_hit_impulse": 40,
+    "max_impulse_per_shot": 300,
+    "hit_bone_share": 0.5,
+    "max_hit_bone_speed_change": 6,
+    "impulse_lift": 0.2,
+    "live_ragdoll_cap": 6,
+    "settle_speed": 0.1,
+    "settle_time": 0.5,
+    "max_simulate_time": 5
+}

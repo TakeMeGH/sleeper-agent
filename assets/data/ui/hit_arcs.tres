@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="HitArcsData" format=3]
+
+[ext_resource type="Script" path="res://src/ui/hud/hit_arcs_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+arc_pool_size = 6
+arc_hold_seconds = 0.6
+arc_fade_seconds = 0.5
+merge_angle = 25.0
+ring_radius = 110.0
+arc_span_degrees = 28.0
+arc_thickness = 9.0
+arc_color = Color(1, 0.15, 0.1, 1)
+arc_outline_color = Color(0, 0, 0, 0.85)
+arc_outline_width = 3.0
+arc_point_count = 24
+countdown_offset_y = 60.0
+countdown_font_size = 30
+countdown_outline_size = 4
+countdown_outline_color = Color(0, 0, 0, 0.85)

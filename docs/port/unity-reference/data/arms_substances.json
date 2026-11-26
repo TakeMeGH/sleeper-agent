@@ -1,0 +1,41 @@
+{
+    "free_hand": "left",
+    "raise_seconds": 0.35,
+    "lower_seconds": 0.25,
+    "swap_lower_seconds": 0.18,
+    "swap_raise_seconds": 0.22,
+    "empty_seconds": 0.3,
+    "free_hand_pole": { "x": -0.6, "y": -1, "z": -0.2 },
+    "lowered_position": { "x": -0.21, "y": -0.38, "z": 0.2 },
+    "lowered_rotation": { "x": -20, "y": 10, "z": 90 },
+    "lowered_curl": { "index": 45, "grip": 60, "thumb": 20 },
+    "empty_position": { "x": -0.21, "y": -0.235, "z": 0.25 },
+    "empty_rotation": { "x": -15, "y": 10, "z": 80 },
+    "empty_curl": { "index": 10, "grip": 20, "thumb": 5 },
+    "substances": [
+        {
+            "id": "coffee",
+            "rest_position": { "x": -0.17, "y": -0.135, "z": 0.3 },
+            "rest_rotation": { "x": 15, "y": 10, "z": 90 },
+            "rest_curl": { "index": 35, "grip": 85, "thumb": 25 },
+            "raised_position": { "x": -0.0862, "y": -0.1257, "z": 0.2402 },
+            "raised_rotation": { "x": -44.71, "y": -174.26, "z": -98.13 },
+            "raised_curl": { "index": 40, "grip": 85, "thumb": 25 },
+            "prop_offset": { "x": 0.005, "y": -0.048, "z": 0.075 },
+            "prop_rotation": { "x": 0, "y": 0, "z": -90 },
+            "prop_scale": 1.0
+        },
+        {
+            "id": "cigarette",
+            "rest_position": { "x": -0.17, "y": -0.135, "z": 0.3 },
+            "rest_rotation": { "x": 15, "y": 10, "z": 90 },
+            "rest_curl": { "index": 20, "grip": 45, "thumb": 15 },
+            "raised_position": { "x": -0.091, "y": -0.2202, "z": 0.175 },
+            "raised_rotation": { "x": -68.02, "y": 68.29, "z": 47.99 },
+            "raised_curl": { "index": 10, "grip": 30, "thumb": 20 },
+            "prop_offset": { "x": 0.01, "y": -0.01, "z": 0.13 },
+            "prop_rotation": { "x": -90, "y": 0, "z": 0 },
+            "prop_scale": 0.5
+        }
+    ]
+}

@@ -1,0 +1,163 @@
+extends SceneTree
+## Story 014 probe: vignette/FOV vs rate, smoothing, pulse, validation, motion scale, run end, combined FOV.
+
+const DT: float = 1.0 / 60.0
+
+var hs: HeartRateScreen
+var heart: HeartRate
+var cam: Camera3D
+
+
+func set_rate(r: float) -> void:
+	heart.change_rate(r - heart.get_rate())
+
+
+func settle(seconds: float) -> void:
+	var n: int = int(seconds / DT)
+	for i in n:
+		hs.tick(DT)
+
+
+func _init() -> void:
+	var sc: Node = load("res://src/player/test_range.tscn").instantiate()
+	root.add_child(sc)
+	await process_frame
+	await process_frame
+	hs = sc.get_node("HeartRateScreen")
+	heart = sc.get_node("Player/HeartRate")
+	cam = sc.get_node("Player/Head/Camera3D")
+	# Drive by hand: freeze the screen's own _process, the heart's drift and the range root.
+	hs.process_mode = Node.PROCESS_MODE_DISABLED
+	heart.process_mode = Node.PROCESS_MODE_DISABLED
+	sc.set_physics_process(false)
+	print("PROBE data_valid=%s layer=%d priority=%d" % [hs.is_data_valid(), hs.layer, hs.process_priority])
+
+	# A. Target vs rate (continuous, zero in 60-100, +20 at 190, -8 at 10).
+	for r: float in [0.0, 5.0, 10.0, 20.0, 35.0, 50.0, 59.0, 60.0, 80.0, 100.0, 101.0, 130.0, 145.0, 160.0, 189.0, 190.0, 200.0]:
+		var t: Dictionary = hs.compute_target(r)
+		print("PROBE target rate=%.0f intensity=%.4f color=%s fov=%+.3f" % [r, t[&"intensity"], t[&"color"], t[&"fov_offset"]])
+	var max_step_i: float = 0.0
+	var max_step_f: float = 0.0
+	var prev: Dictionary = hs.compute_target(0.0)
+	var rr: float = 0.0
+	while rr <= 220.0:
+		var cur: Dictionary = hs.compute_target(rr)
+		max_step_i = maxf(max_step_i, absf(cur[&"intensity"] - prev[&"intensity"]))
+		max_step_f = maxf(max_step_f, absf(cur[&"fov_offset"] - prev[&"fov_offset"]))
+		prev = cur
+		rr += 0.5
+	print("PROBE continuity sweep 0..220 step 0.5 bpm: max intensity step=%.4f max fov step=%.3f deg" % [max_step_i, max_step_f])
+
+	# B. Smoothing: settle at 80, jump to 150 (coffee/hit-size jump), and 150 -> 30 (crossing sides).
+	set_rate(80.0)
+	settle(3.0)
+	var base_fov: float = cam.fov
+	print("PROBE settle rate=80 intensity=%.5f fov_offset=%.5f cam_fov=%.3f" % [hs.get_vignette_intensity(), hs.get_fov_offset(), base_fov])
+	set_rate(150.0)
+	var line: String = ""
+	var last: float = 0.0
+	var biggest: float = 0.0
+	for i in 60:
+		hs.tick(DT)
+		biggest = maxf(biggest, absf(hs.get_fov_offset() - last))
+		last = hs.get_fov_offset()
+		if i < 5 or i == 35 or i == 59:
+			line += " f%d=%.3f" % [i + 1, hs.get_fov_offset()]
+	print("PROBE jump 80->150 fov_offset per frame:%s target=%.3f largest frame step=%.3f deg" % [line, hs.compute_target(150.0)[&"fov_offset"], biggest])
+	print("PROBE after 0.6 s smoothed=%.4f of target %.4f (expect ~63%%)" % [hs.get_smoothed_intensity(), hs.compute_target(150.0)[&"intensity"]])
+	settle(3.0)
+	set_rate(30.0)
+	line = ""
+	var max_alpha_step: float = 0.0
+	var la: float = hs.get_smoothed_intensity()
+	for i in 120:
+		hs.tick(DT)
+		max_alpha_step = maxf(max_alpha_step, absf(hs.get_smoothed_intensity() - la))
+		la = hs.get_smoothed_intensity()
+		if i % 20 == 0:
+			line += " f%d=%.3f/%s" % [i + 1, hs.get_smoothed_intensity(), "white" if hs.get_vignette_color().r > 0.5 else "black"]
+	print("PROBE jump 150->30 smoothed/colour:%s largest frame step=%.4f" % [line, max_alpha_step])
+
+	# C. Pulse near the limits and away from them.
+	for r: float in [120.0, 160.0, 175.0, 185.0, 190.0, 40.0, 25.0, 15.0, 10.0]:
+		set_rate(r)
+		settle(4.0)
+		var lo: float = 1.0
+		var hi: float = 0.0
+		for i in 120:
+			hs.tick(DT)
+			lo = minf(lo, hs.get_vignette_intensity())
+			hi = maxf(hi, hs.get_vignette_intensity())
+		print("PROBE pulse rate=%.0f pulse_per_s=%.2f depth=%.3f drawn min=%.4f max=%.4f countdown=%.2f" % [r, hs.get_pulse_rate(), hs.get_pulse_depth(), lo, hi, heart.get_countdown_left()])
+	# Countdown: rate above 190 with the heart ticking so its 5 s countdown starts.
+	set_rate(195.0)
+	heart.process_mode = Node.PROCESS_MODE_INHERIT
+	for i in 30:
+		await physics_frame
+	heart.process_mode = Node.PROCESS_MODE_DISABLED
+	settle(4.0)
+	var clo: float = 1.0
+	var chi: float = 0.0
+	var crossings: int = 0
+	var prev_up: bool = false
+	var prev_v: float = hs.get_vignette_intensity()
+	for i in 120:
+		hs.tick(DT)
+		var v: float = hs.get_vignette_intensity()
+		clo = minf(clo, v)
+		chi = maxf(chi, v)
+		var up: bool = v > prev_v
+		if up and not prev_up:
+			crossings += 1
+		prev_up = up
+		prev_v = v
+	print("PROBE countdown rate=%.1f countdown_left=%.2f pulse_per_s=%.2f depth=%.3f drawn min=%.4f max=%.4f troughs_in_2s=%d" % [heart.get_rate(), heart.get_countdown_left(), hs.get_pulse_rate(), hs.get_pulse_depth(), clo, chi, crossings])
+	pass
+	set_rate(150.0)
+
+	# D. Validation of pulse rates.
+	var d: HeartRateScreenData = hs.data
+	for pair: Array in [[1.0, 2.0], [3.0, 3.0], [3.01, 2.0], [1.0, 3.5], [-1.0, 2.0], [NAN, 2.0], [1.0, INF]]:
+		var dd: HeartRateScreenData = d.duplicate()
+		dd.pulse_per_second = pair[0]
+		dd.pulse_per_second_countdown = pair[1]
+		var errs: PackedStringArray = dd.validate()
+		print("PROBE validate pulse=%s countdown=%s -> %s %s" % [pair[0], pair[1], "OK" if errs.is_empty() else "FAIL", errs])
+	var bad: HeartRateScreenData = d.duplicate()
+	bad.pulse_per_second_countdown = 4.0
+	var hs2: HeartRateScreen = HeartRateScreen.new()
+	hs2.data = bad
+	hs2.heart = heart
+	hs2.hud = hs.hud
+	sc.add_child(hs2)
+	hs2.process_mode = Node.PROCESS_MODE_DISABLED
+	set_rate(195.0)
+	for i in 60:
+		hs2.tick(DT)
+	print("PROBE invalid data loaded into a screen: is_data_valid=%s pulse_per_s=%.2f depth=%.3f (pulse disabled)" % [hs2.is_data_valid(), hs2.get_pulse_rate(), hs2.get_pulse_depth()])
+	hs2.queue_free()
+	set_rate(150.0)
+
+	# E. camera_motion_scale 0: no FOV change.
+	settle(4.0)
+	var fov_before: float = cam.fov - hs.get_fov_offset()
+	var zero: HeartRateScreenData = d.duplicate()
+	zero.camera_motion_scale = 0.0
+	hs.data = zero
+	set_rate(190.0)
+	settle(4.0)
+	print("PROBE motion_scale=0 rate=190 fov_offset=%.4f cam_fov=%.3f base=%.3f vignette=%.4f" % [hs.get_fov_offset(), cam.fov, fov_before, hs.get_smoothed_intensity()])
+	var half: HeartRateScreenData = d.duplicate()
+	half.camera_motion_scale = 0.5
+	hs.data = half
+	settle(4.0)
+	print("PROBE motion_scale=0.5 rate=190 fov_offset=%.3f" % hs.get_fov_offset())
+	hs.data = d
+	settle(4.0)
+	print("PROBE motion_scale=1 rate=190 fov_offset=%.3f cam_fov=%.3f" % [hs.get_fov_offset(), cam.fov])
+
+	# F. Run end stops it.
+	hs.on_run_ended(&"heart_attack")
+	settle(1.0)
+	print("PROBE after run end: drawn=%.4f fov_offset=%.4f cam_fov=%.3f pulse_per_s=%.2f" % [hs.get_vignette_intensity(), hs.get_fov_offset(), cam.fov, hs.get_pulse_rate()])
+	quit()

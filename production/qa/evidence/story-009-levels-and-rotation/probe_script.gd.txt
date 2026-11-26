@@ -1,0 +1,114 @@
+extends SceneTree
+## Story 009 probe: exit trigger by moving the player, carry-over of heart/ammo/substances/time,
+## plaza reachability of spawns, firing-spot sightlines, second canteen visit.
+
+var g: Node
+
+func _clear_visit() -> void:
+	for i in 3:
+		var tt := 0.0
+		while int(g.call("get_waves_cleared_in_visit")) < i + 1 and tt < 60.0:
+			g.call("debug_kill_enemies")
+			await create_timer(0.25).timeout
+			tt += 0.25
+		print("PROBE visit=", g.call("get_visit_index"), " level=", g.call("get_current_level_id"), " wave_cleared#", i + 1, " cleared=", g.call("get_waves_cleared_in_visit"), " exit_open=", g.call("is_exit_open"))
+
+func _snapshot(tag: String) -> Dictionary:
+	var p: Node = g.get("player")
+	var heart: Node = p.get_node("HeartRate")
+	var subs: Node = p.get_node("SubstanceInventory")
+	var holder: Node = p.get_node("Head/Camera3D/WeaponHolder")
+	var d := {
+		"heart": snappedf(float(heart.call("get_rate")), 0.1),
+		"coffee": subs.call("get_count", &"coffee"),
+		"cig": subs.call("get_count", &"cigarette"),
+		"gun_index": holder.get("current_index"),
+		"time": snappedf(float(g.get("run_state").time_survived), 0.1),
+		"wave": g.get("run_state").wave,
+	}
+	for gun in holder.get("guns"):
+		d[String(gun.data.id) if "id" in gun.data else str(gun)] = "%d/%d" % [gun.magazine, gun.spare]
+	print("PROBE ", tag, " ", d)
+	return d
+
+func _walk_into_exit() -> void:
+	var ex: Node3D = g.call("get_level").call("get_exit")
+	var p: CharacterBody3D = g.get("player")
+	p.global_position = ex.global_position + Vector3(0, 0.1, 0)
+	print("PROBE moved player into exit at ", ex.global_position.snappedf(0.01))
+
+func _reach_and_sight() -> void:
+	var lvl: Node3D = g.call("get_level")
+	var map: RID = lvl.get_world_3d().navigation_map
+	var start: Vector3 = (lvl.call("get_player_start_transform") as Transform3D).origin
+	var target: Vector3 = NavigationServer3D.map_get_closest_point(map, start)
+	for m in get_nodes_in_group(&"spawn_point"):
+		var sp: Vector3 = (m as Node3D).global_position
+		var from: Vector3 = NavigationServer3D.map_get_closest_point(map, sp)
+		var path: PackedVector3Array = NavigationServer3D.map_get_path(map, from, target, true)
+		var end_gap: float = INF if path.is_empty() else path[path.size() - 1].distance_to(target)
+		print("PROBE reach spawn ", m.name, " at ", sp.snappedf(0.1), " snap_gap=", snappedf(from.distance_to(sp), 0.01), " path_pts=", path.size(), " end_gap_to_start=", snappedf(end_gap, 0.01), " reachable=", end_gap < 1.0 and from.distance_to(sp) < 2.0)
+	var space := lvl.get_world_3d().direct_space_state
+	var probes: Array[Vector3] = [start + Vector3(0, 1.0, 0), Vector3(0, 1.0, 0), Vector3(0, 1.0, -10), Vector3(0, 1.0, 10)]
+	for s in get_nodes_in_group(&"firing_spot"):
+		var eye: Vector3 = (s as Node3D).global_position + Vector3(0, 1.5, 0)
+		var clear: Array[String] = []
+		for t in probes:
+			var q := PhysicsRayQueryParameters3D.create(eye, t, 1)
+			q.exclude = [(g.get("player") as CharacterBody3D).get_rid()]
+			var hit := space.intersect_ray(q)
+			clear.append("Y" if hit.is_empty() else "n")
+		print("PROBE sight spot ", s.name, " at ", (s as Node3D).global_position.snappedf(0.1), " to [start,(0,0),(0,-10),(0,10)]=", clear)
+
+func _init() -> void:
+	g = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+	g.get("data").first_wave_delay = 0.2
+	g.get("data").travel_fade_out_seconds = 0.1
+	g.get("data").travel_fade_in_seconds = 0.1
+	g.set("debug_keep_heart_rate", 90.0)
+	root.add_child(g)
+	await create_timer(0.8).timeout
+	print("PROBE start level=", g.call("get_current_level_id"), " visit=", g.call("get_visit_index"), " exit_open=", g.call("is_exit_open"), " wave=", g.get("run_state").wave)
+	# Exit closed: walking in before the waves are cleared does nothing.
+	var back: Vector3 = (g.get("player") as Node3D).global_position
+	_walk_into_exit()
+	await create_timer(1.0).timeout
+	print("PROBE closed-exit walk-in: level=", g.call("get_current_level_id"), " traveling=", g.call("is_traveling"), " exit_open=", g.call("is_exit_open"))
+	(g.get("player") as Node3D).global_position = back
+	await _clear_visit()
+	await create_timer(2.0).timeout
+	print("PROBE no 4th wave: spawner wave=", g.get("spawner").get_wave(), " enemies_left=", g.get("spawner").get_enemies_left())
+	# Make distinctive carry values.
+	var p: Node = g.get("player")
+	var holder: Node = p.get_node("Head/Camera3D/WeaponHolder")
+	holder.call("switch_to", 1)
+	await create_timer(0.6).timeout
+	var guns: Array = holder.get("guns")
+	guns[1].magazine = 5
+	guns[1].spare = 77
+	guns[2].spare = 11
+	p.get_node("SubstanceInventory").call("add_substance", &"coffee", 1)
+	g.set("debug_keep_heart_rate", 0.0)
+	p.get_node("HeartRate").call("change_rate", 133.0 - float(p.get_node("HeartRate").call("get_rate")))
+	var before := _snapshot("before-travel-1")
+	_walk_into_exit()
+	await create_timer(1.5).timeout
+	var after := _snapshot("after-travel-1")
+	g.set("debug_keep_heart_rate", 90.0)
+	print("PROBE travel1 level=", g.call("get_current_level_id"), " visit=", g.call("get_visit_index"), " exit_open=", g.call("is_exit_open"), " heart_drop=", snappedf(before.heart - after.heart, 0.1), " time_delta=", snappedf(after.time - before.time, 0.1))
+	await create_timer(1.0).timeout
+	print("PROBE plaza first wave=", g.get("spawner").get_wave(), " enemies_left=", g.get("spawner").get_enemies_left())
+	_reach_and_sight()
+	await create_timer(6.0).timeout
+	var start: Vector3 = (g.call("get_level").call("get_player_start_transform") as Transform3D).origin
+	for e in get_nodes_in_group(&"enemies"):
+		print("PROBE plaza enemy ", e.name, " pos=", (e as Node3D).global_position.snappedf(0.1), " dist_to_player=", snappedf((e as Node3D).global_position.distance_to((g.get("player") as Node3D).global_position), 0.1), " state=", e.call("get_state"))
+	await _clear_visit()
+	await create_timer(1.0).timeout
+	_snapshot("before-travel-2")
+	_walk_into_exit()
+	await create_timer(1.5).timeout
+	_snapshot("after-travel-2")
+	await create_timer(0.8).timeout
+	print("PROBE travel2 level=", g.call("get_current_level_id"), " visit=", g.call("get_visit_index"), " exit_open=", g.call("is_exit_open"), " spawner wave=", g.get("spawner").get_wave(), " next_first_wave=", g.call("get_next_first_wave"))
+	quit()

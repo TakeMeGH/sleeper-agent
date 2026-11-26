@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="HeartRateData" format=3]
+
+[ext_resource type="Script" path="res://src/heart/heart_rate_data.gd" id="1_hrdata"]
+
+[resource]
+script = ExtResource("1_hrdata")
+resting_rate = 80.0
+drop_per_second = 3.0
+bpm_per_damage = 1.0
+min_rate = 0.0
+max_rate = 250.0
+slow_from = 10.0
+normal_from = 60.0
+fast_from = 100.0
+heart_attack_above = 190.0
+pass_out_seconds = 5.0
+heart_attack_seconds = 5.0
+slow_zone_spread_scale = 0.5
+fast_zone_speed_multiplier = 1.3
+tremor_amplitude_min = 0.15
+tremor_amplitude_max = 1.0
+tremor_frequency_min = 2.0
+tremor_frequency_max = 8.0
+tremor_pitch_phase_ratio = 1.3

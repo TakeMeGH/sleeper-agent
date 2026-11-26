@@ -1,0 +1,19 @@
+{
+  "arc_pool_size": 6,
+  "arc_hold_seconds": 0.6,
+  "arc_fade_seconds": 0.5,
+  "merge_angle": 25,
+  "ring_radius": 110,
+  "arc_span_degrees": 28,
+  "arc_thickness": 9,
+  "arc_color": { "r": 1, "g": 0.15, "b": 0.1, "a": 1 },
+  "arc_outline_color": { "r": 0, "g": 0, "b": 0, "a": 0.85 },
+  "arc_outline_width": 3,
+
+  "countdown_offset_y": 60,
+  "countdown_font_size": 30,
+
+  "hit_jolt_enabled": true,
+  "hit_jolt_degrees": 1.2,
+  "hit_jolt_seconds": 0.25
+}

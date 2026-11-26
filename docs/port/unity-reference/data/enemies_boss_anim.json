@@ -1,0 +1,19 @@
+{
+    "_comment": "Story 052: the boss's animation on gankdroid's model (schema in ZombieAnimation.cs, ZombieAnimationConfig). Measured values seeded 2026-11-15 from production/qa/evidence/story-052-enemy-model-and-animations/rig-dump.txt (Tools > Last Dose > Dump Enemy Rig), to be confirmed by eye in play; every other value is the zombie's (enemies_zombie_anim.json).",
+    "attack_clip_hit_time": 0.0417,
+    "_attack_clip_hit_time_note": "enemy_attack_smg (0.167 s, 4 frames at 24 fps, upper body): the shot is at the start of the clip (both palms move fastest at 0.008 s); set to its first frame, 1/24 s.",
+    "attack_blend_time": 0.1,
+    "walk_reference_speed": 1.04,
+    "_walk_reference_speed_note": "enemy_walk_weak (1.208 s, in place): the lowest foot moves back 0.941 m in 1.175 s while planted, 0.80 m/s at the model's own size; the boss is scaled 1.3x (body_scale), so its feet cover 1.3x the ground per cycle: 0.80 x 1.3 = 1.04.",
+    "run_reference_speed": 3.97,
+    "_run_reference_speed_note": "enemy_run (0.792 s, in place): the lowest foot moves back 2.312 m in 0.759 s while planted, 3.05 m/s at the model's own size; x 1.3 for the boss's scale = 3.97.",
+    "speed_scale_min": 0.6,
+    "speed_scale_max": 1.6,
+    "locomotion_damp_time": 0.1,
+    "stagger_duration": 0.3,
+    "stagger_blend_time": 0.05,
+    "death_duration": 1.8,
+    "death_blend_time": 0.1,
+    "corpse_linger": 4.0,
+    "corpse_fade": 1.5
+}

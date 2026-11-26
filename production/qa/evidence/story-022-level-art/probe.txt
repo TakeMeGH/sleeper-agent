@@ -1,0 +1,61 @@
+# Story 022 probes (2026-11-26)
+## p009c run flow after art
+LEVEL canteen nav polygons=372
+LEVEL loaded canteen visit=0 first_wave=1
+PROBE start level=canteen visit=0 exit_open=false wave=1
+PROBE moved player into exit at (0.0, 0.07, 7.5)
+PROBE closed-exit walk-in: level=canteen traveling=false exit_open=false
+PROBE visit=0 level=canteen wave_cleared#1 cleared=1 exit_open=false
+PROBE visit=0 level=canteen wave_cleared#2 cleared=2 exit_open=false
+PROBE visit=0 level=canteen wave_cleared#3 cleared=3 exit_open=true
+PROBE no 4th wave: spawner wave=3 enemies_left=0
+PROBE before-travel-1 { "heart": 133.0, "coffee": 8, "cig": 3, "gun_index": 1, "time": 26.8, "wave": 3, "pistol:<Node#82258691629>": "12/0", "smg:<Node#82292246277>": "5/77", "shotgun:<Node#82325800615>": "6/11" }
+PROBE moved player into exit at (0.0, 0.07, 7.5)
+LEVEL plaza nav polygons=849
+LEVEL loaded plaza visit=1 first_wave=4
+PROBE after-travel-1 { "heart": 128.5, "coffee": 8, "cig": 3, "gun_index": 1, "time": 28.3, "wave": 4, "pistol:<Node#82258691629>": "12/0", "smg:<Node#82292246277>": "5/77", "shotgun:<Node#82325800615>": "6/11" }
+PROBE travel1 level=plaza visit=1 exit_open=false heart_drop=4.5 time_delta=1.5
+PROBE plaza first wave=4 enemies_left=7
+PROBE reach spawn Spawn1Right at (-20.7, 0.0, -5.3) snap_gap=0.32 path_pts=4 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn1Left at (20.6, 0.0, -5.3) snap_gap=0.32 path_pts=5 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn1Front at (-2.1, 0.0, -35.9) snap_gap=1.71 path_pts=17 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn2Right at (-16.0, 0.0, -25.0) snap_gap=0.32 path_pts=14 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn2Left at (16.0, 0.0, -25.0) snap_gap=0.32 path_pts=15 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn2Front at (3.0, 0.0, -34.0) snap_gap=0.32 path_pts=15 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn3Right at (-17.0, 0.0, 8.0) snap_gap=0.32 path_pts=2 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn3Left at (17.0, 0.0, 8.0) snap_gap=0.32 path_pts=4 end_gap_to_start=0.0 reachable=true
+PROBE reach spawn Spawn3Front at (-8.0, 0.0, -30.0) snap_gap=0.32 path_pts=17 end_gap_to_start=0.0 reachable=true
+PROBE sight spot SpotA at (-7.0, 0.0, -22.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotB at (7.0, 0.0, -22.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotC at (-9.0, 0.0, 0.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotD at (9.0, 0.0, 0.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotE at (0.0, 0.0, -8.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotF at (-6.0, 0.0, 24.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE sight spot SpotG at (6.0, 0.0, 26.0) to [start,(0,0),(0,-10),(0,10)]=["Y", "Y", "Y", "Y"]
+PROBE plaza enemy boss_31 pos=(-1.8, 0.0, -23.3) dist_to_player=37.8 state=orbit
+PROBE plaza enemy melee_32 pos=(-1.2, 0.0, -5.5) dist_to_player=19.9 state=chase
+PROBE plaza enemy melee_33 pos=(-2.0, -261.7, -34.2) dist_to_player=266.2 state=chase
+PROBE plaza enemy melee_34 pos=(2.6, 0.0, 11.9) dist_to_player=3.6 state=chase
+PROBE plaza enemy melee_35 pos=(3.2, 0.0, 11.3) dist_to_player=4.5 state=chase
+PROBE plaza enemy ranged_pistol_36 pos=(3.4, 0.0, 9.1) dist_to_player=6.3 state=move_to_spot
+PROBE plaza enemy ranged_shotgun_37 pos=(-7.4, 0.0, 5.8) dist_to_player=11.4 state=move_to_spot
+PROBE visit=1 level=plaza wave_cleared#1 cleared=1 exit_open=false
+PROBE visit=1 level=plaza wave_cleared#2 cleared=2 exit_open=false
+PROBE visit=1 level=plaza wave_cleared#3 cleared=3 exit_open=true
+PROBE before-travel-2 { "heart": 90.0, "coffee": 8, "cig": 3, "gun_index": 1, "time": 72.3, "wave": 6, "pistol:<Node#82258691629>": "12/0", "smg:<Node#82292246277>": "5/77", "shotgun:<Node#82325800615>": "6/11" }
+PROBE moved player into exit at (0.0, 0.07, -20.0)
+LEVEL canteen nav polygons=372
+LEVEL loaded canteen visit=2 first_wave=7
+PROBE after-travel-2 { "heart": 90.0, "coffee": 8, "cig": 3, "gun_index": 1, "time": 73.8, "wave": 7, "pistol:<Node#82258691629>": "12/0", "smg:<Node#82292246277>": "5/77", "shotgun:<Node#82325800615>": "6/11" }
+PROBE travel2 level=canteen visit=2 exit_open=false spawner wave=7 next_first_wave=7
+## p021 push re-run
+PROPS 16
+f60 || E (-1.263127, 0.000018, -3.989035) stuck=0.00 det=false dp=(0.0, 0.0, 0.0) des=(0.553737, 0.0, -3.455919)
+f90 | Prop5 pos=(-1.971231, 0.1, -7.18706) yaw=13.6 v=2.61 rest=false blk=false || E (-0.970528, 0.001, -5.472886) stuck=0.00 det=false dp=(0.0, 0.0, 0.0) des=(0.486305, 0.0, -3.466051)
+f120 | Prop5 pos=(-2.199178, 0.1, -7.556304) yaw=14.7 v=0.00 rest=true blk=false || E (-0.70675, 0.000024, -7.1634) stuck=0.00 det=false dp=(0.0, 0.0, 0.0) des=(0.496793, 0.0, -3.464563)
+f150 | Prop5 pos=(-2.199178, 0.1, -7.556304) yaw=14.7 v=0.00 rest=true blk=false || E (-0.524591, 0.000024, -8.433743) stuck=0.00 det=false dp=(0.0, 0.0, 0.0) des=(0.0, 0.0, 0.0)
+## p022perf
+.scratch/s022/perf_canteen.out:PROBE restarted spawner at wave 6
+.scratch/s022/perf_canteen.out:PROBE perf level=canteen frames=29742 samples=25596 max_enemies=21 fps_avg=774.8 fps_min=47.8797261279666 fps_p5=330.0 wall_ms=45006 vsync=1
+.scratch/s022/perf_plaza.out:PROBE restarted spawner at wave 6
+.scratch/s022/perf_plaza.out:PROBE perf level=plaza frames=22085 samples=18486 max_enemies=28 fps_avg=562.6 fps_min=96.086093139453 fps_p5=220.0 wall_ms=45005 vsync=1

@@ -1,0 +1,13 @@
+{
+    "_comment": "Skin variants per enemy type (schema in Assets/_Game/Editor/EnemyModel/EnemySkinSetup.cs, SkinsDto). Each entry is an FBX skinned to enemy_base's skeleton (same bone names and bind poses); every spawned enemy of that type wears one of its list, picked with equal chance (EnemySkin.cs). Add Assets/_Game/Art/enemy/enemy_base.fbx to a list to keep the original look in the pool; an empty list keeps the base model only. Run Tools > Enemy Model > Setup Enemy Skins (or Rebuild Enemies From Current Model) after editing.",
+    "melee": [
+        "Assets/_Game/Art/enemy/enemy_a.fbx",
+        "Assets/_Game/Art/enemy/enemy_b.fbx",
+        "Assets/_Game/Art/enemy/enemy_c.fbx"
+    ],
+    "ranged": [
+        "Assets/_Game/Art/enemy/enemy_a.fbx",
+        "Assets/_Game/Art/enemy/enemy_b.fbx",
+        "Assets/_Game/Art/enemy/enemy_c.fbx"
+    ]
+}

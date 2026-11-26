@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Boss walk-ins: the boss orbits at 9-16 m (mid 12.5) so the player is placed 14+ m beyond the table.
+G="E:/GodotEngine/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe"
+OUT=$1; F=${2:-480}
+TRIALS="
+headon_end_n -1.71,4.3 180 0 3.5 14 -1.71,-9.7
+headon_end_n_mid 2.14,4.3 180 0 3.5 14 2.14,-9.7
+offset_end_n -1.71,4.3 180 0.35 3.5 14 -1.36,-9.7
+corner_ne -1.71,4.3 210 0 3.5 14 -1.0,-10.0
+corner_nw 2.14,4.3 150 0 3.5 14 1.0,-10.0
+along_side_e -1.71,4.3 180 0.75 3.5 14 -0.96,-9.7
+along_side_w 2.14,4.3 180 -0.75 3.5 14 2.89,-9.7
+graze_corner 2.14,4.3 175 0.55 3.5 14 2.0,-10.0
+side_from_e -1.71,4.3 270 0 2.5 5 -0.3,-12.0
+side_from_w 2.14,4.3 90 0 2.5 5 0.3,-12.0
+"
+FIRST=${3:-1}; LAST=${4:-99}; N=0
+echo "$TRIALS" | while read -r L T Y LAT B A LU; do
+  [ -z "$L" ] && continue
+  N=$((N+1)); { [ $N -lt $FIRST ] || [ $N -gt $LAST ]; } && continue
+  timeout 300 "$G" --headless --path . -s res://.scratch/probes/p021s.gd -- boss $T $Y $LAT $F $B $A boss_$L $LU 2>&1 | grep -E "^PROBE|SCRIPT ERROR" >> "$OUT"
+done

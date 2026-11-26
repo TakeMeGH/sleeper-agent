@@ -1,0 +1,10 @@
+Reviewed-Content-Hash: src/dosing/substance_data.gd f0ff4238b4d55c7718a5a0925b055e2d435aef8e
+Reviewed-Content-Hash: src/dosing/substance_inventory.gd 77979d3dc8b4b8ad37c7d7e80c7f6bf00afbccb1
+Reviewed-Content-Hash: assets/data/dosing/coffee.tres 38f2ef29cd85035fd884e706841c3de4233bf74d
+Reviewed-Content-Hash: assets/data/dosing/cigarette.tres 99f31c228136f81fd7e08af1aea608ff463299f6
+Reviewed-Content-Hash: src/player/player.tscn a0445c9e5508a16afbb8cfd58c3bf4d2d51ddee5
+Reviewed-Content-Hash: src/player/test_range.gd 326157c9b295a8a7b98db643ef2138864a39a43c
+Reviewed-Content-Hash: src/player/test_range.tscn 6958eb4176a12a7ae4ff1d92daa812f62073d0e4
+Reviewed-Content-Hash: src/player/test_range_hold_coffee.tscn 5a13f7634544bad64b94b7ecebdaaa278819f636
+Reviewed-Content-Hash: src/player/test_range_hold_cigarette.tscn 253643ec43235c9ba12732140ca4004275e88498
+Reviewed-Content-Hash: project.godot 26c5db753f3a248884390348a01f24057273ca85

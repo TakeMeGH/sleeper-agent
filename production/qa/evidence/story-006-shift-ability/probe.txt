@@ -1,0 +1,36 @@
+PROBE in_tree root=true
+PROBE data slow_time_scale=0.3 slow_seconds=7.0 superspeed_multiplier=1.8 superspeed_seconds=8.0 cooldown_seconds=8.0
+PROBE input shift_ability exists=true events=[InputEventKey: keycode=4194325 (Shift), mods=none, physical=true, location=unspecified, pressed=false, echo=false]
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE hr=40 zone=1 try_activate=true kind=slow_motion time_scale=0.3 speed_mult=1.0
+PROBE during effect try_activate=false
+PROBE left zone (hr=5) after 3 s real: active=true effect_left=4.00 time_scale=0.3
+PROBE danger countdown under time_scale 0.3 after 1 real s: left=4.000 (total 5.0)
+PROBE after 6.9 s: active=true time_scale=0.3
+PROBE after 7.1 s: active=false time_scale_exact_1=true cooldown_left=8.00
+PROBE during cooldown try_activate=false
+PROBE cooldown 7.9 s: left=0.10 try_activate=false
+PROBE cooldown done: left=0.00 try_activate=true kind=slow_motion
+PROBE events=["started:slow_motion", "ended:slow_motion", "cooldown:8.0", "cooldown:0.0", "started:slow_motion"]
+PROBE run ended=true active=false time_scale_exact_1=true events=["ended:slow_motion"] try_activate_after_end=false
+PROBE   freed, time_scale=1.0
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE hr=150 try_activate=true kind=superspeed time_scale=1.0 speed_mult=1.8 hr_speed_mult=1.3
+PROBE superspeed after 8.1 s: active=false speed_mult=1.0 cooldown=8.00 events=["started:superspeed", "ended:superspeed", "cooldown:8.0"]
+PROBE   freed, time_scale=1.0
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE hr=5 zone=0 try_activate=false time_scale=1.0
+PROBE   freed, time_scale=1.0
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE hr=80 zone=2 try_activate=false time_scale=1.0
+PROBE   freed, time_scale=1.0
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE hr=200 zone=4 try_activate=false time_scale=1.0
+PROBE   freed, time_scale=1.0
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE before restart time_scale=0.3
+PROBE   freed, time_scale=1.0
+PROBE after exit_tree time_scale_exact_1=true
+PROBE   new nodes inside_tree=true ready_connected=1 time_scale=1.0
+PROBE stale 0.3 then new ShiftAbility _ready: time_scale_exact_1=true
+PROBE   freed, time_scale=1.0

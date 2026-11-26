@@ -1,0 +1,18 @@
+ERROR: Condition "!is_inside_tree()" is true. Returning: Transform3D()
+PROBE ticks_per_second=60 data slow_time_scale=0.3 player_time_scale=0.7 slow_seconds=7.0 superspeed_seconds=8.0 hang_factor=2.0
+PROBE normal: engine=1.0 player_scale=1.0 mult=1.0
+PROBE normal dive phases(real s)={ "start": 0.0, "DIVE_LAUNCH": 0.25, "AIRBORNE": 0.15, "SLIDE": 0.467, "GET_UP": 0.6 } fire_cooldown_real_s=0.11666666666667
+PROBE normal reload_real_s=0.8 coffee_unit_real_s=3.01666666666667 move_m_per_real_s=5.00000667572021 rigid_dv_per_real_s=9.80003356933594 switch_tween_real_s=-0.01666666666667
+PROBE slow A activated=true kind=slow_motion effect_left=6.97 engine=0.3 player_scale=0.7 mult=2.33333333333333
+PROBE slow dive phases(real s)={ "start": 0.0, "DIVE_LAUNCH": 0.683, "AIRBORNE": 0.467, "SLIDE": 0.65, "GET_UP": 0.867 } hang_applied_during=true fire_cooldown_real_s=0.16666666666667
+PROBE slow A effect_left=4.25486544444444 still slow=true
+PROBE hitstop: engine_during=0.015 hitstop_left=0.030943 mult=2.33333333333333 reload_left_change_5ticks=0.014 rigid_dv_5ticks=-0.05879592895508
+PROBE after hitstop: engine=0.3 hitstop_left=0.0 player_scale=0.7 mult=2.33333333333333
+PROBE slow A ended naturally: active=false engine=1.0 player_scale=1.0 mult=1.0 diving=false
+PROBE slow B activated=true kind=slow_motion effect_left=6.96 engine=0.3 player_scale=0.7 mult=2.33333333333333
+PROBE slow reload_real_s=1.15 coffee_unit_real_s=4.26666666666667 move_m_per_real_s=3.50000381469727 rigid_dv_per_real_s=2.94002532958984 switch_tween_real_s=-0.01666666666667
+PROBE ratios slow/normal real duration: reload=1.4375 coffee=1.41436464088398 fire=1.42857142857143 | speed ratios: move=0.69999982833885 rigid=0.30000155701396
+PROBE slow C activated=true kind=slow_motion effect_left=6.96 engine=0.3 player_scale=0.7 mult=2.33333333333333
+PROBE run end: active=false engine=1.0 player_scale=1.0 mult=1.0
+PROBE run end +2s: diving=false phase=IDLE hang_applied=false engine=1.0
+ERROR: 1 resources still in use at exit (run with --verbose for details).

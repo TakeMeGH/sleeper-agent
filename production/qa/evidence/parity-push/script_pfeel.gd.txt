@@ -1,0 +1,183 @@
+extends SceneTree
+## Push-feel trace probe (parity-push): per-frame table speed, yaw rate, enemy speed while pushing.
+## godot --headless --path . -s res://.scratch/probes/pfeel.gd -- <kinds csv> <starts "x,z;x,z"> <player x,z> <frames> [label] [trace 0/1]
+## Prints TRACE lines (if trace=1) and one FEEL summary line. Hard frame cap + 120 s wall clock.
+const KINDS := {
+	"melee": "res://assets/data/enemies/melee.tres",
+	"pistol": "res://assets/data/enemies/ranged_pistol.tres",
+	"boss": "res://assets/data/enemies/boss.tres",
+}
+const WALL_LIMIT_MS: int = 120000
+var _wall_start: int = 0
+var _frame: int = 0
+var _max: int = 400
+var _label: String = ""
+var _trace: bool = false
+var _game: Node
+var _enemies: Array[EnemyBase] = []
+var _props: Array[PushableProp] = []
+var _prev_pos: Dictionary = {}
+var _prev_yaw: Dictionary = {}
+var _start_pos: Dictionary = {}
+var _start_yaw: Dictionary = {}
+var _was_moving: Dictionary = {}
+var _prev_v: Dictionary = {}
+var _restarts: int = 0
+var _snaps: int = 0
+var _pen_max: float = -9.0
+var _vmax: float = 0.0
+var _yr_max: float = 0.0
+var _jerk_max: float = 0.0
+var _enemy_dips: int = 0
+var _enemy_low: Dictionary = {}
+var _push_frames: int = 0
+var _enemy_push_speed_sum: float = 0.0
+var _tbl_push_speed_sum: float = 0.0
+var _last_contact_frame: int = -1
+var _rest_frame: int = -1
+var _coast_dist: float = 0.0
+var _pos_at_last_contact: Vector3
+var _main: PushableProp
+var _detoured: bool = false
+var _stuck_max: float = 0.0
+
+
+func _initialize() -> void:
+	_wall_start = Time.get_ticks_msec()
+	var a: PackedStringArray = OS.get_cmdline_user_args()
+	var kinds: Array[EnemyData] = []
+	for k: String in a[0].split(","):
+		kinds.append(load(KINDS[k]) as EnemyData)
+	var starts: PackedVector3Array = PackedVector3Array()
+	for s: String in a[1].split(";"):
+		var p: PackedStringArray = s.split(",")
+		starts.append(Vector3(float(p[0]), 0.05, float(p[1])))
+	var pp: PackedStringArray = a[2].split(",")
+	_max = int(a[3])
+	_label = a[4] if a.size() > 4 else ""
+	_trace = a.size() > 5 and a[5] == "1"
+	_game = (load("res://src/levels/test_canteen_push_table.tscn") as PackedScene).instantiate()
+	_game.set(&"debug_spawn_kinds", kinds)
+	_game.set(&"debug_spawn_positions", starts)
+	_game.set(&"debug_override_player_pose", true)
+	_game.set(&"debug_player_position", Vector3(float(pp[0]), 0.05, float(pp[1])))
+	root.add_child(_game)
+
+
+func _physics_process(delta: float) -> bool:
+	_frame += 1
+	if _frame >= _max + 60 or Time.get_ticks_msec() - _wall_start > WALL_LIMIT_MS:
+		print("FEEL %s ABORTED frame=%d" % [_label, _frame])
+		quit()
+		return true
+	if _frame >= _max:
+		_finish()
+		return true
+	if _props.is_empty():
+		_props = PushableProp.get_all(self)
+		for p: PushableProp in _props:
+			_prev_pos[p] = p.global_position
+			_prev_yaw[p] = p.global_rotation.y
+			_start_pos[p] = p.global_position
+			_start_yaw[p] = p.global_rotation.y
+			_was_moving[p] = false
+			_prev_v[p] = 0.0
+	if _enemies.is_empty():
+		for n: Node in get_nodes_in_group(&"enemies"):
+			_enemies.append(n as EnemyBase)
+		return false
+	var contact: bool = false
+	var line: String = "TRACE f=%d" % _frame
+	for e: EnemyBase in _enemies:
+		if not is_instance_valid(e):
+			continue
+		var ev: Vector3 = e.get_real_velocity()
+		var es: float = Vector2(ev.x, ev.z).length()
+		var pushing: bool = false
+		for i: int in e.get_slide_collision_count():
+			if e.get_slide_collision(i).get_collider() is PushableProp:
+				pushing = true
+		if pushing:
+			contact = true
+			_push_frames += 1
+			_enemy_push_speed_sum += es
+		# stop-go: enemy speed dips below 35% of its walk speed while wanting to move and near a table
+		var walk: float = e.get_move_speed()
+		var low: bool = es < walk * 0.35 and pushing
+		if low and not (_enemy_low.get(e, false) as bool):
+			_enemy_dips += 1
+		_enemy_low[e] = low
+		_stuck_max = maxf(_stuck_max, e.get_stuck_time())
+		if e.is_detouring():
+			_detoured = true
+		line += " e%s=%.2f%s(w%.2f)" % [e.name.right(2), es, "P" if pushing else "", Vector2(e._wanted_velocity.x, e._wanted_velocity.z).length()]
+		for cp: PushableProp in e._push_contacts:
+			if is_instance_valid(cp):
+				var q: Vector3 = cp.closest_footprint_point(e.global_position)
+				var off: Vector3 = Vector3(q.x - e.global_position.x, 0.0, q.z - e.global_position.z)
+				var nn: Vector3 = off.normalized()
+				line += " [gap=%.3f n=(%.2f,%.2f) vc=%.2f dv=(%.2f) kb=%.2f]" % [off.length() - (e._collision.shape as CapsuleShape3D).radius, nn.x, nn.z, cp.get_point_velocity(q).dot(nn), Vector2(e._desired_velocity.x, e._desired_velocity.z).length(), e._knockback.length()]
+		var r: float = (e._collision.shape as CapsuleShape3D).radius
+		for p: PushableProp in _props:
+			var l: Vector3 = p.to_local(e.global_position)
+			var h: Vector2 = p.get_footprint_extents()
+			var dx: float = absf(l.x) - h.x
+			var dz: float = absf(l.z) - h.y
+			var d: float = maxf(dx, dz) if (dx < 0.0 and dz < 0.0) else Vector2(maxf(dx, 0.0), maxf(dz, 0.0)).length()
+			_pen_max = maxf(_pen_max, r - d)
+	for p: PushableProp in _props:
+		var pos: Vector3 = p.global_position
+		var step: Vector3 = pos - (_prev_pos[p] as Vector3)
+		var v: float = Vector2(step.x, step.z).length() / delta
+		var yr: float = rad_to_deg(angle_difference(_prev_yaw[p] as float, p.global_rotation.y)) / delta
+		var mv: bool = v > 0.05 or absf(yr) > 1.0
+		if mv and _main == null:
+			_main = p
+		if mv and not (_was_moving[p] as bool) and _frame > 3 and _restarts_ok(p):
+			_restarts += 1
+		# snap: from moving >0.4 m/s to still in one frame
+		if (_prev_v[p] as float) > 0.4 and v < 0.05:
+			_snaps += 1
+		_jerk_max = maxf(_jerk_max, absf(v - (_prev_v[p] as float)) / delta)
+		_was_moving[p] = mv
+		_prev_v[p] = v
+		_vmax = maxf(_vmax, v)
+		_yr_max = maxf(_yr_max, absf(yr))
+		if mv:
+			line += " %s v=%.2f yr=%.1f" % [p.name, v, yr]
+		_prev_pos[p] = pos
+		_prev_yaw[p] = p.global_rotation.y
+	if contact:
+		_last_contact_frame = _frame
+		_rest_frame = -1
+		if _main != null:
+			_pos_at_last_contact = _main.global_position
+			_tbl_push_speed_sum += (_prev_v[_main] as float)
+	elif _main != null and _last_contact_frame > 0 and _rest_frame < 0 and (_prev_v[_main] as float) < 0.01:
+		_rest_frame = _frame
+		_coast_dist = Vector2(_main.global_position.x - _pos_at_last_contact.x, _main.global_position.z - _pos_at_last_contact.z).length()
+	if _trace and (contact or (_main != null and (_was_moving[_main] as bool))):
+		print(line)
+	return false
+
+
+func _restarts_ok(_p: PushableProp) -> bool:
+	return true
+
+
+func _finish() -> void:
+	var disp: float = 0.0
+	var turn: float = 0.0
+	if _main != null:
+		disp = Vector2(_main.global_position.x - (_start_pos[_main] as Vector3).x, _main.global_position.z - (_start_pos[_main] as Vector3).z).length()
+		turn = rad_to_deg(angle_difference(_start_yaw[_main] as float, _main.global_rotation.y))
+	var moved: int = 0
+	for p: PushableProp in _props:
+		if (p.global_position - (_start_pos[p] as Vector3)).length() > 0.02:
+			moved += 1
+	var walk: float = _enemies[0].get_move_speed() if not _enemies.is_empty() and is_instance_valid(_enemies[0]) else 0.0
+	print("FEEL %s pen_max=%.3f props_moved=%d disp=%.2f turn=%.1f tbl_vmax=%.2f yr_max=%.1f restarts=%d snaps=%d accel_max=%.1f enemy_dips=%d push_frames=%d enemy_push_v=%.2f walk=%.2f tbl_push_v=%.2f coast_m=%.2f coast_frames=%d detoured=%s stuck_max=%.2f" % [
+		_label, _pen_max, moved, disp, turn, _vmax, _yr_max, _restarts, _snaps, _jerk_max, _enemy_dips, _push_frames,
+		_enemy_push_speed_sum / maxf(_push_frames, 1), walk, _tbl_push_speed_sum / maxf(_push_frames, 1),
+		_coast_dist, (_rest_frame - _last_contact_frame) if _rest_frame > 0 else -1, _detoured, _stuck_max])
+	quit()

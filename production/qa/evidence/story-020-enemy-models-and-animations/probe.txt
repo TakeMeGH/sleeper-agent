@@ -1,0 +1,132 @@
+## p020a/p020b: FBX import check (before implementation)
+PROBE FILE res://assets/art/enemies/enemy_base.fbx
+PROBE enemy_base [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   rig_enemy [Node3D] scale=(100.0, 100.0, 100.0) rot=(-90.0, 0.0, 0.0)
+PROBE     Skeleton3D [Skeleton3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) bones=55 ["spine_a", "spine_b", "spine_c", "head", "head_end", "shoulder_L", "arm_a_L", "arm_b_L", "arm_b_L_end", "shoulder_R", "arm_a_R", "arm_b_R", "arm_b_R_end", "palm_L", "finger_bunch_a_L", "finger_bunch_b_L", "finger_bunch_b_L_end", "finger_index_a_L", "finger_index_b_L", "finger_index_b_L_end", "finger_thumb_a_L", "
+PROBE       base_male [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) aabb=[P: (-0.703629, -0.000618, -0.100665), S: (1.407257, 1.769578, 0.291282)] mat0=res://assets/art/enemies/enemy_base.fbx::StandardMaterial3D_uk5ie tex=none
+PROBE   AnimationPlayer [AnimationPlayer]
+    CLIP enemy_attack_melee len=1.25 loop=0 tracks=44
+    CLIP enemy_attack_pistol_001 len=0.5 loop=0 tracks=44
+    CLIP enemy_attack_shotgun len=0.75 loop=0 tracks=44
+    CLIP enemy_attack_smg len=0.16666666666667 loop=0 tracks=44
+    CLIP enemy_idle_breathing len=1.0 loop=0 tracks=44
+    CLIP enemy_run len=0.79166666666667 loop=0 tracks=44
+    CLIP enemy_walk_weak len=1.20833333333333 loop=0 tracks=44
+PROBE FILE res://assets/art/enemies/enemy_a.fbx
+PROBE enemy_a [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   rig_enemy_a [Node3D] scale=(100.0, 100.0, 100.0) rot=(-90.0, 0.0, 0.0)
+PROBE     Skeleton3D [Skeleton3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) bones=55 ["spine_a", "spine_b", "spine_c", "head", "head_end", "shoulder_L", "arm_a_L", "arm_b_L", "arm_b_L_end", "shoulder_R", "arm_a_R", "arm_b_R", "arm_b_R_end", "palm_L", "finger_bunch_a_L", "finger_bunch_b_L", "finger_bunch_b_L_end", "finger_index_a_L", "finger_index_b_L", "finger_index_b_L_end", "finger_thumb_a_L", "
+PROBE       base_male [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) aabb=[P: (-0.703629, -0.000618, -0.108061), S: (1.407257, 1.754315, 0.298677)] mat0=res://assets/art/enemies/enemy_a.fbx::StandardMaterial3D_bpb5q tex=none
+PROBE   AnimationPlayer [AnimationPlayer]
+    CLIP enemy_attack_melee len=1.25 loop=0 tracks=44
+    CLIP enemy_attack_pistol_001 len=0.5 loop=0 tracks=44
+    CLIP enemy_attack_shotgun len=0.75 loop=0 tracks=44
+    CLIP enemy_attack_smg len=0.16666666666667 loop=0 tracks=44
+    CLIP enemy_idle_breathing len=1.0 loop=0 tracks=44
+    CLIP enemy_run len=0.79166666666667 loop=0 tracks=44
+    CLIP enemy_walk_weak len=1.20833333333333 loop=0 tracks=44
+PROBE FILE res://assets/art/weapons/enemy_kayu.fbx
+PROBE enemy_kayu [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   prop_kayu [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) aabb=[P: (-0.016823, -0.042939, -0.070795), S: (0.060433, 0.066584, 0.802857)] mat0=res://assets/art/weapons/enemy_kayu.fbx::StandardMaterial3D_tl5x6 tex=none
+PROBE FILE res://assets/art/weapons/enemy_pistol.fbx
+PROBE enemy_pistol [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   prop_pistol [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(19.76009, -66.54179, -79.03448) aabb=[P: (-0.02394, -0.045582, -0.043518), S: (0.08591, 0.114383, 0.165673)] mat0=res://assets/art/weapons/enemy_pistol.fbx::StandardMaterial3D_7ovqr tex=none
+PROBE     prop_pistol_tip [Node3D] scale=(1.0, 1.0, 1.0) rot=(18.94058, 26.9835, 7.273104)
+PROBE FILE res://assets/art/weapons/enemy_shotgun.fbx
+PROBE enemy_shotgun [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   prop_shotgun [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) aabb=[P: (-0.236859, -0.187279, -0.150476), S: (0.32893, 0.230979, 0.627685)] mat0=res://assets/art/weapons/enemy_shotgun.fbx::StandardMaterial3D_nnqpi tex=none
+PROBE     prop_shotgun_tip [Node3D] scale=(1.0, 1.0, 1.0) rot=(20.11821, -30.24554, -36.61157)
+PROBE FILE res://assets/art/weapons/enemy_smg.fbx
+PROBE enemy_smg [Node3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0)
+PROBE   prop_smg [MeshInstance3D] scale=(1.0, 1.0, 1.0) rot=(0.0, 0.0, 0.0) aabb=[P: (-0.146617, -0.13521, -0.03525), S: (0.17166, 0.158577, 0.164715)] mat0=res://assets/art/weapons/enemy_smg.fbx::StandardMaterial3D_2h8f2 tex=none
+PROBE     prop_smg_tip [Node3D] scale=(1.0, 1.0, 1.0) rot=(38.59698, -68.70408, -70.75116)
+PROBE libs=[&""] anims=["enemy_attack_melee", "enemy_attack_pistol_001", "enemy_attack_shotgun", "enemy_attack_smg", "enemy_idle_breathing", "enemy_run", "enemy_walk_weak"] root=..
+
+## p020c: live test_arena_enemy_models.tscn (physics-frame clock, t in s)
+PROBE spawn CharacterBody3D melee_1 script=melee_enemy.gd height=1.8 skin=0 loops={ &"enemy_idle_breathing": 1, &"enemy_walk_weak": 1, &"enemy_run": 1, &"enemy_attack_melee": 0 } attack_clip=enemy_attack_melee hit_time=0.425 clip_len=1.25 has_muzzle=false muzzle=(-0.766113, 1.501, 4.604047) origin=(-0.766113, 0.001, 4.604047) layer=2 mask=3
+PROBE spawn CharacterBody3D ranged_pistol_2 script=ranged_enemy.gd height=1.8 skin=2 loops={ &"enemy_idle_breathing": 1, &"enemy_walk_weak": 1, &"enemy_run": 1, &"enemy_attack_pistol_001": 0 } attack_clip=enemy_attack_pistol_001 hit_time=0.0417 clip_len=0.5 has_muzzle=true muzzle=(-2.245874, 1.109629, 3.494302) origin=(-1.843383, 0.000984, 3.466656) layer=2 mask=3
+PROBE spawn CharacterBody3D boss_3 script=boss_enemy.gd height=2.34 skin=-1 loops={ &"enemy_idle_breathing": 1, &"enemy_walk_weak": 1, &"enemy_run": 1, &"enemy_attack_smg": 0 } attack_clip=enemy_attack_smg hit_time=0.0417 clip_len=0.167 has_muzzle=true muzzle=(1.938759, 1.43464, 1.376231) origin=(2.125864, 0.000878, 1.342728) layer=2 mask=3
+PROBE melee attack_started t=1.0
+PROBE t=1.5 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=1.5 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=1.5 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=2.0 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=2.0 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=2.0 boss_3 state=aim speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=2.5 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=2.5 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=2.5 boss_3 state=aim speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE melee attack_started t=2.85
+PROBE t=3.0 melee_1 state=windup speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=3.0 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=3.0 boss_3 state=burst speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=3.5 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=3.5 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=3.5 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=4.0 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=4.0 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=4.0 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=4.5 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=4.5 ranged_pistol_2 state=move_to_spot speed=3.8 loco=run clip=enemy_run attack_playing=false
+PROBE t=4.5 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE melee attack_started t=4.7
+PROBE t=5.0 melee_1 state=windup speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=5.0 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=5.0 boss_3 state=aim speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=5.5 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=5.5 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=5.5 boss_3 state=burst speed=0.0 loco=idle clip=enemy_attack_smg attack_playing=true
+PROBE t=6.0 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=6.0 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=6.0 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=6.5 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=6.5 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=6.5 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE melee attack_started t=6.55
+PROBE t=7.0 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=7.0 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=7.0 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=7.5 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=7.5 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=7.5 boss_3 state=aim speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=8.0 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=8.0 ranged_pistol_2 state=shoot speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=8.0 boss_3 state=aim speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE melee attack_started t=8.4
+PROBE t=8.5 melee_1 state=windup speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=8.5 ranged_pistol_2 state=reload speed=0.0 loco=idle clip=enemy_attack_pistol_001 attack_playing=true
+PROBE t=8.5 boss_3 state=burst speed=0.0 loco=idle clip=enemy_attack_smg attack_playing=true
+PROBE t=9.0 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=9.0 ranged_pistol_2 state=reload speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=9.0 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=9.5 melee_1 state=swing speed=0.0 loco=idle clip=enemy_attack_melee attack_playing=true
+PROBE t=9.5 ranged_pistol_2 state=reload speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=9.5 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE t=10.0 melee_1 state=recover speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=10.0 ranged_pistol_2 state=reload speed=0.0 loco=idle clip=enemy_idle_breathing attack_playing=false
+PROBE t=10.0 boss_3 state=orbit speed=1.7 loco=walk clip=enemy_walk_weak attack_playing=false
+PROBE melee attack_started t=10.25
+PROBE player hits (t, dmg, src): [[1.45, 15.0, (-0.766113, 0.001, 4.604047)], [2.533, 6.0, (1.736497, 0.000878, -0.015193)], [2.65, 6.0, (1.736497, 0.000878, -0.015193)], [2.767, 6.0, (1.736497, 0.000878, -0.015193)], [2.883, 6.0, (1.736497, 0.000878, -0.015193)], [3.0, 6.0, (1.736497, 0.000878, -0.015193)], [3.117, 6.0, (1.736497, 0.000878, -0.015193)], [3.3, 15.0, (-0.766113, 0.001, 4.604047)], [5.15, 15.0, (-0.766
+PROBE dead melee_1 is_dead=true in_enemies=false layer=4 mask=1 dead_pose=true corpse_age=0.33
+PROBE dead ranged_pistol_2 is_dead=true in_enemies=false layer=4 mask=1 dead_pose=true corpse_age=0.33
+PROBE dead boss_3 is_dead=true in_enemies=false layer=4 mask=1 dead_pose=true corpse_age=0.33
+PROBE live corpses=3
+PROBE player layer=1 mask=1
+PROBE corpse re-hit: died_again=false moved=0.14
+PROBE after 11 kills live corpses=6 (cap 6)
+PROBE at kill+7s live corpses=0 (linger 4 + fade 1.5)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+
+## p020d: props/muzzles per kind + locomotion thresholds
+PROBE prop melee_1 has_muzzle=false muzzle=(-4.0, 1.5, -2.0) palm_R=(-3.767259, 0.997418, -2.014619) muzzle-palm=0.55 attack_clip=enemy_attack_melee
+PROBE prop ranged_pistol_2 has_muzzle=true muzzle=(-1.855868, 1.075405, -2.059576) palm_R=(-1.767259, 0.997418, -2.014619) muzzle-palm=0.13 attack_clip=enemy_attack_pistol_001
+PROBE prop ranged_shotgun_3 has_muzzle=true muzzle=(-0.05525, 1.272076, -2.525672) palm_R=(0.256015, 1.09716, -2.016081) muzzle-palm=0.62 attack_clip=enemy_attack_shotgun
+PROBE prop ranged_smg_4 has_muzzle=true muzzle=(2.077882, 1.048662, -2.107407) palm_R=(2.221103, 0.947547, -2.013888) muzzle-palm=0.2 attack_clip=enemy_attack_smg
+PROBE prop boss_5 has_muzzle=true muzzle=(4.106575, 1.435012, -2.146978) palm_R=(4.302563, 1.296644, -2.019005) muzzle-palm=0.27 attack_clip=enemy_attack_smg
+PROBE loco speed=0.0 state=idle scale=<null>
+PROBE loco speed=0.5 state=walk scale=<null>
+PROBE loco speed=1.0 state=walk scale=<null>
+PROBE loco speed=1.5 state=walk scale=<null>
+PROBE loco speed=2.5 state=run scale=<null>
+PROBE loco speed=3.5 state=run scale=<null>
+PROBE loco speed=6.0 state=run scale=<null>

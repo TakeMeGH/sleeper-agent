@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LevelRotationData" format=3]
+
+[ext_resource type="Script" path="res://src/run/level_rotation_data.gd" id="1_r"]
+[ext_resource type="PackedScene" path="res://src/levels/canteen.tscn" id="2_c"]
+[ext_resource type="PackedScene" path="res://src/levels/plaza.tscn" id="3_p"]
+
+[resource]
+script = ExtResource("1_r")
+level_ids = PackedStringArray("canteen", "plaza")
+level_scenes = Array[PackedScene]([ExtResource("2_c"), ExtResource("3_p")])
+waves_per_visit = 3
+travel_fade_out_seconds = 0.6
+travel_fade_in_seconds = 0.5
+first_wave_delay = 1.5

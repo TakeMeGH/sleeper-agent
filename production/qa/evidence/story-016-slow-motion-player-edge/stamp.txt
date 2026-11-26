@@ -1,0 +1,16 @@
+Reviewed-Content-Hash: src/player/player_time.gd 80ef6fda35394323091d8051d71ccd68156ff867
+Reviewed-Content-Hash: src/player/test_range_slow_edge.tscn 233e1eff1e1711cd14d384d1d32cd0ade1af5031
+Reviewed-Content-Hash: src/player/player.tscn bd15d841f03620f783f5afcbc2867b0a43594dcb
+Reviewed-Content-Hash: src/player/shift_ability.gd 34e8edc0f3e39a7449a3a2a2a348687a53d6a077
+Reviewed-Content-Hash: src/player/shift_ability_data.gd 4140382b6b1f83ea6c0c3e18b89a373a617a1149
+Reviewed-Content-Hash: assets/data/player/shift_ability.tres be0b29e171d27297d831e7c499021b3a07e1ab12
+Reviewed-Content-Hash: src/player/player_controller.gd fe14831e172c4ed32b4476c5c101351eed45bf20
+Reviewed-Content-Hash: src/player/dive_state.gd 4ce485050540b33e463776010e7f250013a3a4b7
+Reviewed-Content-Hash: src/player/dive_data.gd 01736be094c012116446c8744242c8c77d0ec114
+Reviewed-Content-Hash: src/weapons/gun.gd 58f0f06e12c4b4e96e5e23f4a0b83fb5642a6058
+Reviewed-Content-Hash: src/weapons/weapon_holder.gd b60c7bafbf11d0250291a9f38215b4907c6ead50
+Reviewed-Content-Hash: src/weapons/gun_feel.gd 470237985df82cadd559bc825111fb4ef4c33a87
+Reviewed-Content-Hash: src/dosing/substance_inventory.gd 083ccbbca3108d89ad76b8ce1319d3707c0d51c1
+Reviewed-Content-Hash: src/viewmodel/viewmodel.gd 36284baca66c67b683ef2c2a41adbb5a155a4dd0
+Reviewed-Content-Hash: src/audio/footsteps.gd 553429adc1001927d01776b5a3f1e7c2cbf0496d
+Reviewed-Content-Hash: production/session-logs/build-notes.md 004447579e5f38b0e1a936d488483c5f02a081aa

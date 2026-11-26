@@ -1,0 +1,85 @@
+import json, re, sys, math
+level = sys.argv[1]            # canteen | plaza
+D = 'res://assets/art/levels/'
+CFG = {
+ 'canteen': dict(file='src/levels/canteen.tscn', json='Canteen', color='Color(0.5377, 0.7442, 1, 1)', fwd=(0.942,-0.329,-0.048), bg='Color(0.0809, 0.1637, 0.2956, 1)', amb='Color(0.1591, 0.2193, 0.3396, 1)'),
+ 'plaza': dict(file='src/levels/plaza.tscn', json='Plaza', color='Color(0.5196, 0.6873, 0.8931, 1)', fwd=(0.009,-0.999,-0.047), bg='Color(0.0809, 0.1637, 0.2956, 1)', amb='Color(0.1591, 0.2193, 0.3396, 1)'),
+}[level]
+s = open(CFG['file']).read()
+data = json.load(open('.scratch/s022/%s_Art_world.json' % CFG['json']))
+def sub(rx, rep, text, flags=re.S): return re.sub(rx, rep, text, flags=flags)
+# environment
+env = '''[sub_resource type="Environment" id="Env_1"]
+background_mode = 1
+background_color = %s
+ambient_light_source = 2
+ambient_light_color = %s
+ambient_light_energy = 1.0
+tonemap_mode = 0
+adjustment_enabled = true
+adjustment_saturation = 0.85
+''' % (CFG['bg'], CFG['amb'])
+s = sub(r'\[sub_resource type="Environment" id="Env_1"\].*?\n\n', env + '\n', s)
+# remove old lights
+s = sub(r'\[node name="(Light\d+|Sun)" type="(OmniLight3D|DirectionalLight3D)" parent="\."\].*?\n\n', '', s)
+# sun basis: -Z along fwd
+f = CFG['fwd']; n = math.sqrt(sum(c*c for c in f)); f = [c/n for c in f]
+z = [-c for c in f]
+up = (0,1,0) if abs(z[1]) < 0.99 else (0,0,1)
+def cross(a,b): return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
+def norm(a): m=math.sqrt(sum(c*c for c in a)); return [c/m for c in a]
+x = norm(cross(up, z)); y = cross(z, x)
+rows = [x[0],y[0],z[0], x[1],y[1],z[1], x[2],y[2],z[2]]
+sun = '[node name="Sun" type="DirectionalLight3D" parent="."]\ntransform = Transform3D(%s, 0, 20, 0)\nlight_color = %s\nlight_energy = 1.0\nshadow_enabled = true\nshadow_bias = 0.05\nshadow_normal_bias = 0.4\n\n' % (', '.join('%.4f' % r for r in rows), CFG['color'])
+s = s.replace('[node name="NavigationRegion3D"', sun + '[node name="NavigationRegion3D"', 1)
+# ext resources
+used = sorted(set(d['fbx'] for d in data if d['fbx'] not in (level + '_main',)))
+def path(fb): return D + ('plaza/' if fb.startswith('plaza') else 'canteen/') + fb + '.fbx'
+ids = {}
+existing = dict((m.group(1), m.group(2)) for m in re.finditer(r'\[ext_resource type="PackedScene" path="([^"]+)" id="([^"]+)"\]', s))
+add = ''
+for i, fb in enumerate(used):
+    p = path(fb)
+    if p in existing: ids[fb] = existing[p]
+    else:
+        ids[fb] = '%d_art_%s' % (i + 20, fb); add += '[ext_resource type="PackedScene" path="%s" id="%s"]\n' % (p, ids[fb])
+last = [m for m in re.finditer(r'\[ext_resource [^\n]*\n', s)][-1]
+s = s[:last.end()] + add + s[last.end():]
+# existing props: update transforms for plaza (match by fbx and nearest pos), keep names
+def tf(d): return d['godot_transform']
+placed = {}
+for m in re.finditer(r'\[node name="(Prop\d+)" parent="NavigationRegion3D/Props" instance=ExtResource\("([^"]+)"\)\]\ntransform = Transform3D\(([^)]*)\)', s):
+    v = [float(q) for q in m.group(3).split(',')]
+    fb = [k for k, i in ids.items() if i == m.group(2)]
+    placed[m.group(1)] = (fb[0] if fb else None, v[9:12], m.start(), m.end(), m.group(2))
+newprops = ''; decor = ''
+counts = {}
+used_json = set()
+if level == 'plaza':
+    for name, (fb, pos, a, b, rid) in sorted(placed.items(), key=lambda kv: -kv[1][2]):
+        if fb is None: continue
+        best = None; bd = 1e9
+        for j, d in enumerate(data):
+            if d['fbx'] != fb or j in used_json: continue
+            dd = (d['world_pos'][0]-pos[0])**2 + (d['world_pos'][2]-pos[2])**2
+            if dd < bd: bd, best = dd, j
+        if best is None: continue
+        used_json.add(best)
+        s = s[:a] + '[node name="%s" parent="NavigationRegion3D/Props" instance=ExtResource("%s")]\ntransform = %s' % (name, rid, tf(data[best])) + s[b:]
+nextprop = max([int(k[4:]) for k in placed] + [-1]) + 1
+for j, d in enumerate(data):
+    fb = d['fbx']
+    if fb.endswith('_main') or j in used_json: continue
+    if fb in ('canteen_dynamic_table', 'canteen_fixed_benches') and level == 'canteen': continue
+    counts[fb] = counts.get(fb, 0) + 1
+    k = counts[fb]
+    if 'door' in fb:
+        decor += '[node name="%s_%d" parent="NavigationRegion3D/Decor" instance=ExtResource("%s")]\ntransform = %s\n\n' % (fb, k, ids[fb], tf(d))
+    elif fb in ('canteen_dynamic_bottle', 'canteen_dynamic_bowl'):
+        decor += '[node name="%s_%d" parent="NavigationRegion3D/Decor" groups=["table_decor"] instance=ExtResource("%s")]\ntransform = %s\n\n' % (fb, k, ids[fb], tf(d))
+    else:
+        newprops += '[node name="Prop%d" parent="NavigationRegion3D/Props" instance=ExtResource("%s")]\ntransform = %s\n\n' % (nextprop, ids[fb], tf(d)); nextprop += 1
+block = newprops + '[node name="Decor" type="Node3D" parent="NavigationRegion3D"]\n\n' + decor
+s = s.replace('[node name="PlayerStart"', block + '[node name="PlayerStart"', 1)
+open(CFG['file'], 'w').write(s)
+print('ok', counts)

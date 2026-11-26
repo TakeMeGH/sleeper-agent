@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="GunFeelSet" format=3]
+
+[ext_resource type="Script" path="res://src/weapons/gun_feel_set.gd" id="1_set"]
+[ext_resource type="Script" path="res://src/weapons/gun_feel_data.gd" id="1_gfd"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/muzzle_01.png" id="2_m1"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/muzzle_02.png" id="3_m2"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/muzzle_03.png" id="4_m3"]
+
+[sub_resource type="Resource" id="Resource_pistol"]
+script = ExtResource("1_gfd")
+gun_id = &"pistol"
+kick_pitch_degrees = 1.8
+kick_yaw_degrees = 0.4
+max_pitch_degrees = 4.5
+max_yaw_degrees = 1.0
+recovery_seconds = 0.35
+shake_position = 0.002
+shake_roll_degrees = 1.0
+shake_pitch_degrees = 1.0
+shake_yaw_degrees = 1.0
+shake_seconds = 0.12
+shake_frequency = 25.0
+fov_punch_degrees = -1.0
+fov_punch_seconds = 0.12
+muzzle_offset = Vector3(0, 0.065, -0.178)
+muzzle_flash_size = 0.12
+muzzle_flash_seconds = 0.05
+muzzle_flash_color = Color(1, 0.85, 0.5, 1)
+hitstop_seconds = 0.05
+
+[sub_resource type="Resource" id="Resource_smg"]
+script = ExtResource("1_gfd")
+gun_id = &"smg"
+kick_pitch_degrees = 0.45
+kick_yaw_degrees = 0.22
+max_pitch_degrees = 3.5
+max_yaw_degrees = 1.0
+recovery_seconds = 0.3
+shake_position = 0.0015
+shake_roll_degrees = 0.4
+shake_pitch_degrees = 0.3
+shake_yaw_degrees = 0.3
+shake_seconds = 0.07
+shake_frequency = 30.0
+fov_punch_degrees = -0.3
+fov_punch_seconds = 0.07
+muzzle_offset = Vector3(0, 0.075, -0.273)
+muzzle_flash_forward = 0.12
+muzzle_flash_size = 0.14
+muzzle_flash_seconds = 0.04
+muzzle_flash_color = Color(1, 0.85, 0.5, 1)
+hitstop_seconds = 0.05
+
+[sub_resource type="Resource" id="Resource_shotgun"]
+script = ExtResource("1_gfd")
+gun_id = &"shotgun"
+kick_pitch_degrees = 4.5
+kick_yaw_degrees = 0.8
+max_pitch_degrees = 6.0
+max_yaw_degrees = 1.5
+recovery_seconds = 0.7
+shake_position = 0.002
+shake_roll_degrees = 3.0
+shake_pitch_degrees = 2.5
+shake_yaw_degrees = 2.5
+shake_seconds = 0.2
+shake_frequency = 20.0
+fov_punch_degrees = -2.5
+fov_punch_seconds = 0.18
+muzzle_offset = Vector3(0, 0.03, -0.456)
+muzzle_flash_size = 0.25
+muzzle_flash_seconds = 0.07
+muzzle_flash_color = Color(1, 0.8, 0.45, 1)
+hitstop_seconds = 0.09
+
+[resource]
+script = ExtResource("1_set")
+guns = Array[ExtResource("1_gfd")]([SubResource("Resource_pistol"), SubResource("Resource_smg"), SubResource("Resource_shotgun")])
+muzzle_textures = Array[Texture2D]([ExtResource("2_m1"), ExtResource("3_m2"), ExtResource("4_m3")])

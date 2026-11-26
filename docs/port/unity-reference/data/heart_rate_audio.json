@@ -1,0 +1,8 @@
+{
+  "_comment": "Story 044: the heart-rate loops (schema in HeartRateAudioConfig.cs). Band, end rates and curve come from heart_rate_screen.json. Volumes 0 to 1 (above 0) at full strength; response in real seconds.",
+  "low_clip": "darah rendah.wav",
+  "high_clip": "darah tinggi.wav",
+  "low_max_volume": 0.8,
+  "high_max_volume": 0.8,
+  "response_seconds": 0.6
+}

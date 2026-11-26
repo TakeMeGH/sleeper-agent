@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+[ext_resource type="Script" path="res://src/player/hit_arcs_debug.gd" id="2_dbg"]
+
+[node name="TestRangeHitArcsLeft" instance=ExtResource("1_base")]
+
+[node name="HitArcsDebug" type="Node" parent="." index="0" node_paths=PackedStringArray("player")]
+script = ExtResource("2_dbg")
+player = NodePath("../Player")
+offsets = PackedVector3Array(-8, 0, 0)

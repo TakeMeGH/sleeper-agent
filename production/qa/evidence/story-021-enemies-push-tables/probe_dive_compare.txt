@@ -1,0 +1,1 @@
+PROBE dive_regression canteen: before(017)=372 after(021)=570 (run cut at 900 s) common_starts=276 end_differs(>0.3m xz or >0.2m y)=0 through_geometry_after=0 head_in_ceiling_after=2

@@ -1,0 +1,36 @@
+{
+    "voice_cap": 8,
+    "min_distance": 2,
+    "max_distance": 40,
+    "surface_sounds_per_shot": 2,
+    "flesh_clips": [
+        "flesh_hit_01.wav",
+        "flesh_hit_02.wav",
+        "flesh_hit_03.wav",
+        "flesh_hit_04.wav",
+        "flesh_hit_05.wav",
+        "flesh_hit_06.wav"
+    ],
+    "flesh_volume": 0.8,
+    "flesh_pitch_variation": 0.08,
+    "kill_clips": [
+        "kill_burst_01.wav",
+        "kill_burst_02.wav",
+        "kill_burst_03.wav",
+        "kill_burst_04.wav"
+    ],
+    "kill_volume": 0.9,
+    "kill_pitch_variation": 0.05,
+    "surface_clips": [
+        "bfh1_hit_05.ogg",
+        "bfh1_hit_08.ogg",
+        "bfh1_hit_09.ogg",
+        "bfh1_hit_10.ogg",
+        "bfh1_hit_11.ogg",
+        "bfh1_hit_13.ogg",
+        "bfh1_rock_breaking_03.ogg",
+        "bfh1_rock_hit_01.ogg"
+    ],
+    "surface_volume": 0.5,
+    "surface_pitch_variation": 0.1
+}

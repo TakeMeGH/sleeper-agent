@@ -1,0 +1,25 @@
+PROBE player has health prop: false
+PROBE start rate=80.00 zone=NORMAL
+PROBE after 1 s rate=77.00 (expect 77)
+PROBE from 100 after 1 s rate=97.00 (expect 97)
+PROBE from 200 after 1 s rate=197.00 (expect 197)
+PROBE from 30 after 1 s rate=27.00 (expect 27)
+PROBE rate 9.9 -> zone LOW spread=1.00 speed=1.00 tremor=(0.0, 0.0) slowmo=false superspeed=false
+PROBE rate 10.0 -> zone SLOW spread=0.50 speed=1.00 tremor=(0.0, 0.0) slowmo=true superspeed=false
+PROBE rate 59.9 -> zone SLOW spread=0.50 speed=1.00 tremor=(0.0, 0.0) slowmo=true superspeed=false
+PROBE rate 60.0 -> zone NORMAL spread=1.00 speed=1.00 tremor=(0.0, 0.0) slowmo=false superspeed=false
+PROBE rate 99.9 -> zone NORMAL spread=1.00 speed=1.00 tremor=(0.0, 0.0) slowmo=false superspeed=false
+PROBE rate 100.0 -> zone FAST spread=1.00 speed=1.30 tremor=(0.0, -0.121353) slowmo=false superspeed=true
+PROBE rate 190.0 -> zone FAST spread=1.00 speed=1.30 tremor=(0.0, -0.809017) slowmo=false superspeed=true
+PROBE rate 190.1 -> zone HIGH spread=1.00 speed=1.00 tremor=(0.0, 0.0) slowmo=false superspeed=false
+PROBE rate 149.4 tremor sample=(0.237734, 0.122753) (nonzero expected)
+PROBE take_hit(25) from 80 -> 55.00 (expect 55 with bpm_per_damage 1.00)
+PROBE change_rate(+250) from 80 -> 250.0 (clamp max 250.0)
+PROBE 4 s under 10: countdown_left=1.00 ended=false
+PROBE left zone (rate 19.9): countdown_left=0.00
+PROBE 4.5 s after re-entry: ended=false
+PROBE 5.1 s after re-entry: ended=true reasons=[&"passed_out"]
+PROBE after end: change_rate/apply_hit/1 s ignored: rate 0.00 -> 0.00; run_ended count=1
+PROBE 4.9 s over 190 (rate 215.3): ended=false
+PROBE 5.1 s over 190: ended=true reasons=[&"heart_attack"]
+PROBE data: start 80 fall 3 thresholds 10/60/100/190 secs 5/5 hit 1.00 spread 0.50 speed 1.30

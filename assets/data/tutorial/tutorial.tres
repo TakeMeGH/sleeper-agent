@@ -1,0 +1,199 @@
+[gd_resource type="Resource" script_class="TutorialData" format=3]
+
+[ext_resource type="Script" path="res://src/tutorial/tutorial_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://src/tutorial/tutorial_hint.gd" id="2_hint"]
+[ext_resource type="Script" path="res://src/tutorial/tutorial_goal.gd" id="3_goal"]
+
+[sub_resource type="Resource" id="Goal_moved"]
+script = ExtResource("3_goal")
+fact = &"moved_meters"
+amount = 3.0
+
+[sub_resource type="Resource" id="Goal_turned"]
+script = ExtResource("3_goal")
+fact = &"turned_degrees"
+amount = 60.0
+
+[sub_resource type="Resource" id="Goal_coffee"]
+script = ExtResource("3_goal")
+fact = &"substance_held_seconds"
+substance = &"coffee"
+amount = 1.5
+
+[sub_resource type="Resource" id="Goal_cigarette"]
+script = ExtResource("3_goal")
+fact = &"substance_held_seconds"
+substance = &"cigarette"
+amount = 1.5
+
+[sub_resource type="Resource" id="Goal_shot"]
+script = ExtResource("3_goal")
+fact = &"shots_fired"
+amount = 1.0
+
+[sub_resource type="Resource" id="Hint_move_look"]
+script = ExtResource("2_hint")
+id = &"move_look"
+text = "Move with {Move}, look with {Look}"
+min_seconds = 1.5
+priority = 100
+holds_wave = true
+goals = Array[ExtResource("3_goal")]([SubResource("Goal_moved"), SubResource("Goal_turned")])
+
+[sub_resource type="Resource" id="Hint_heart_falls"]
+script = ExtResource("2_hint")
+id = &"heart_falls"
+text = "Your heart rate keeps falling"
+targets = Array[StringName]([&"heart_panel"])
+min_seconds = 5.0
+max_seconds = 5.0
+priority = 100
+holds_wave = true
+
+[sub_resource type="Resource" id="Hint_coffee"]
+script = ExtResource("2_hint")
+id = &"coffee"
+text = "Hold {DoseCoffee} to drink coffee and raise it"
+targets = Array[StringName]([&"coffee_row", &"heart_panel"])
+min_seconds = 1.0
+priority = 100
+holds_wave = true
+goals = Array[ExtResource("3_goal")]([SubResource("Goal_coffee")])
+
+[sub_resource type="Resource" id="Hint_cigarette"]
+script = ExtResource("2_hint")
+id = &"cigarette"
+text = "Hold {DoseCigarette} to smoke and calm it"
+targets = Array[StringName]([&"cigarette_row", &"heart_panel"])
+min_seconds = 1.0
+priority = 100
+holds_wave = true
+goals = Array[ExtResource("3_goal")]([SubResource("Goal_cigarette")])
+
+[sub_resource type="Resource" id="Hint_shoot"]
+script = ExtResource("2_hint")
+id = &"shoot"
+text = "Press {Attack} to shoot"
+targets = Array[StringName]([&"gun_panel"])
+min_seconds = 1.0
+max_seconds = 30.0
+priority = 100
+requires_wave_start = true
+goals = Array[ExtResource("3_goal")]([SubResource("Goal_shot")])
+
+[sub_resource type="Resource" id="Hint_slow_zone"]
+script = ExtResource("2_hint")
+id = &"slow_zone"
+text = "Slow zone: press {Shift} for slow motion"
+targets = Array[StringName]([&"heart_panel"])
+min_seconds = 2.0
+max_seconds = 4.5
+priority = 50
+moment = &"slow_zone"
+
+[sub_resource type="Resource" id="Hint_fast_zone"]
+script = ExtResource("2_hint")
+id = &"fast_zone"
+text = "Fast zone: press {Shift} for super speed"
+targets = Array[StringName]([&"heart_panel"])
+min_seconds = 2.0
+max_seconds = 4.5
+priority = 50
+moment = &"fast_zone"
+
+[sub_resource type="Resource" id="Hint_danger"]
+script = ExtResource("2_hint")
+id = &"danger"
+text = "Danger! Bring your heart rate back before the timer ends"
+targets = Array[StringName]([&"heart_panel"])
+danger = true
+min_seconds = 2.0
+max_seconds = 4.5
+priority = 200
+moment = &"danger"
+
+[sub_resource type="Resource" id="Hint_first_hit"]
+script = ExtResource("2_hint")
+id = &"first_hit"
+text = "Every hit you take lowers your heart rate"
+targets = Array[StringName]([&"heart_panel"])
+min_seconds = 2.0
+max_seconds = 4.0
+priority = 60
+moment = &"first_hit"
+
+[sub_resource type="Resource" id="Hint_empty_gun"]
+script = ExtResource("2_hint")
+id = &"empty_gun"
+text = "Magazine empty: press {Reload} to reload"
+targets = Array[StringName]([&"gun_panel"])
+min_seconds = 2.0
+max_seconds = 4.0
+priority = 55
+moment = &"empty_gun"
+
+[sub_resource type="Resource" id="Hint_pickup"]
+script = ExtResource("2_hint")
+id = &"pickup"
+text = "Pickups refill your ammo and your coffee and cigarettes"
+targets = Array[StringName]([&"substance_panel", &"gun_panel"])
+min_seconds = 2.0
+max_seconds = 4.0
+priority = 40
+moment = &"pickup"
+
+[sub_resource type="Resource" id="Hint_dive"]
+script = ExtResource("2_hint")
+id = &"dive"
+text = "{Dive} dives the way you move; you can shoot while diving"
+targets = Array[StringName]([&"status_bar"])
+min_seconds = 2.0
+max_seconds = 4.0
+priority = 30
+moment = &"dive"
+
+[resource]
+script = ExtResource("1_data")
+start_delay_seconds = 1.5
+gap_seconds = 0.6
+opening_cap_seconds = 90.0
+default_info_seconds = 4.0
+skip_hold_seconds = 1.5
+motion_max_step_meters = 2.0
+opening_heart_min = 40.0
+opening_heart_max = 160.0
+opening = PackedStringArray("move_look", "heart_falls", "coffee", "cigarette", "shoot")
+hints = Array[ExtResource("2_hint")]([SubResource("Hint_move_look"), SubResource("Hint_heart_falls"), SubResource("Hint_coffee"), SubResource("Hint_cigarette"), SubResource("Hint_shoot"), SubResource("Hint_slow_zone"), SubResource("Hint_fast_zone"), SubResource("Hint_danger"), SubResource("Hint_first_hit"), SubResource("Hint_empty_gun"), SubResource("Hint_pickup"), SubResource("Hint_dive")])
+skip_text = "Hold {SkipTutorial} to skip the tutorial"
+placeholder_names = PackedStringArray("DoseCoffee", "DoseCigarette", "Attack", "Dive", "Reload", "Shift", "SkipTutorial")
+placeholder_actions = PackedStringArray("dose_coffee", "dose_cigarette", "fire", "dive", "reload", "shift_ability", "skip_tutorial")
+fixed_placeholder_names = PackedStringArray("Look")
+fixed_placeholder_values = PackedStringArray("the mouse")
+move_placeholder = "Move"
+move_actions = PackedStringArray("move_forward", "move_left", "move_back", "move_right")
+mouse_button_labels = PackedStringArray("", "left mouse", "right mouse", "middle mouse", "wheel up", "wheel down")
+mouse_button_fallback_format = "mouse button %d"
+joypad_button_format = "pad button %d"
+unbound_label = "?"
+canvas_layer = 4
+reference_height = 1080.0
+font_size = 44
+skip_font_size = 26
+text_max_width = 1600.0
+text_bottom_margin = 28.0
+skip_gap = 8.0
+skip_bar_width = 360.0
+skip_bar_height = 6.0
+text_color = Color(1, 0.84, 0.4, 1)
+skip_text_color = Color(0.92, 0.92, 0.9, 0.9)
+skip_bar_back_color = Color(0, 0, 0, 0.5)
+skip_bar_fill_color = Color(1, 0.75, 0.25, 1)
+outline_color = Color(0, 0, 0, 0.85)
+outline_width = 0.25
+outline_scale = 0.25
+box_color = Color(1, 0.75, 0.25, 1)
+danger_box_color = Color(1, 0.25, 0.2, 1)
+box_thickness = 6.0
+box_padding = 8.0
+pulse_hz = 1.5
+pulse_min_alpha = 0.35

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+
+[node name="Game" instance=ExtResource("1_game")]
+metadata/tutorial_enabled = true

@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/viewmodel/viewmodel.gd" id="1_vm"]
+[ext_resource type="Resource" path="res://assets/data/viewmodel/viewmodel.tres" id="2_data"]
+
+[node name="Viewmodel" type="Node3D"]
+script = ExtResource("1_vm")
+data = ExtResource("2_data")
+
+[node name="GunPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="HandPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="ViewLayer" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="ViewContainer" type="SubViewportContainer" parent="ViewLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="ViewViewport" type="SubViewport" parent="ViewLayer/ViewContainer"]
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="ViewCamera" type="Camera3D" parent="ViewLayer/ViewContainer/ViewViewport"]
+unique_name_in_owner = true

@@ -1,0 +1,12 @@
+PSX First Person Arms, by Drillimpact
+Source: https://drillimpact.itch.io/psx-first-person-arms-free
+Download: psx-first-person-arms-free-game-assets.zip (3.8 MB, version 1.1.0), downloaded 2026-11-13 with the user's approval.
+
+Licence as stated on the source page (checked 2026-11-13):
+  Asset license: Creative Commons Zero v1.0 Universal
+  "This asset is released under CC0 (Public Domain)."
+The author also answered a commenter on the page: "Yes CC0" and "No credit is required".
+CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
+
+Files used here, unchanged from the zip: arms_rig.fbx, arms_01.png (bare hands), arms_gloves_01.png (black gloves).
+The zip itself carries no licence file; the licence rests on the source page quoted above.

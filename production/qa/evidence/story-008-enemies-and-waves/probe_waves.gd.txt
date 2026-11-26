@@ -1,0 +1,21 @@
+extends SceneTree
+var events: Array = []
+func _initialize() -> void:
+	var arena: Node3D = (load("res://src/waves/test_arena.tscn") as PackedScene).instantiate()
+	arena.set("start_delay", 0.2)
+	arena.set("log_events", false)
+	root.add_child(arena)
+	_run.call_deferred(arena)
+func _run(arena: Node3D) -> void:
+	var sp: WaveSpawner = arena.get_node("WaveSpawner")
+	var rs: RunState = arena.get_node("RunState")
+	sp.wave_started.connect(func(n: int) -> void: events.append("started %d" % n))
+	sp.wave_cleared.connect(func(n: int) -> void: events.append("cleared %d (left=%d runstate wave=%d left=%d)" % [n, sp.get_enemies_left(), rs.wave, rs.enemies_left]))
+	for f in 900:
+		await physics_frame
+		for e in get_nodes_in_group(&"enemy") if has_group(&"enemy") else arena.get_children():
+			if e is EnemyBase and not (e as EnemyBase).is_dead():
+				(e as EnemyBase).take_hit(100000.0, Vector3.ZERO)
+				(e as EnemyBase).take_hit(100000.0, Vector3.ZERO)
+	print("PROBE wave loop (kill all on spawn, 15 s) events=%s kills=%d" % [events, sp.get_kills()])
+	quit(0)

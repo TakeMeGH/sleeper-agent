@@ -1,0 +1,162 @@
+extends SceneTree
+## Story 017 probe: sweep dives from navmesh points (4 dirs, speed factor 2) in canteen/plaza; check
+## through-geometry, ceiling, height gain, tall obstacles; map; hang.
+var game: Node
+var p: CharacterBody3D
+var dive: DiveState
+var space: PhysicsDirectSpaceState3D
+
+func _init() -> void:
+	var args := OS.get_cmdline_user_args()
+	game = load("res://src/run/game.tscn").instantiate()
+	game.set("debug_open_exit_immediately", true)
+	game.set("start_level_id", StringName(args[0]))
+	game.set("log_events", false)
+	game.set("debug_keep_heart_rate", 70.0)
+	root.add_child(game)
+	for i in 20: await physics_frame
+	p = game.get_node("Player")
+	dive = p.get_node("DiveState")
+	space = p.get_world_3d().direct_space_state
+	var lvl: LevelBase = game.call("get_level")
+	lvl.level_exit.set_deferred("monitoring", false)
+	lvl.level_exit.monitoring = false
+	if "nolift" in args:
+		dive.data = dive.data.duplicate()
+		dive.data.air_step_height = 0.0
+	var vs: PackedVector3Array = lvl.nav_region.navigation_mesh.get_vertices()
+	var hy := {}
+	for v in vs:
+		var k := snappedf(v.y, 0.25)
+		hy[k] = hy.get(k, 0) + 1
+	print("PROBE navmesh vertex heights (y:count)=", hy)
+	print("PROBE level=", lvl.level_id, " air_step_height=", dive.data.air_step_height)
+	if "map" in args: _map()
+	if "sweep" in args: await _sweep(lvl, 1.0 if "slow1" in args else 2.0)
+	if "hang" in args: await _hang()
+	quit()
+
+func _ray(a: Vector3, b: Vector3) -> Dictionary:
+	var q := PhysicsRayQueryParameters3D.create(a, b)
+	q.exclude = [p.get_rid()]
+	return space.intersect_ray(q)
+
+func _map() -> void:
+	var z := -27.0
+	while z <= 27.0:
+		var line := "%6.1f " % z
+		var x := -10.0
+		while x <= 10.0:
+			var h := _ray(Vector3(x, 4.0, z), Vector3(x, -2, z))
+			var y: float = h.position.y if h else -9.0
+			line += "." if y < 0.2 and y > -0.2 else ("b" if y < 0.7 and y > 0 else ("T" if y < 1.1 and y > 0 else ("C" if y < 1.6 and y > 0 else ("#" if y > 0 else "_"))))
+			x += 0.5
+		print("MAP ", line)
+		z += 0.5
+	# counter candidates: tops 1.0-1.6 that are not tables (0.96)
+	print("MAP legend . floor b<0.7 T<1.1 C 1.1-1.6 # taller _ void/below; x from -10 step .5")
+
+func _sweep(lvl: LevelBase, sf: float) -> void:
+	var verts: PackedVector3Array = lvl.nav_region.navigation_mesh.get_vertices()
+	var step: int = maxi(1, verts.size() / 160)
+	var n := 0
+	var flagged := 0
+	var through := 0
+	var ceiling_hits := 0
+	var tall_contacts := 0
+	var tall_climbed := 0
+	var lifts := 0
+	var max_gain := -99.0
+	var i := 0
+	while i < verts.size():
+		var v := verts[i]
+		i += step
+		if v.y > 2.5: continue
+		var g := _ray(v + Vector3(0, 1.0, 0), v + Vector3(0, -1.0, 0))
+		if g.is_empty(): continue
+		for yaw in [0.0, 90.0, 180.0, 270.0]:
+			var r: Dictionary = await _one(g.position + Vector3(0, 0.02, 0), yaw, sf)
+			if r.is_empty(): continue
+			n += 1
+			lifts += r.lifted
+			if r.through: through += 1
+			if r.ceiling: ceiling_hits += 1
+			if r.tall: tall_contacts += 1
+			if r.tall and r.tall_climbed: tall_climbed += 1
+			max_gain = maxf(max_gain, r.gain)
+			print("DIVE s=%.2f,%.2f,%.2f y=%d e=%.2f,%.2f,%.2f lift=%.2f thr=%s ceil=%s tall=%.2f" % [r.start.x, r.start.y, r.start.z, yaw, r.end.x, r.end.y, r.end.z, r.lift_total, r.through, r.ceiling, r.tall_h])
+			if r.through or r.gain > 1.0 or r.end_y > 3.0 or (r.tall and r.tall_climbed):
+				flagged += 1
+				print("PROBE FLAG start=%s yaw=%d end=%s gain=%.2f lift=%.2f through=%s tall=%.2f climbed=%s" % [r.start, yaw, r.end, r.gain, r.lift_total, r.through, r.tall_h, r.tall_climbed])
+	print("PROBE sweep %s sf=%.1f dives=%d with_lift=%d through_geometry=%d head_in_ceiling=%d tall_contacts(>step)=%d tall_climbed=%d max_gain=%.2f flagged=%d" % [lvl.level_id, sf, n, lifts, through, ceiling_hits, tall_contacts, tall_climbed, max_gain, flagged])
+
+func _one(start: Vector3, yaw: float, sf: float) -> Dictionary:
+	dive.set("_cooldown_left", 0.0)
+	p.velocity = Vector3.ZERO
+	p.global_position = start
+	p.rotation_degrees = Vector3(0, yaw, 0)
+	for k in 4: await physics_frame
+	if not p.is_on_floor(): return {}
+	var s0 := p.global_position
+	if not dive.try_start(Vector2.ZERO, sf): return {}
+	var prev := p.global_position
+	var through := false
+	var ceiling := false
+	var tall_h := 0.0
+	var frames := 0
+	var fwd := -p.global_transform.basis.z
+	fwd.y = 0
+	fwd = fwd.normalized()
+	while dive.is_diving() and frames < 240:
+		await physics_frame
+		frames += 1
+		var cur := p.global_position
+		# segment at mid height between frames; ignore pure vertical moves (lift)
+		var a := prev + Vector3(0, 0.9, 0)
+		var b := cur + Vector3(0, 0.9, 0)
+		if (b - a).length() > 0.001 and not _ray(a, b).is_empty():
+			through = true
+		# head inside geometry: ray from waist to just under head
+		if not _ray(cur + Vector3(0, 1.0, 0), cur + Vector3(0, 1.75, 0)).is_empty():
+			ceiling = true
+		if p.is_on_wall():
+			var probe := cur + fwd * 0.5
+			var h := _ray(Vector3(probe.x, cur.y + 3.0, probe.z), Vector3(probe.x, cur.y - 0.5, probe.z))
+			# if the downward ray starts inside a ceiling it hits that ceiling: treat as tall (wall to ceiling)
+			var top: float = (h.position.y - cur.y) if h else 0.0
+			tall_h = maxf(tall_h, top)
+		prev = cur
+	var lt: float = float(dive.get("_lifted_total")) if dive.get("_lifted_total") != null else 0.0
+	var end := p.global_position
+	var tall: bool = tall_h > dive.data.air_step_height + 0.05
+	return {"start": s0, "end": end, "gain": end.y - s0.y, "end_y": end.y, "through": through, "ceiling": ceiling,
+		"tall": tall, "tall_h": tall_h, "tall_climbed": tall and end.y - s0.y > tall_h - 0.1, "lifted": 1 if lt > 0.0 else 0, "lift_total": lt}
+
+func _hang() -> void:
+	var heart: HeartRate = p.get_node("HeartRate")
+	var sh: ShiftAbility = p.get_node("ShiftAbility")
+	var start := Vector3(0.0, 0.05, -4.59)
+	for slow in [false, true]:
+		if slow:
+			game.set("debug_keep_heart_rate", 0.0)
+			heart.change_rate(40.0 - heart.get_rate())
+			for k in 3: await physics_frame
+			print("PROBE hang slow available=", heart.is_slow_motion_available(), " activated=", sh.try_activate())
+			for k in 3: await physics_frame
+		dive.set("_cooldown_left", 0.0)
+		p.global_position = start
+		p.rotation_degrees = Vector3(0, 90, 0)
+		p.velocity = Vector3.ZERO
+		for k in 6: await physics_frame
+		var t0 := Time.get_ticks_usec()
+		var ticks := 0
+		var air_ticks := 0
+		dive.try_start(Vector2.ZERO, 1.0)
+		var hang := dive.get_hang_factor()
+		var maxy := 0.0
+		while dive.is_diving() and ticks < 600:
+			await physics_frame
+			ticks += 1
+			if dive.get_phase() == DiveState.Phase.AIRBORNE or dive.get_phase() == DiveState.Phase.DIVE_LAUNCH: air_ticks += 1
+			maxy = maxf(maxy, p.global_position.y)
+		print("PROBE hang slow=%s hang_factor=%.1f engine_scale=%.2f launch+air_ticks=%d total_ticks=%d end=%s maxy=%.2f" % [slow, hang, Engine.time_scale, air_ticks, ticks, p.global_position, maxy])

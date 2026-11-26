@@ -1,0 +1,65 @@
+{
+  "death_hold_seconds": 1.2,
+  "death_fade_seconds": 0.5,
+  "level_fade_in_seconds": 0.4,
+  "restart_fade_out_seconds": 0.2,
+  "restart_input_guard": 0.75,
+  "restart_bindings": [
+    "<Keyboard>/enter",
+    "<Keyboard>/numpadEnter",
+    "<Gamepad>/buttonSouth",
+    "<Gamepad>/start"
+  ],
+
+  "text": {
+    "title": "YOUR BODY GAVE OUT",
+    "time_label": "TIME SURVIVED",
+    "wave_label": "WAVE REACHED",
+    "kills_label": "KILLS",
+    "best_label": "SESSION BEST",
+    "best_line": "{time}  -  wave {wave}  -  {kills} kills",
+    "new_best": "NEW BEST",
+    "restart_button": "PLAY AGAIN",
+    "restart_prompt": "Press Enter (keyboard) or A / Start (gamepad) to play again",
+    "reason_passed_out": "YOU PASSED OUT",
+    "reason_heart_attack": "HEART ATTACK"
+  },
+
+  "panel_width": 760,
+  "panel_padding": 48,
+  "panel_border_width": 2,
+  "panel_corner_radius": 6,
+  "row_spacing": 14,
+  "reason_spacing": 14,
+  "section_spacing": 34,
+
+  "button_width": 380,
+  "button_height": 84,
+  "button_border_width": 3,
+
+  "title_font_size": 52,
+  "label_font_size": 28,
+  "value_font_size": 44,
+  "best_font_size": 32,
+  "new_best_font_size": 30,
+  "button_font_size": 36,
+  "prompt_font_size": 22,
+  "reason_font_size": 30,
+
+  "overlay_color": { "r": 0.0, "g": 0.0, "b": 0.0, "a": 0.78 },
+  "fade_color": { "r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0 },
+  "panel_color": { "r": 0.07, "g": 0.06, "b": 0.06, "a": 0.96 },
+  "panel_border_color": { "r": 0.55, "g": 0.1, "b": 0.1, "a": 1.0 },
+  "title_color": { "r": 0.85, "g": 0.18, "b": 0.18, "a": 1.0 },
+  "reason_color": { "r": 0.95, "g": 0.75, "b": 0.3, "a": 1.0 },
+  "label_color": { "r": 0.72, "g": 0.72, "b": 0.72, "a": 1.0 },
+  "value_color": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+  "best_color": { "r": 0.92, "g": 0.82, "b": 0.5, "a": 1.0 },
+  "new_best_color": { "r": 0.45, "g": 1.0, "b": 0.55, "a": 1.0 },
+  "button_color": { "r": 0.5, "g": 0.1, "b": 0.1, "a": 1.0 },
+  "button_highlight_color": { "r": 0.72, "g": 0.16, "b": 0.16, "a": 1.0 },
+  "button_border_color": { "r": 0.3, "g": 0.05, "b": 0.05, "a": 1.0 },
+  "button_focus_border_color": { "r": 1.0, "g": 0.9, "b": 0.4, "a": 1.0 },
+  "button_text_color": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 },
+  "prompt_color": { "r": 0.66, "g": 0.66, "b": 0.66, "a": 1.0 }
+}

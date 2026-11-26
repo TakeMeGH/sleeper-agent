@@ -1,0 +1,116 @@
+extends SceneTree
+## Story 011 probe: aim drift, hole/splat caps, hitstop cap, input during hitstop.
+
+func _initialize() -> void:
+	_run()
+
+func _wait_physics(n: int) -> void:
+	for i in n:
+		await physics_frame
+
+func _run() -> void:
+	change_scene_to_packed(load("res://src/player/test_range.tscn"))
+	await create_timer(0.5).timeout
+	var s: Node = current_scene
+	var player: Node3D = s.get_node("Player")
+	var head: Node3D = player.get_node("Head")
+	var cam: Camera3D = head.get_node("Camera3D")
+	var feel: GunFeel = cam.get_node("GunFeel")
+	var holder: WeaponHolder = cam.get_node("WeaponHolder")
+	var shift: ShiftAbility = player.get_node("ShiftAbility")
+	var pool_before: int = feel.get_effects().get_pool_node_count()
+	var nodes_before: int = Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+
+	# A) aim drift after 30 held shots (SMG)
+	holder.switch_to(1)
+	await _wait_physics(40)
+	var yaw0: float = player.rotation.y
+	var pitch0: float = head.rotation.x
+	var camrot0: Vector3 = cam.rotation
+	var fired: int = 0
+	var max_kick: Vector2 = Vector2.ZERO
+	var ex: Array[RID] = [player.get_rid()]
+	for i in 200:
+		var g: Gun = holder.get_current_gun()
+		if g.is_reloading():
+			g.cancel_reload()
+		if g.try_fire(cam, ex):
+			fired += 1
+		var k: Vector2 = feel.get_kick_offset()
+		if absf(k.y) > absf(max_kick.y):
+			max_kick = k
+		await physics_frame
+		if fired >= 30:
+			break
+	print("PROBE drift shots_fired=", fired, " max_kick_during=", max_kick)
+	await create_timer(1.5, true, false, true).timeout
+	print("PROBE drift after_recovery kick=", feel.get_kick_offset(), " shake=", feel.get_shake_offset(),
+		" yaw_delta=", player.rotation.y - yaw0, " pitch_delta=", head.rotation.x - pitch0,
+		" cam_rot_delta=", cam.rotation - camrot0)
+
+	# B) caps
+	var dir: Vector3 = Vector3(0, 0, -1)
+	var max_holes: int = 0
+	for i in 120:
+		holder.shot_hit.emit(Vector3(float(i % 10) * 0.2, 1.0, -6.0), Vector3(0, 0, 1), null, false, false, dir)
+		max_holes = maxi(max_holes, feel.get_bullet_hole_count())
+	print("PROBE holes emitted=120 max_alive=", max_holes, " cap=", feel.get_bullet_hole_cap())
+	var max_splats: int = 0
+	for i in 120:
+		holder.shot_hit.emit(Vector3(float(i % 10) * 0.3, 1.0, -4.0), Vector3(0, 0, 1), null, true, true, dir)
+		max_splats = maxi(max_splats, feel.get_splat_count())
+		if i % 10 == 0:
+			await create_timer(0.2, true, false, true).timeout
+	print("PROBE splats kills=120 max_alive=", max_splats, " cap=", feel.get_splat_cap())
+	print("PROBE pool nodes before=", pool_before, " after=", feel.get_effects().get_pool_node_count(),
+		" scene_nodes_before=", nodes_before, " after=", Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
+
+	# C) hitstop: one kill, then 10 rapid kills
+	await create_timer(0.5, true, false, true).timeout
+	var t0: int = Time.get_ticks_usec()
+	holder.shot_hit.emit(Vector3(0, 1, -5), Vector3(0, 0, 1), null, true, true, dir)
+	var ts_during: float = Engine.time_scale
+	var left0: float = feel.get_hitstop_left()
+	while feel.get_hitstop_left() > 0.0:
+		await process_frame
+	await process_frame
+	await process_frame
+	print("PROBE hitstop single requested_left=", snappedf(left0, 0.001), " time_scale_during=", ts_during,
+		" real_length=", snappedf(float(Time.get_ticks_usec() - t0) / 1e6, 0.001), " time_scale_after=", Engine.time_scale)
+	await create_timer(0.3, true, false, true).timeout
+	var max_left: float = 0.0
+	t0 = Time.get_ticks_usec()
+	for i in 10:
+		holder.shot_hit.emit(Vector3(0, 1, -5), Vector3(0, 0, 1), null, true, true, dir)
+		max_left = maxf(max_left, feel.get_hitstop_left())
+	while feel.get_hitstop_left() > 0.0:
+		await process_frame
+	await process_frame
+	await process_frame
+	print("PROBE hitstop 10_kills max_left=", snappedf(max_left, 0.001), " cap=", feel.get_hitstop_cap(),
+		" real_length=", snappedf(float(Time.get_ticks_usec() - t0) / 1e6, 0.001), " time_scale_after=", Engine.time_scale)
+
+	# D) input pressed during hitstop is not lost
+	await create_timer(0.5, true, false, true).timeout
+	holder.switch_to(0)
+	await create_timer(0.6, true, false, true).timeout
+	var gun: Gun = holder.get_current_gun()
+	if gun.is_reloading():
+		await create_timer(2.0, true, false, true).timeout
+	var shots: Array[int] = [0]
+	holder.shot_fired.connect(func(_d: GunData) -> void: shots[0] += 1)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	await physics_frame
+	await physics_frame
+	print("PROBE input mouse_mode=", Input.mouse_mode, " (2 = captured)")
+	# fire once (sets cooldown), kill -> hitstop, press during freeze
+	gun.try_fire(cam, ex)
+	holder.shot_hit.emit(Vector3(0, 1, -5), Vector3(0, 0, 1), null, true, true, dir)
+	holder.buffer_fire_press()
+	var buffered: int = holder.get_buffered_input_count()
+	var ts: float = Engine.time_scale
+	var base_shots: int = shots[0]
+	await create_timer(0.8, true, false, true).timeout
+	print("PROBE input during_hitstop time_scale=", ts, " buffered=", buffered,
+		" buffered_after=", holder.get_buffered_input_count(), " shots_after_press=", shots[0] - base_shots)
+	quit()

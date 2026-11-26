@@ -1,0 +1,14 @@
+Reviewed-Content-Hash: src/audio/audio_config.gd 12a0b5adc310435043d238ff8fdcdd56a37a1570
+Reviewed-Content-Hash: src/audio/audio_emitter.gd b69050988a8a59791616b6b400ecc40854d5d157
+Reviewed-Content-Hash: src/audio/consume_sound_data.gd 6e123994ac0754e879181a81f6a1b50fc6552ac2
+Reviewed-Content-Hash: src/audio/footsteps.gd c18bb131bae07f4bfbe3587f12f816e5786c3b4d
+Reviewed-Content-Hash: src/audio/gun_audio_data.gd 0a49c5d6b911709e46c38f72bc9f62d78bc11659
+Reviewed-Content-Hash: src/audio/heart_rate_audio.gd 460cce7535746c9a93aa4eae7aa02a0772d62541
+Reviewed-Content-Hash: src/audio/loop_voice.gd 1b53847f5f527829d82dc8270e6eaf56eeaf6d20
+Reviewed-Content-Hash: src/audio/music_director.gd 5f519a0ff823a57b7b3f95a2e423d1b7b9e188ea
+Reviewed-Content-Hash: src/audio/reload_sound_part.gd 38ab75e1c3a3372a98b6acdc9316d849ecf456cb
+Reviewed-Content-Hash: src/audio/sfx_player.gd 12a760d4611fa0a4dd4adce4c82653ba7deb1eae
+Reviewed-Content-Hash: src/weapons/gun.gd 2b2d5f013d94bd62d35f3c99bf349c34ff30cf28
+Reviewed-Content-Hash: src/player/player.tscn 7afabe6b64c0aa4f14a01208ecbc639c21965050
+Reviewed-Content-Hash: assets/data/audio/audio_config.tres 4e2dbf32c5d3e8acbd740f288b65a3f48a960e74
+Reviewed-Content-Hash: default_bus_layout.tres 4fcb6e0eb3185f3192f391806add4deb57028db6

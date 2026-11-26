@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="5_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/melee.tres" id="2_melee"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_pistol.tres" id="3_pistol"]
+
+[node name="TestCanteenParityEnemies" instance=ExtResource("1_game")]
+start_level_id = &"canteen"
+debug_open_exit_immediately = true
+debug_keep_heart_rate = 70.0
+debug_override_player_pose = true
+debug_player_position = Vector3(-0.3, 0.05, -10.0)
+debug_player_yaw_degrees = 180.0
+debug_spawn_kinds = Array[ExtResource("5_ed")]([ExtResource("2_melee"), ExtResource("2_melee"), ExtResource("2_melee"), ExtResource("2_melee"), ExtResource("2_melee"), ExtResource("3_pistol")])
+debug_spawn_positions = PackedVector3Array(-1.2, 0.05, -3.0, 0.4, 0.05, -2.5, 1.6, 0.05, -3.6, -0.4, 0.05, -4.4, 1.0, 0.05, -5.0, -2.2, 0.05, -4.6)

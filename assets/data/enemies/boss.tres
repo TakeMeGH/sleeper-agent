@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+[ext_resource type="Resource" path="res://assets/data/enemies/visual_boss.tres" id="9_vis"]
+
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="1_ed"]
+
+[resource]
+script = ExtResource("1_ed")
+id = &"boss"
+kind = 2
+display_name = "Armoured Boss"
+health = 600.0
+move_speed = 1.7
+damage = 6.0
+body_scale = 1.3
+body_color = Color(0.55, 0.5, 0.5, 1)
+repath_interval = 0.25
+band_min = 9.0
+band_max = 16.0
+spot_arrive_distance = 0.5
+no_line_wait_seconds = 0.8
+spot_check_height = 1.7
+aim_seconds = 0.7
+spread_degrees = 4.0
+shot_range = 40.0
+armour_points = 300.0
+armour_absorb_fraction = 0.7
+orbit_step_degrees = 22.0
+orbit_flip_seconds = 4.5
+burst_size = 6
+shot_interval_seconds = 0.1
+burst_pause_seconds = 1.5
+plate_color = Color(0.2, 0.21, 0.23, 1)
+plate_offsets = PackedVector3Array(0, 1.2, -0.41, 0, 1.2, 0.41, 0, 0.8, -0.41, 0.4, 1.5, 0, -0.4, 1.5, 0)
+plate_sizes = PackedVector3Array(0.5, 0.5, 0.1, 0.5, 0.5, 0.1, 0.45, 0.3, 0.1, 0.3, 0.12, 0.4, 0.3, 0.12, 0.4)
+knockback_scale = 0.15
+ammo_drop_chance = 0.0
+dose_drop_chance = 0.0
+guaranteed_ammo = PackedInt32Array(2, 2)
+guaranteed_doses = PackedInt32Array(2, 2)
+visual = ExtResource("9_vis")

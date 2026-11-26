@@ -1,0 +1,222 @@
+[gd_resource type="Resource" script_class="AudioConfig" format=3]
+
+[ext_resource type="Script" path="res://src/audio/audio_config.gd" id="cfg"]
+[ext_resource type="Script" path="res://src/audio/gun_audio_data.gd" id="gun"]
+[ext_resource type="Script" path="res://src/audio/reload_sound_part.gd" id="part"]
+[ext_resource type="Script" path="res://src/audio/consume_sound_data.gd" id="cons"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_handgun_reload/pistol_mag_out_01.wav" id="s1"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_handgun_reload/pistol_mag_in_01.wav" id="s2"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_handgun_reload/pistol_slide_rack_01.wav" id="s3"]
+[ext_resource type="AudioStream" path="res://assets/third_party/springy_springo_gun_reload/smg_mag_out_01.wav" id="s4"]
+[ext_resource type="AudioStream" path="res://assets/third_party/springy_springo_gun_reload/smg_mag_in_01.wav" id="s5"]
+[ext_resource type="AudioStream" path="res://assets/third_party/springy_springo_gun_reload/smg_bolt_rack_01.wav" id="s6"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_shotgun_reload/shotgun_shell_01.wav" id="s7"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_shotgun_reload/shotgun_shell_02.wav" id="s8"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_shotgun_reload/shotgun_shell_03.wav" id="s9"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_shotgun_reload/shotgun_shell_04.wav" id="s10"]
+[ext_resource type="AudioStream" path="res://assets/third_party/zer0sol_shotgun_reload/shotgun_pump_01.wav" id="s11"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/pistol.wav" id="s12"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/pistol_tail_01.wav" id="s13"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/pistol_tail_02.wav" id="s14"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/pistol_tail_03.wav" id="s15"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/pistol_tail_04.wav" id="s16"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/smg.wav" id="s17"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/smg_tail_01.wav" id="s18"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/smg_tail_02.wav" id="s19"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/smg_tail_03.wav" id="s20"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/smg_tail_04.wav" id="s21"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_close_01.wav" id="s22"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_close_02.wav" id="s23"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_close_03.wav" id="s24"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_close_04.wav" id="s25"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_tail_01.wav" id="s26"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_tail_02.wav" id="s27"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_tail_03.wav" id="s28"]
+[ext_resource type="AudioStream" path="res://assets/third_party/free_firearm_sound_library/layers/shotgun_tail_04.wav" id="s29"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/shotgun_thump_01.wav" id="s30"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ngopi.wav" id="s31"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ngudud.wav" id="s32"]
+[ext_resource type="AudioStream" path="res://assets/third_party/lfa_equipment_clicks/dry_click_01.wav" id="s33"]
+[ext_resource type="AudioStream" path="res://assets/third_party/lfa_equipment_clicks/dry_click_02.wav" id="s34"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_01.wav" id="s35"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_02.wav" id="s36"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_03.wav" id="s37"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_04.wav" id="s38"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_05.wav" id="s39"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_wet_squish/flesh_hit_06.wav" id="s40"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_extreme_splatter/kill_burst_01.wav" id="s41"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_extreme_splatter/kill_burst_02.wav" id="s42"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_extreme_splatter/kill_burst_03.wav" id="s43"]
+[ext_resource type="AudioStream" path="res://assets/third_party/independent_nu_extreme_splatter/kill_burst_04.wav" id="s44"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_05.ogg" id="s45"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_08.ogg" id="s46"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_09.ogg" id="s47"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_10.ogg" id="s48"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_11.ogg" id="s49"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_13.ogg" id="s50"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_rock_breaking_03.ogg" id="s51"]
+[ext_resource type="AudioStream" path="res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_rock_hit_01.ogg" id="s52"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/substance_taken.wav" id="s53"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/darah_rendah.wav" id="s54"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/darah_tinggi.wav" id="s55"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/footstep_for_walking.wav" id="s56"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/drop_from_heights.wav" id="s57"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/bgm_combat.wav" id="s58"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/bgm_boss.wav" id="s59"]
+
+[sub_resource type="Resource" id="p_out"]
+script = ExtResource("part")
+event_id = &"mag_out"
+fraction = 0.0
+clips = Array[AudioStream]([ExtResource("s1")])
+
+[sub_resource type="Resource" id="p_in"]
+script = ExtResource("part")
+event_id = &"mag_in"
+fraction = 0.35
+clips = Array[AudioStream]([ExtResource("s2")])
+
+[sub_resource type="Resource" id="p_rack"]
+script = ExtResource("part")
+event_id = &"rack"
+trigger = 2
+clips = Array[AudioStream]([ExtResource("s3")])
+
+[sub_resource type="Resource" id="m_out"]
+script = ExtResource("part")
+event_id = &"mag_out"
+fraction = 0.0
+clips = Array[AudioStream]([ExtResource("s4")])
+
+[sub_resource type="Resource" id="m_in"]
+script = ExtResource("part")
+event_id = &"mag_in"
+fraction = 0.45
+clips = Array[AudioStream]([ExtResource("s5")])
+
+[sub_resource type="Resource" id="m_rack"]
+script = ExtResource("part")
+event_id = &"rack"
+trigger = 2
+clips = Array[AudioStream]([ExtResource("s6")])
+
+[sub_resource type="Resource" id="s_shell"]
+script = ExtResource("part")
+event_id = &"shell"
+trigger = 1
+clips = Array[AudioStream]([ExtResource("s7"), ExtResource("s8"), ExtResource("s9"), ExtResource("s10")])
+
+[sub_resource type="Resource" id="s_pump"]
+script = ExtResource("part")
+event_id = &"rack"
+trigger = 2
+clips = Array[AudioStream]([ExtResource("s11")])
+
+[sub_resource type="Resource" id="g_pistol"]
+script = ExtResource("gun")
+gun_id = &"pistol"
+shot_clips = Array[AudioStream]([ExtResource("s12")])
+shot_volume = 0.8
+shot_pitch_variation = 0.05
+shot_volume_variation = 0.1
+use_tail = false
+tail_clips = Array[AudioStream]([ExtResource("s13"), ExtResource("s14"), ExtResource("s15"), ExtResource("s16")])
+tail_volume = 0.5
+reload_volume = 0.8
+reload_parts = Array[ExtResource("part")]([SubResource("p_out"), SubResource("p_in"), SubResource("p_rack")])
+
+[sub_resource type="Resource" id="g_smg"]
+script = ExtResource("gun")
+gun_id = &"smg"
+shot_clips = Array[AudioStream]([ExtResource("s17")])
+shot_volume = 0.7
+shot_pitch_variation = 0.06
+shot_volume_variation = 0.1
+use_tail = false
+tail_clips = Array[AudioStream]([ExtResource("s18"), ExtResource("s19"), ExtResource("s20"), ExtResource("s21")])
+tail_volume = 0.4
+reload_volume = 0.8
+reload_parts = Array[ExtResource("part")]([SubResource("m_out"), SubResource("m_in"), SubResource("m_rack")])
+
+[sub_resource type="Resource" id="g_shotgun"]
+script = ExtResource("gun")
+gun_id = &"shotgun"
+shot_clips = Array[AudioStream]([ExtResource("s22"), ExtResource("s23"), ExtResource("s24"), ExtResource("s25")])
+shot_volume = 0.9
+shot_pitch_variation = 0.05
+shot_volume_variation = 0.1
+use_tail = true
+tail_clips = Array[AudioStream]([ExtResource("s26"), ExtResource("s27"), ExtResource("s28"), ExtResource("s29")])
+tail_volume = 0.55
+use_thump = true
+thump_clips = Array[AudioStream]([ExtResource("s30")])
+thump_volume = 0.2
+reload_volume = 0.8
+reload_parts = Array[ExtResource("part")]([SubResource("s_shell"), SubResource("s_pump")])
+
+[sub_resource type="Resource" id="c_coffee"]
+script = ExtResource("cons")
+substance_id = &"coffee"
+clip = ExtResource("s31")
+volume = 0.8
+
+[sub_resource type="Resource" id="c_cig"]
+script = ExtResource("cons")
+substance_id = &"cigarette"
+clip = ExtResource("s32")
+volume = 0.8
+
+[resource]
+script = ExtResource("cfg")
+sfx_bus = &"SFX"
+music_bus = &"Music"
+guns = Array[ExtResource("gun")]([SubResource("g_pistol"), SubResource("g_smg"), SubResource("g_shotgun")])
+dry_click_clips = Array[AudioStream]([ExtResource("s33"), ExtResource("s34")])
+dry_click_volume = 0.7
+voices_2d = 12
+voice_cap_3d = 8
+min_distance = 2.0
+max_distance = 40.0
+flesh_per_shot = 1
+kill_per_shot = 1
+surface_sounds_per_shot = 2
+flesh_clips = Array[AudioStream]([ExtResource("s35"), ExtResource("s36"), ExtResource("s37"), ExtResource("s38"), ExtResource("s39"), ExtResource("s40")])
+flesh_volume = 0.8
+flesh_pitch_variation = 0.08
+kill_clips = Array[AudioStream]([ExtResource("s41"), ExtResource("s42"), ExtResource("s43"), ExtResource("s44")])
+kill_volume = 0.9
+kill_pitch_variation = 0.05
+surface_clips = Array[AudioStream]([ExtResource("s45"), ExtResource("s46"), ExtResource("s47"), ExtResource("s48"), ExtResource("s49"), ExtResource("s50"), ExtResource("s51"), ExtResource("s52")])
+surface_volume = 0.5
+surface_pitch_variation = 0.1
+consume_fade_in_seconds = 0.05
+consume_fade_out_seconds = 0.25
+consume_sounds = Array[ExtResource("cons")]([SubResource("c_coffee"), SubResource("c_cig")])
+substance_taken_clip = ExtResource("s53")
+substance_taken_volume = 0.8
+heart_low_clip = ExtResource("s54")
+heart_high_clip = ExtResource("s55")
+heart_low_max_volume = 0.8
+heart_high_max_volume = 0.8
+heart_response_seconds = 0.6
+heart_low_silent_at = 60.0
+heart_low_full_at = 10.0
+heart_high_silent_at = 100.0
+heart_high_full_at = 190.0
+heart_curve_exponent = 1.0
+heart_end_fade_seconds = 0.8
+footstep_clip = ExtResource("s56")
+footstep_volume = 0.6
+footstep_min_speed = 1.0
+footstep_fade_in_seconds = 0.08
+footstep_fade_out_seconds = 0.15
+landing_clip = ExtResource("s57")
+landing_volume = 0.8
+min_fall_height = 1.0
+combat_clip = ExtResource("s58")
+combat_volume = 0.5
+boss_clip = ExtResource("s59")
+boss_volume = 0.5
+crossfade_seconds = 2.0
+music_start_fade_seconds = 0.5
+boss_poll_seconds = 0.25

@@ -1,0 +1,9 @@
+Reviewed-Content-Hash: src/heart/heart_rate.gd 5ddc88e7c1e69eb94187d58e500fc9d20c3d2ad4
+Reviewed-Content-Hash: src/heart/heart_rate_data.gd 25a3291c58ab850423d2f7050307e5e29e43e738
+Reviewed-Content-Hash: assets/data/heart/heart_rate.tres 6abf98a84e0292dc1b5a45b0f1efabf52d93a3a6
+Reviewed-Content-Hash: src/player/player_controller.gd 39fd4792571d1fcbfa21153b5ec84db6b519b18b
+Reviewed-Content-Hash: src/player/player.tscn b7476a74f7678f0bc4f91b8b19ca192a7102bbd6
+Reviewed-Content-Hash: src/weapons/weapon_holder.gd bc0261053a823f6457b4b4b88c60d84ca6f0ac44
+Reviewed-Content-Hash: src/weapons/gun.gd 28a3b7b9bc6365c45ace7a99279099bb145fdb15
+Reviewed-Content-Hash: src/player/test_range.gd 082744861a527cbf20c01c0fba533087c1ff766e
+Reviewed-Content-Hash: src/player/test_range.tscn 0e12ae87e75887d3cc6d0367e7a002403cba62ce

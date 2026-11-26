@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="WaveData" format=3]
+
+[ext_resource type="Script" path="res://src/waves/wave_data.gd" id="1_wd"]
+[ext_resource type="Script" path="res://src/waves/wave_enemy_entry.gd" id="2_we"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="3_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/melee.tres" id="4_melee"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_pistol.tres" id="5_ranged"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_shotgun.tres" id="7_shotgun"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_smg.tres" id="8_smg"]
+[ext_resource type="Resource" path="res://assets/data/enemies/boss.tres" id="6_boss"]
+
+[sub_resource type="Resource" id="Entry_melee"]
+script = ExtResource("2_we")
+enemy = ExtResource("4_melee")
+first_wave = 1
+base_count = 6
+extra_per_wave = 2
+max_count = 20
+health_scale_per_wave = 0.1
+speed_scale_per_wave = 0.03
+damage_scale_per_wave = 0.1
+
+[sub_resource type="Resource" id="Entry_ranged"]
+script = ExtResource("2_we")
+enemy = ExtResource("5_ranged")
+first_wave = 2
+base_count = 2
+extra_per_wave = 1
+max_count = 6
+health_scale_per_wave = 0.1
+speed_scale_per_wave = 0.02
+damage_scale_per_wave = 0.08
+
+[sub_resource type="Resource" id="Entry_shotgun"]
+script = ExtResource("2_we")
+enemy = ExtResource("7_shotgun")
+first_wave = 3
+base_count = 1
+extra_per_wave = 1
+max_count = 4
+health_scale_per_wave = 0.1
+speed_scale_per_wave = 0.02
+damage_scale_per_wave = 0.08
+
+[sub_resource type="Resource" id="Entry_smg"]
+script = ExtResource("2_we")
+enemy = ExtResource("8_smg")
+first_wave = 5
+base_count = 1
+extra_per_wave = 1
+max_count = 4
+health_scale_per_wave = 0.1
+speed_scale_per_wave = 0.02
+damage_scale_per_wave = 0.08
+
+[sub_resource type="Resource" id="Entry_boss"]
+script = ExtResource("2_we")
+enemy = ExtResource("6_boss")
+first_wave = 1
+base_count = 1
+extra_per_wave = 0
+max_count = 1
+health_scale_per_wave = 0.1
+speed_scale_per_wave = 0.02
+damage_scale_per_wave = 0.08
+
+[resource]
+script = ExtResource("1_wd")
+delay_between_waves = 5.0
+spawn_interval = 0.75
+group_size = 3
+group_spawn_interval = 0.4
+entries = Array[ExtResource("2_we")]([SubResource("Entry_melee"), SubResource("Entry_ranged"), SubResource("Entry_shotgun"), SubResource("Entry_smg")])
+boss = SubResource("Entry_boss")
+boss_interval = 4
+escort_enemies = Array[ExtResource("3_ed")]([ExtResource("4_melee"), ExtResource("5_ranged"), ExtResource("7_shotgun")])
+escort_counts = PackedInt32Array(4, 1, 1)

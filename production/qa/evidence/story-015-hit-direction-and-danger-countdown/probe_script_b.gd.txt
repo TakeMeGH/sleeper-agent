@@ -1,0 +1,84 @@
+extends SceneTree
+func _initialize() -> void:
+	var s: Node = load("res://src/player/test_range.tscn").instantiate()
+	root.add_child(s)
+	await create_timer(0.2).timeout
+	var arcs: HitArcs = s.get_node("Hud/HitArcs")
+	var p: PlayerController = s.get_node("Player")
+	for pair: Array in [["front", Vector3(0,0,-8)], ["right", Vector3(8,0,0)], ["left", Vector3(-8,0,0)], ["behind", Vector3(0,0,8)], ["front_high", Vector3(0,6,-8)], ["left_low", Vector3(-8,-3,0)]]:
+		print("PROBE angle %s = %.1f" % [pair[0], arcs.get_arc_angle_for(p.to_global(pair[1]))])
+	# turn follow
+	var src: Vector3 = p.to_global(Vector3(-8,0,0))
+	arcs.add_hit(src)
+	arcs.tick(0.0)
+	print("PROBE turn before angle=%.1f" % arcs.get_active_arcs()[0]["angle_degrees"])
+	p.rotate_y(deg_to_rad(90.0))
+	arcs.tick(0.0)
+	print("PROBE turn after yaw+90 (left turn) angle=%.1f (source now in front expected 0)" % arcs.get_active_arcs()[0]["angle_degrees"])
+	p.rotate_y(deg_to_rad(-90.0))
+	arcs.tick(5.0)
+	print("PROBE cleared arcs=%d" % arcs.get_active_arcs().size())
+	# merge
+	arcs.add_hit(p.to_global(Vector3(0,0,-8)))
+	arcs.tick(0.4)
+	var ang20: Vector3 = p.to_global(Vector3(0,0,-8).rotated(Vector3.UP, deg_to_rad(-20.0)))
+	arcs.add_hit(ang20)
+	var a: Array = arcs.get_active_arcs()
+	print("PROBE merge within 20deg (merge_angle=%s): arcs=%d age=%.2f angle=%.1f" % [arcs.data.merge_angle, a.size(), a[0]["age"], a[0]["angle_degrees"]])
+	var ang40: Vector3 = p.to_global(Vector3(0,0,-8).rotated(Vector3.UP, deg_to_rad(-60.0)))
+	arcs.add_hit(ang40)
+	print("PROBE hit 60deg away: arcs=%d" % arcs.get_active_arcs().size())
+	arcs.tick(5.0)
+	# pool
+	print("PROBE pool size=%d" % arcs.get_pool_size())
+	for i: int in 8:
+		arcs.add_hit(p.to_global(Vector3(0,0,-8).rotated(Vector3.UP, deg_to_rad(i * 45.0))))
+		arcs.tick(0.01)
+	var angs: Array = []
+	for d: Dictionary in arcs.get_active_arcs(): angs.append(snappedf(d["angle_degrees"], 1.0))
+	print("PROBE after 8 hits at 0,45..315 deg CCW: arcs=%d angles=%s (first two = oldest reused)" % [arcs.get_active_arcs().size(), angs])
+	arcs.tick(5.0)
+	# no source
+	p.take_hit(0.0, Vector3.ZERO)
+	p.take_hit(0.0, Vector3.ZERO, null)
+	print("PROBE no-source hits: arcs=%d" % arcs.get_active_arcs().size())
+	p.take_hit(0.0, Vector3.ZERO, p.to_global(Vector3(8,0,0)))
+	print("PROBE take_hit with source via signal: arcs=%d angle=%.1f" % [arcs.get_active_arcs().size(), arcs.get_active_arcs()[0]["angle_degrees"]])
+	arcs.tick(5.0)
+	# unscaled time: _process path at time_scale 0.1
+	Engine.time_scale = 0.1
+	arcs.add_hit(p.to_global(Vector3(0,0,-8)))
+	var t0: int = Time.get_ticks_msec()
+	await create_timer(0.8, true, false, true).timeout
+	var mid: Array = arcs.get_active_arcs()
+	print("PROBE time_scale 0.1 after %d real ms: arcs=%d alpha=%.2f age=%.2f" % [Time.get_ticks_msec() - t0, mid.size(), mid[0]["alpha"] if mid.size() > 0 else -1.0, mid[0]["age"] if mid.size() > 0 else -1.0])
+	await create_timer(0.6, true, false, true).timeout
+	print("PROBE time_scale 0.1 after %d real ms: arcs=%d (hold+fade=%.2f)" % [Time.get_ticks_msec() - t0, arcs.get_active_arcs().size(), arcs.data.arc_hold_seconds + arcs.data.arc_fade_seconds])
+	Engine.time_scale = 1.0
+	# run end: showing arcs finish fading, no new arcs
+	arcs.add_hit(p.to_global(Vector3(0,0,-8)))
+	arcs.on_run_ended(&"passed_out")
+	arcs.add_hit(p.to_global(Vector3(8,0,0)))
+	print("PROBE run end: arcs=%d (new hit refused)" % arcs.get_active_arcs().size())
+	await create_timer(1.3, true, false, true).timeout
+	print("PROBE run end after 1.3 s: arcs=%d" % arcs.get_active_arcs().size())
+	s.queue_free()
+	await process_frame
+	# countdown
+	var s2: Node = load("res://src/player/test_range_danger_countdown.tscn").instantiate()
+	root.add_child(s2)
+	var l: DangerCountdownLabel = s2.get_node("Hud/DangerCountdown")
+	var h: HeartRate = s2.get_node("Player/HeartRate")
+	var seen: Array = []
+	var start: int = Time.get_ticks_msec()
+	while Time.get_ticks_msec() - start < 7000:
+		await process_frame
+		var tx: String = l.get_shown_text()
+		if seen.is_empty() or seen[-1] != tx: seen.append(tx)
+		if h.has_ended() and Time.get_ticks_msec() - start > 6000: break
+	print("PROBE countdown sequence=%s ended=%s shown_after=%s colour=%s" % [seen, h.has_ended(), l.is_shown(), l.get_theme_color("font_color")])
+	l.on_countdown_changed(3.4, &"passed_out")
+	var ok: String = l.get_shown_text()
+	l.on_countdown_changed(0.0, &"")
+	print("PROBE label direct: 3.4 -> '%s'; stop -> shown=%s" % [ok, l.is_shown()])
+	quit()

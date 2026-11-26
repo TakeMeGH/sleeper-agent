@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ShiftAbilityData" format=3]
+
+[ext_resource type="Script" path="res://src/player/shift_ability_data.gd" id="1_sdata"]
+
+[resource]
+script = ExtResource("1_sdata")
+slow_time_scale = 0.3
+player_time_scale = 0.7
+slow_seconds = 7.0
+superspeed_multiplier = 1.8
+superspeed_seconds = 8.0
+cooldown_seconds = 8.0

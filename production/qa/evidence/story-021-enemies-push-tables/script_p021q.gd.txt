@@ -1,0 +1,27 @@
+extends SceneTree
+## Story 021 plaza props: every mesh under the plaza Props has a collider (static trimesh or PushableProp).
+var f: int = 0
+func _initialize() -> void:
+	var g: Node = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+	g.set(&"start_level_id", &"plaza")
+	g.set(&"debug_open_exit_immediately", true)
+	root.add_child(g)
+func _physics_process(_d: float) -> bool:
+	f += 1
+	if f == 40:
+		var lvl: Node = root.find_children("*", "LevelBase", true, false)[0]
+		var props: Node = lvl.find_child("Props", true, false)
+		var total: int = 0; var with_col: int = 0; var pushable: int = 0; var names: PackedStringArray = []
+		for top: Node in props.get_children():
+			total += 1
+			var has: bool = not top.find_children("*", "StaticBody3D", true, false).is_empty() or top is PushableProp or not top.find_children("*", "PushableProp", true, false).is_empty()
+			if top is PushableProp: pushable += 1
+			if has: with_col += 1
+			else: names.append(String(top.name))
+		var nav: RID = root.get_world_3d().navigation_map
+		print("PROBE plaza props top_level=%d with_collider=%d pushable=%d without=%s nav_polys=%d" % [total, with_col, pushable, names, NavigationServer3D.map_get_regions(nav).size()])
+		for p: PushableProp in PushableProp.get_all(self):
+			var cp: Vector3 = NavigationServer3D.map_get_closest_point(nav, p.global_position)
+			print("PROBE plaza pushable %s at %s nearest_nav=%s" % [p.name, p.global_position, cp])
+		quit()
+	return false

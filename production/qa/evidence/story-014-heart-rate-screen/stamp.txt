@@ -1,0 +1,14 @@
+Reviewed-Content-Hash: src/ui/screen_effects/heart_rate_screen.gd 3eb032ab0a00a99603b4361b2d328edb7b7b4e05
+Reviewed-Content-Hash: src/ui/screen_effects/heart_rate_screen_data.gd 3c20a1bde858ddbb4ae64381f353fd3635d2e1a9
+Reviewed-Content-Hash: src/ui/screen_effects/heart_rate_vignette.gdshader 3e0fc241c9cc056f77a6452ec93e374a9b62fe4a
+Reviewed-Content-Hash: assets/data/heart/heart_rate_screen.tres e10aa38c28e8d9b05bac9fb6c6b3dca88e88d78f
+Reviewed-Content-Hash: src/player/test_range.gd 9aea0cf01b56548ae2d8eacb0696184abcc41717
+Reviewed-Content-Hash: src/player/test_range.tscn 7cf645d8e7aab84dd2f81441eb54114757bd63d7
+Reviewed-Content-Hash: src/waves/test_arena.tscn c74318005d9f3bccc912460bad94b63ded4e5cea
+Reviewed-Content-Hash: src/run/game.tscn 406827a0c43c2afdc56a7861bf2531209ff626d9
+Reviewed-Content-Hash: src/player/test_range_hr_screen_low.tscn 91e14f8aa993d656ad4c2f294cf311e9bfc81bc1
+Reviewed-Content-Hash: src/player/test_range_hr_screen_normal.tscn a0b6ac95d147e457813a552284af0370a2a296ad
+Reviewed-Content-Hash: src/player/test_range_hr_screen_high.tscn 7e73bffe8ad44726607d63579863a75a4bb6e2fc
+Reviewed-Content-Hash: src/player/test_range_hr_screen_high_speed.tscn 02f82ce7aa057b58c80fb7eb0a964bbaa07ddac4
+Reviewed-Content-Hash: src/ui/hud/hud.gd f5425dd089331cbad3e3f51ddbf95a5f41f70983
+Reviewed-Content-Hash: src/viewmodel/viewmodel.gd ffe5bf6556aca203a5ef0e3c8f1f9d6d8b53d3bc

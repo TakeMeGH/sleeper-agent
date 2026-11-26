@@ -1,0 +1,30 @@
+{
+  "substances": [
+    {
+      "id": "coffee",
+      "display_name": "Coffee",
+      "input_action": "DoseCoffee",
+      "seconds_per_item": 3,
+      "rate_curve": [
+        { "held_seconds": 0, "bpm_per_second": 3 },
+        { "held_seconds": 1, "bpm_per_second": 10 },
+        { "held_seconds": 3, "bpm_per_second": 60 }
+      ],
+      "start_count": 7,
+      "max_count": 9
+    },
+    {
+      "id": "cigarette",
+      "display_name": "Cigarette",
+      "input_action": "DoseCigarette",
+      "seconds_per_item": 3,
+      "rate_curve": [
+        { "held_seconds": 0, "bpm_per_second": -2 },
+        { "held_seconds": 1, "bpm_per_second": -8 },
+        { "held_seconds": 3, "bpm_per_second": -30 }
+      ],
+      "start_count": 3,
+      "max_count": 5
+    }
+  ]
+}

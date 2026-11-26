@@ -1,0 +1,190 @@
+extends SceneTree
+## Story 016 probe: real durations (physics ticks / 60) at normal time vs slow motion (world 0.3, player 0.7).
+
+var s: Node
+var p: CharacterBody3D
+var pt: PlayerTime
+var sh: ShiftAbility
+var dv: DiveState
+var heart: HeartRate
+var inv: SubstanceInventory
+var holder: Node
+var cam: Camera3D
+var rb: RigidBody3D
+var tick_n: int = 0
+var phase_log: Array = []
+
+
+func _ticks(n: int) -> void:
+	for i in n:
+		await physics_frame
+		tick_n += 1
+
+
+func _init() -> void:
+	var packed: PackedScene = load("res://src/player/test_range.tscn")
+	s = packed.instantiate()
+	s.set("debug_heart_rate", 40.0)
+	s.set("debug_hold_heart_rate", true)
+	root.add_child(s)
+	p = s.get_node("Player")
+	pt = p.get_node("PlayerTime")
+	sh = p.get_node("ShiftAbility")
+	dv = p.get_node("DiveState")
+	heart = p.get_node("HeartRate")
+	inv = p.get_node("SubstanceInventory")
+	holder = p.get_node("Head/Camera3D/WeaponHolder")
+	cam = p.get_node("Head/Camera3D")
+	dv.phase_changed.connect(func(ph, _prev): phase_log.append([DiveState.Phase.keys()[ph], tick_n]))
+	rb = RigidBody3D.new()
+	var cs := CollisionShape3D.new()
+	cs.shape = SphereShape3D.new()
+	rb.add_child(cs)
+	rb.collision_layer = 0
+	rb.collision_mask = 0
+	rb.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
+	rb.linear_damp = 0.0
+	s.add_child(rb)
+	rb.global_position = Vector3(50, 500, 50)
+	await _ticks(30)
+	print("PROBE ticks_per_second=", Engine.physics_ticks_per_second, " data slow_time_scale=", sh.data.slow_time_scale,
+		" player_time_scale=", sh.data.player_time_scale, " slow_seconds=", sh.data.slow_seconds,
+		" superspeed_seconds=", sh.data.superspeed_seconds, " hang_factor=", dv.data.slow_motion_hang_factor)
+	print("PROBE normal: engine=", Engine.time_scale, " player_scale=", pt.get_time_scale(), " mult=", pt.get_delta_multiplier())
+	var normal_dive: Dictionary = await _measure_dive()
+	var normal_fire: int = await _measure_fire()
+	var normal: Dictionary = await _measure_combined()
+	print("PROBE normal dive phases(real s)=", normal_dive, " fire_cooldown_real_s=", normal_fire / 60.0)
+	print("PROBE normal reload_real_s=", normal.reload / 60.0, " coffee_unit_real_s=", normal.coffee / 60.0,
+		" move_m_per_real_s=", normal.move, " rigid_dv_per_real_s=", normal.rigid, " switch_tween_real_s=", normal.get("switch", -1) / 60.0)
+
+	# Slow motion A: dive, fire, hitstop.
+	await _activate_slow("A")
+	var slow_dive: Dictionary = await _measure_dive()
+	var slow_fire: int = await _measure_fire()
+	print("PROBE slow dive phases(real s)=", slow_dive, " hang_applied_during=", _hang_seen, " fire_cooldown_real_s=", slow_fire / 60.0)
+	print("PROBE slow A effect_left=", sh.get_effect_left(), " still slow=", pt.is_slow_motion_active())
+	# Hitstop during slow motion.
+	var gun: Gun = holder.get_current_gun()
+	gun.magazine = 1
+	gun.start_reload()
+	await _ticks(2)
+	var before: float = gun.get_reload_left()
+	var vy0: float = rb.linear_velocity.y
+	sh.request_hitstop(0.1, 0.2, 0.05)
+	await _ticks(1)
+	var min_scale: float = Engine.time_scale
+	await _ticks(4)
+	min_scale = minf(min_scale, Engine.time_scale)
+	print("PROBE hitstop: engine_during=", min_scale, " hitstop_left=", sh.get_hitstop_left(), " mult=", pt.get_delta_multiplier(),
+		" reload_left_change_5ticks=", before - gun.get_reload_left(), " rigid_dv_5ticks=", rb.linear_velocity.y - vy0)
+	await _ticks(20)
+	print("PROBE after hitstop: engine=", Engine.time_scale, " hitstop_left=", sh.get_hitstop_left(), " player_scale=", pt.get_time_scale(), " mult=", pt.get_delta_multiplier())
+	await _wait_reload(gun)
+	# End A by running the effect out, then clear cooldown.
+	sh.tick(sh.get_effect_left() + 0.01)
+	await _ticks(2)
+	print("PROBE slow A ended naturally: active=", sh.is_active(), " engine=", Engine.time_scale, " player_scale=", pt.get_time_scale(), " mult=", pt.get_delta_multiplier(), " diving=", dv.is_diving())
+	sh.tick(sh.get_cooldown_left() + 0.01)
+
+	# Slow motion B: reload, consume, movement, rigid body.
+	await _activate_slow("B")
+	var slow: Dictionary = await _measure_combined()
+	print("PROBE slow reload_real_s=", slow.reload / 60.0, " coffee_unit_real_s=", slow.coffee / 60.0,
+		" move_m_per_real_s=", slow.move, " rigid_dv_per_real_s=", slow.rigid, " switch_tween_real_s=", slow.get("switch", -1) / 60.0)
+	print("PROBE ratios slow/normal real duration: reload=", float(slow.reload) / normal.reload, " coffee=", float(slow.coffee) / normal.coffee,
+		" fire=", float(slow_fire) / maxf(normal_fire, 1), " | speed ratios: move=", slow.move / normal.move, " rigid=", slow.rigid / normal.rigid)
+	sh.tick(sh.get_effect_left() + 0.01)
+	await _ticks(2)
+	sh.tick(sh.get_cooldown_left() + 0.01)
+
+	# Slow motion C, then a dive in slow motion, then run end mid-dive.
+	await _activate_slow("C")
+	dv.try_start(Vector2.ZERO, 1.0)
+	await _ticks(10)
+	heart.run_ended.emit(&"passed_out")
+	await _ticks(2)
+	print("PROBE run end: active=", sh.is_active(), " engine=", Engine.time_scale, " player_scale=", pt.get_time_scale(), " mult=", pt.get_delta_multiplier())
+	await _ticks(120)
+	print("PROBE run end +2s: diving=", dv.is_diving(), " phase=", DiveState.Phase.keys()[dv.get_phase()], " hang_applied=", dv.is_hang_applied(), " engine=", Engine.time_scale)
+	quit()
+
+
+var _hang_seen: bool = false
+
+
+func _activate_slow(tag: String) -> void:
+	var ok: bool = sh.try_activate()
+	await _ticks(3)
+	print("PROBE slow ", tag, " activated=", ok, " kind=", sh.get_active_kind(), " effect_left=", snappedf(sh.get_effect_left(), 0.01),
+		" engine=", Engine.time_scale, " player_scale=", pt.get_time_scale(), " mult=", pt.get_delta_multiplier())
+
+
+func _measure_dive() -> Dictionary:
+	while dv.get_cooldown_left() > 0.0:
+		await _ticks(1)
+	phase_log.clear()
+	var start: int = tick_n
+	_hang_seen = false
+	dv.try_start(Vector2.ZERO, 1.0)
+	_hang_seen = dv.is_hang_applied()
+	while dv.is_diving() and tick_n - start < 600:
+		await _ticks(1)
+	var out: Dictionary = {}
+	var prev_name: String = "start"
+	var prev_t: int = start
+	for e in phase_log:
+		out[prev_name] = snappedf((e[1] - prev_t) / 60.0, 0.001)
+		prev_name = e[0]
+		prev_t = e[1]
+	return out
+
+
+func _measure_fire() -> int:
+	var gun: Gun = holder.get_current_gun()
+	if gun.magazine <= 0 or gun.is_reloading():
+		await _wait_reload(gun)
+	while gun.get_cooldown_left() > 0.0:
+		await _ticks(1)
+	var ex: Array[RID] = [p.get_rid()]
+	var fired: bool = gun.try_fire(cam, ex)
+	var start: int = tick_n
+	while gun.get_cooldown_left() > 0.0 and tick_n - start < 600:
+		await _ticks(1)
+	return tick_n - start if fired else -1
+
+
+func _wait_reload(gun: Gun) -> void:
+	if gun.magazine <= 0 and not gun.is_reloading():
+		gun.start_reload()
+	while gun.is_reloading():
+		await _ticks(1)
+
+
+func _measure_combined() -> Dictionary:
+	var gun: Gun = holder.get_current_gun()
+	await _wait_reload(gun)
+	gun.magazine = 1
+	gun.start_reload()
+	var count0: int = inv.get_count(&"coffee")
+	Input.action_press(&"dose_coffee")
+	Input.action_press(&"move_forward")
+	var pos0: Vector3 = p.global_position
+	var vy0: float = rb.linear_velocity.y
+	var start: int = tick_n
+	var res: Dictionary = {"reload": -1, "coffee": -1, "move": 0.0, "rigid": 0.0}
+	while (res.reload < 0 or res.coffee < 0) and tick_n - start < 900:
+		await _ticks(1)
+		var t: int = tick_n - start
+		if t == 30:
+			Input.action_release(&"move_forward")
+			var d: Vector3 = p.global_position - pos0
+			res.move = Vector2(d.x, d.z).length() / 0.5
+			res.rigid = absf(rb.linear_velocity.y - vy0) / 0.5
+		if res.reload < 0 and not gun.is_reloading():
+			res.reload = t
+		if res.coffee < 0 and inv.get_count(&"coffee") < count0:
+			res.coffee = t
+	Input.action_release(&"dose_coffee")
+	await _ticks(2)
+	return res

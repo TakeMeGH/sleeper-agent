@@ -1,0 +1,113 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/player/player_controller.gd" id="1_ctrl"]
+[ext_resource type="Script" path="res://src/player/player_time.gd" id="99_ptime"]
+[ext_resource type="Script" path="res://src/weapons/weapon_holder.gd" id="2_holder"]
+[ext_resource type="Script" path="res://src/weapons/gun_data.gd" id="3_gundata"]
+[ext_resource type="Resource" path="res://assets/data/weapons/pistol.tres" id="4_pistol"]
+[ext_resource type="Resource" path="res://assets/data/weapons/smg.tres" id="5_smg"]
+[ext_resource type="Resource" path="res://assets/data/weapons/shotgun.tres" id="6_shotgun"]
+
+[ext_resource type="Script" path="res://src/heart/heart_rate.gd" id="7_heart"]
+[ext_resource type="Resource" path="res://assets/data/heart/heart_rate.tres" id="8_hrdata"]
+
+[ext_resource type="Script" path="res://src/dosing/substance_data.gd" id="9_sdata"]
+[ext_resource type="Script" path="res://src/dosing/substance_inventory.gd" id="10_inv"]
+[ext_resource type="Resource" path="res://assets/data/dosing/coffee.tres" id="11_coffee"]
+[ext_resource type="Resource" path="res://assets/data/dosing/cigarette.tres" id="12_cig"]
+
+[ext_resource type="PackedScene" path="res://src/viewmodel/viewmodel.tscn" id="13_vm"]
+[ext_resource type="Script" path="res://src/player/shift_ability.gd" id="14_shift"]
+[ext_resource type="Resource" path="res://assets/data/player/shift_ability.tres" id="15_shiftdata"]
+
+[ext_resource type="Script" path="res://src/player/dive_state.gd" id="17_dive"]
+[ext_resource type="Resource" path="res://assets/data/player/dive.tres" id="18_divedata"]
+
+[ext_resource type="Script" path="res://src/weapons/gun_feel.gd" id="19_feel"]
+[ext_resource type="Resource" path="res://assets/data/weapons/gun_feel.tres" id="20_feeldata"]
+[ext_resource type="Resource" path="res://assets/data/weapons/impact_effects.tres" id="21_fxdata"]
+
+[ext_resource type="Script" path="res://src/audio/sfx_player.gd" id="aud_sfx"]
+[ext_resource type="Script" path="res://src/audio/music_director.gd" id="aud_music"]
+[ext_resource type="Script" path="res://src/audio/heart_rate_audio.gd" id="aud_heart"]
+[ext_resource type="Script" path="res://src/audio/footsteps.gd" id="aud_foot"]
+[ext_resource type="Resource" path="res://assets/data/audio/audio_config.tres" id="aud_cfg"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p"]
+radius = 0.35
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_ctrl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_p")
+
+[node name="HeartRate" type="Node" parent="."]
+script = ExtResource("7_heart")
+data = ExtResource("8_hrdata")
+
+[node name="SubstanceInventory" type="Node" parent="." node_paths=PackedStringArray("heart_rate")]
+script = ExtResource("10_inv")
+heart_rate = NodePath("../HeartRate")
+substances = Array[ExtResource("9_sdata")]([ExtResource("11_coffee"), ExtResource("12_cig")])
+
+[node name="ShiftAbility" type="Node" parent="." node_paths=PackedStringArray("heart_rate")]
+script = ExtResource("14_shift")
+data = ExtResource("15_shiftdata")
+heart_rate = NodePath("../HeartRate")
+
+[node name="PlayerTime" type="Node" parent="." node_paths=PackedStringArray("shift_ability")]
+script = ExtResource("99_ptime")
+shift_ability = NodePath("../ShiftAbility")
+
+[node name="DiveState" type="Node" parent="."]
+script = ExtResource("17_dive")
+data = ExtResource("18_divedata")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+fov = 60.0
+
+[node name="WeaponHolder" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("camera", "exclude_body")]
+script = ExtResource("2_holder")
+gun_definitions = Array[ExtResource("3_gundata")]([ExtResource("4_pistol"), ExtResource("5_smg"), ExtResource("6_shotgun")])
+camera = NodePath("..")
+exclude_body = NodePath("../../..")
+
+[node name="Viewmodel" parent="Head/Camera3D" node_paths=PackedStringArray("weapon_holder", "substances", "camera") instance=ExtResource("13_vm")]
+weapon_holder = NodePath("../WeaponHolder")
+substances = NodePath("../../../SubstanceInventory")
+camera = NodePath("..")
+
+[node name="GunFeel" type="Node" parent="Head/Camera3D" node_paths=PackedStringArray("holder", "camera", "viewmodel", "shift_ability")]
+script = ExtResource("19_feel")
+data = ExtResource("20_feeldata")
+effects_data = ExtResource("21_fxdata")
+holder = NodePath("../WeaponHolder")
+camera = NodePath("..")
+viewmodel = NodePath("../Viewmodel")
+shift_ability = NodePath("../../../ShiftAbility")
+
+[node name="SfxPlayer" type="Node" parent="." node_paths=PackedStringArray("holder", "substances")]
+script = ExtResource("aud_sfx")
+config = ExtResource("aud_cfg")
+holder = NodePath("../Head/Camera3D/WeaponHolder")
+substances = NodePath("../SubstanceInventory")
+
+[node name="MusicDirector" type="Node" parent="."]
+script = ExtResource("aud_music")
+config = ExtResource("aud_cfg")
+
+[node name="HeartRateAudio" type="Node" parent="." node_paths=PackedStringArray("heart")]
+script = ExtResource("aud_heart")
+config = ExtResource("aud_cfg")
+heart = NodePath("../HeartRate")
+
+[node name="Footsteps" type="Node" parent="." node_paths=PackedStringArray("body", "dive_state")]
+script = ExtResource("aud_foot")
+config = ExtResource("aud_cfg")
+body = NodePath("..")
+dive_state = NodePath("../DiveState")

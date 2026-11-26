@@ -1,0 +1,16 @@
+{
+    "weapon_name": "SMG",
+    "damage": 22,
+    "magazine_size": 30,
+    "fire_rate": 12,
+    "reload_time": 1.8,
+    "range": 100,
+    "raise_time": 0.4,
+    "fire_buffer_time": 0.1,
+    "auto_reload": true,
+    "spare_ammo_endless": false,
+    "spare_ammo_start": 60,
+    "spare_ammo_max": 150,
+    "hit_push_scale": 1,
+    "kill_launch_scale": 1
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# p021_sweep.sh <kind> <outfile> : runs the walk-in trial list for one enemy kind.
+G="E:/GodotEngine/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe"
+K=$1; OUT=$2; F=${3:-420}
+# label table yaw lateral before after
+TRIALS="
+headon_end_n -1.71,-4.59 180 0 3.5 7
+headon_end_s -1.71,-4.59 0 0 3.5 6
+headon_end_n_mid 2.14,-4.59 180 0 3.5 7
+offset_end_n -1.71,4.3 180 0.35 3.5 7
+corner_ne -1.71,-4.59 225 0 3.5 6
+corner_nw 2.14,-4.59 135 0 3.5 6
+corner_se 2.14,-4.59 45 0 3.5 6
+corner_sw -1.71,4.3 315 0 3.5 6
+side_from_e -1.71,-4.59 270 0 2.5 5
+side_from_w 2.14,-4.59 90 0 2.5 5
+side_from_e_off -1.71,4.3 270 0.9 2.5 5
+along_side_e -1.71,-4.59 180 0.75 3.5 7
+along_side_w 2.14,4.3 180 -0.75 3.5 7
+graze_corner 2.14,-4.59 170 0.55 3.5 7
+"
+FIRST=${4:-1}; LAST=${5:-99}; N=0
+echo "$TRIALS" | while read -r L T Y LAT B A; do
+  [ -z "$L" ] && continue
+  N=$((N+1)); { [ $N -lt $FIRST ] || [ $N -gt $LAST ]; } && continue
+  timeout 300 "$G" --headless --path . -s res://.scratch/probes/p021s.gd -- $K $T $Y $LAT $F $B $A ${K}_$L 2>&1 | grep -E "^PROBE|SCRIPT ERROR" >> "$OUT"
+done

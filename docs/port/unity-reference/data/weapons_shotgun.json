@@ -1,0 +1,19 @@
+{
+    "weapon_name": "Shotgun",
+    "damage": 17,
+    "magazine_size": 6,
+    "fire_rate": 1.1,
+    "reload_time": 0,
+    "range": 40,
+    "raise_time": 0.5,
+    "pellet_count": 8,
+    "pellet_spread_degrees": 5,
+    "shell_load_time": 0.45,
+    "fire_buffer_time": 0.15,
+    "auto_reload": true,
+    "spare_ammo_endless": false,
+    "spare_ammo_start": 12,
+    "spare_ammo_max": 30,
+    "hit_push_scale": 2.5,
+    "kill_launch_scale": 2
+}

@@ -1,0 +1,17 @@
+{
+    "weapon_name": "Pistol",
+    "damage": 25,
+    "magazine_size": 12,
+    "fire_rate": 5,
+    "reload_time": 1.5,
+    "range": 100,
+    "raise_time": 0.4,
+    "click_fire_rate": 8,
+    "fire_buffer_time": 0.1,
+    "auto_reload": true,
+    "spare_ammo_endless": true,
+    "spare_ammo_start": 0,
+    "spare_ammo_max": 0,
+    "hit_push_scale": 1,
+    "kill_launch_scale": 1
+}

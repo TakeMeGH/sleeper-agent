@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# feel_all.sh <prefix> : runs the push-feel trace probe on the four cases.
+G="E:/GodotEngine/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe"; P=res://.scratch/probes/pfeel.gd
+timeout 300 "$G" --headless --path . -s $P -- melee "-1.71,-1.2" "-0.3,-10" 220 melee_head 1 > .scratch/feel/$1_melee_head.txt 2>&1
+timeout 300 "$G" --headless --path . -s $P -- melee "-1.31,-1.2" "-1.31,-10" 220 melee_off 1 > .scratch/feel/$1_melee_off.txt 2>&1
+timeout 300 "$G" --headless --path . -s $P -- melee,melee "-1.31,-1.2;-2.11,-1.0" "-1.71,-10" 220 melee_two 1 > .scratch/feel/$1_two.txt 2>&1
+timeout 300 "$G" --headless --path . -s $P -- boss "2.14,7.8" "2.14,-9.7" 600 boss_head 1 > .scratch/feel/$1_boss.txt 2>&1
+grep -h "FEEL\|SCRIPT ERROR" .scratch/feel/$1_*.txt

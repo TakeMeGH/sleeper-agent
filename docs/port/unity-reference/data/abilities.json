@@ -1,0 +1,17 @@
+{
+  "slow_time_scale": 0.3,
+  "slow_seconds": 7,
+  "player_time_scale": 0.7,
+
+  "superspeed_multiplier": 1.8,
+  "superspeed_seconds": 8,
+
+  "cooldown_seconds": 8,
+  "end_when_leaving_zone": 0,
+
+  "slow_start": { "volume": 0.8, "tint": { "r": 0.3, "g": 0.6, "b": 1, "a": 0.25 }, "tint_seconds": 0.5 },
+  "slow_end": { "volume": 0.6, "tint": { "r": 0.3, "g": 0.6, "b": 1, "a": 0.15 }, "tint_seconds": 0.35 },
+  "superspeed_start": { "volume": 0.8, "tint": { "r": 1, "g": 0.7, "b": 0.2, "a": 0.25 }, "tint_seconds": 0.5 },
+  "superspeed_end": { "volume": 0.6, "tint": { "r": 1, "g": 0.7, "b": 0.2, "a": 0.15 }, "tint_seconds": 0.35 },
+  "denied_volume": 0.5
+}

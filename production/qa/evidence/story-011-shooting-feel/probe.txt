@@ -1,0 +1,12 @@
+PROBE drift shots_fired=30 max_kick_during=(-0.1125, 0.45)
+PROBE drift after_recovery kick=(0.0, 0.0) shake=(0.0, 0.0, 0.0) yaw_delta=0.0 pitch_delta=0.0 cam_rot_delta=(0.0, 0.0, 0.0)
+PROBE holes emitted=120 max_alive=40 cap=40
+PROBE splats kills=120 max_alive=48 cap=48
+PROBE pool nodes before=158 after=158 scene_nodes_before=315 after=316.0
+PROBE hitstop single requested_left=0.05 time_scale_during=0.05 real_length=0.068 time_scale_after=1.0
+PROBE hitstop 10_kills max_left=0.12 cap=0.12 real_length=0.138 time_scale_after=1.0
+PROBE input mouse_mode=0 (2 = captured)
+PROBE input during_hitstop time_scale=0.05 buffered=1 buffered_after=0 shots_after_press=0
+# windowed run (mouse capture needs a window; headless cannot capture, so the holder drops buffered presses by design):
+PROBE input mouse_mode=2 (2 = captured)
+PROBE input during_hitstop time_scale=0.05 buffered=1 buffered_after=0 shots_after_press=1

@@ -1,0 +1,17 @@
+extends Camera3D
+## Capture-only overview camera: the HUD's world view mirrors this camera instead of the player's,
+## and the first-person viewmodel layer is hidden.
+@export var look_at_point: Vector3 = Vector3.ZERO
+
+
+func _ready() -> void:
+	look_at(look_at_point, Vector3.UP)
+
+
+func _process(_delta: float) -> void:
+	var hud: Hud = get_parent().get_node_or_null(^"StatusBar") as Hud
+	if hud != null and hud.camera != self:
+		hud.camera = self
+	var vm: Node = get_parent().get_node_or_null(^"Player/Head/Camera3D/Viewmodel/ViewLayer")
+	if vm is CanvasLayer:
+		(vm as CanvasLayer).visible = false

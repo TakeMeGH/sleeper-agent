@@ -1,0 +1,70 @@
+# Story 017 probes (final code: lift capped at start floor + air_step_max_reach 1.3)
+PROBE navmesh vertex heights (y:count)={ 1.5: 68, 0.25: 141, 0.75: 13, 1.25: 54, 5.0: 16, 1.75: 26, 4.25: 12, 0.5: 1 }
+PROBE level=canteen air_step_height=0.8
+PROBE hang slow=false hang_factor=1.0 engine_scale=1.00 launch+air_ticks=23 total_ticks=88 end=(-2.939688, 0.460189, -4.59) maxy=1.27
+PROBE hang slow available=true activated=true
+PROBE hang slow=true hang_factor=2.0 engine_scale=0.30 launch+air_ticks=47 total_ticks=139 end=(-1.70145, 0.958535, -4.59) maxy=1.30
+PROBE cmp canteen: dives lift=372 nolift=378 common=372 with_lift_used=76 through_geometry lift/nolift=0/0 head_in_ceiling lift/nolift=1/1 max_end_y lift/nolift=1.37/1.37 tall_contacts=108 tall_climbed=2 ends_higher_with_lift(>0.3m)=8
+PROBE   higher: start=(-1.59,0.96,4.97) yaw=90 end_y lift=0.85 nolift=0.00 lift=0.80
+PROBE   higher: start=(-2.34,0.00,7.72) yaw=180 end_y lift=0.66 nolift=0.00 lift=0.69
+PROBE   higher: start=(-3.34,1.28,11.47) yaw=270 end_y lift=0.46 nolift=0.00 lift=0.80
+PROBE   higher: start=(3.66,1.28,2.97) yaw=90 end_y lift=0.46 nolift=0.00 lift=0.62
+PROBE   higher: start=(3.66,1.28,-6.03) yaw=90 end_y lift=0.46 nolift=0.00 lift=0.62
+PROBE   higher: start=(-3.34,1.28,2.97) yaw=270 end_y lift=0.46 nolift=0.00 lift=0.62
+PROBE   higher: start=(-3.34,1.28,-6.03) yaw=270 end_y lift=0.46 nolift=0.00 lift=0.62
+PROBE   higher: start=(-3.34,1.28,-12.03) yaw=270 end_y lift=0.46 nolift=0.00 lift=0.62
+PROBE cmp plaza: dives lift=274 nolift=274 common=274 with_lift_used=92 through_geometry lift/nolift=9/11 head_in_ceiling lift/nolift=4/4 max_end_y lift/nolift=2.43/2.4 tall_contacts=35 tall_climbed=2 ends_higher_with_lift(>0.3m)=7
+PROBE   higher: start=(12.43,1.68,20.02) yaw=180 end_y lift=2.43 nolift=0.00 lift=0.73
+PROBE   higher: start=(-13.31,0.00,18.55) yaw=90 end_y lift=2.40 nolift=0.00 lift=0.80
+PROBE   higher: start=(-20.57,1.71,21.77) yaw=270 end_y lift=1.80 nolift=0.00 lift=0.53
+PROBE   higher: start=(16.81,0.00,23.92) yaw=90 end_y lift=1.54 nolift=0.00 lift=0.74
+PROBE   higher: start=(-19.56,0.00,23.55) yaw=0 end_y lift=1.47 nolift=1.08 lift=0.35
+PROBE   higher: start=(22.69,0.00,21.55) yaw=0 end_y lift=1.35 nolift=0.00 lift=0.54
+PROBE   higher: start=(11.94,0.00,21.05) yaw=270 end_y lift=1.18 nolift=0.00 lift=0.11
+PROBE TRIAL table d=0.4 end x=-2.94 y=0.46 minx=-2.94 maxy=1.30 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=0.5 end x=-2.94 y=0.46 minx=-2.94 maxy=1.30 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=0.6 end x=-2.94 y=0.46 minx=-2.94 maxy=1.30 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=0.7 end x=-2.94 y=0.46 minx=-2.94 maxy=1.30 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=0.8 end x=-3.56 y=1.28 minx=-3.56 maxy=1.30 ontop=true badgetup=false frames=90 -> onTop
+PROBE TRIAL table d=0.9 end x=-3.60 y=1.28 minx=-3.60 maxy=1.28 ontop=true badgetup=false frames=93 -> onTop
+PROBE TRIAL table d=1.0 end x=-3.58 y=1.28 minx=-3.58 maxy=1.30 ontop=true badgetup=false frames=96 -> onTop
+PROBE TRIAL table d=1.1 end x=-3.36 y=1.28 minx=-3.36 maxy=1.28 ontop=true badgetup=false frames=96 -> onTop
+PROBE TRIAL table d=1.2 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=1.3 end x=-2.81 y=0.46 minx=-2.81 maxy=1.27 ontop=true badgetup=false frames=92 -> onTop
+PROBE TRIAL table d=1.4 end x=-2.68 y=0.45 minx=-2.68 maxy=1.27 ontop=true badgetup=false frames=88 -> onTop
+PROBE TRIAL table d=1.5 end x=-2.93 y=0.46 minx=-2.93 maxy=1.27 ontop=true badgetup=false frames=92 -> onTop
+PROBE TRIAL table d=1.6 end x=-2.90 y=0.46 minx=-2.90 maxy=1.27 ontop=true badgetup=false frames=94 -> onTop
+PROBE TRIAL table d=1.7 end x=-2.94 y=0.46 minx=-3.01 maxy=1.27 ontop=true badgetup=false frames=109 -> onTop
+PROBE TRIAL table d=1.8 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=96 -> onTop
+PROBE TRIAL table d=1.9 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=97 -> onTop
+PROBE TRIAL table d=2.0 end x=-2.93 y=0.46 minx=-2.93 maxy=1.27 ontop=true badgetup=false frames=98 -> onTop
+PROBE TRIAL table d=2.1 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=100 -> onTop
+PROBE TRIAL table d=2.2 end x=-2.73 y=0.46 minx=-2.73 maxy=1.27 ontop=true badgetup=false frames=98 -> onTop
+PROBE TRIAL table d=2.3 end x=-0.77 y=0.00 minx=-0.77 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL table d=2.4 end x=-0.77 y=0.00 minx=-0.77 maxy=1.26 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL table d=2.5 end x=-0.77 y=0.00 minx=-0.77 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL table d=2.6 end x=-0.77 y=0.00 minx=-0.77 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL bench d=0.4 end x=-5.88 y=0.00 minx=-5.88 maxy=1.30 ontop=true badgetup=false frames=93 -> CLEARS
+PROBE TRIAL bench d=0.5 end x=-5.91 y=0.00 minx=-5.91 maxy=1.30 ontop=true badgetup=false frames=93 -> CLEARS
+PROBE TRIAL bench d=0.6 end x=-5.79 y=0.00 minx=-5.79 maxy=1.30 ontop=true badgetup=false frames=93 -> CLEARS
+PROBE TRIAL bench d=0.7 end x=-5.66 y=0.00 minx=-5.66 maxy=1.30 ontop=true badgetup=false frames=93 -> CLEARS
+PROBE TRIAL bench d=0.8 end x=-5.62 y=0.00 minx=-5.62 maxy=1.29 ontop=true badgetup=false frames=94 -> CLEARS
+PROBE TRIAL bench d=0.9 end x=-5.85 y=0.00 minx=-5.85 maxy=1.30 ontop=true badgetup=false frames=97 -> CLEARS
+PROBE TRIAL bench d=1.0 end x=-5.70 y=0.00 minx=-5.70 maxy=1.30 ontop=true badgetup=false frames=97 -> CLEARS
+PROBE TRIAL bench d=1.1 end x=-5.68 y=0.00 minx=-5.68 maxy=1.29 ontop=true badgetup=false frames=98 -> CLEARS
+PROBE TRIAL bench d=1.2 end x=-5.66 y=0.00 minx=-5.66 maxy=1.29 ontop=true badgetup=false frames=99 -> CLEARS
+PROBE TRIAL bench d=1.3 end x=-5.87 y=0.00 minx=-5.87 maxy=1.30 ontop=true badgetup=false frames=102 -> CLEARS
+PROBE TRIAL bench d=1.4 end x=-5.72 y=0.00 minx=-5.72 maxy=1.30 ontop=true badgetup=false frames=102 -> CLEARS
+PROBE TRIAL bench d=1.5 end x=-5.70 y=0.00 minx=-5.70 maxy=1.30 ontop=true badgetup=false frames=103 -> CLEARS
+PROBE TRIAL bench d=1.6 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=86 -> onTop
+PROBE TRIAL bench d=1.7 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=86 -> onTop
+PROBE TRIAL bench d=1.8 end x=-5.33 y=0.00 minx=-5.33 maxy=1.28 ontop=true badgetup=false frames=104 -> CLEARS
+PROBE TRIAL bench d=1.9 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=89 -> onTop
+PROBE TRIAL bench d=2.0 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=91 -> onTop
+PROBE TRIAL bench d=2.1 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=92 -> onTop
+PROBE TRIAL bench d=2.2 end x=-2.94 y=0.46 minx=-2.94 maxy=1.27 ontop=true badgetup=false frames=93 -> onTop
+PROBE TRIAL bench d=2.3 end x=-2.41 y=0.00 minx=-2.41 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL bench d=2.4 end x=-2.41 y=0.00 minx=-2.41 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL bench d=2.5 end x=-2.41 y=0.00 minx=-2.41 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+PROBE TRIAL bench d=2.6 end x=-2.41 y=0.00 minx=-2.41 maxy=1.27 ontop=false badgetup=false frames=89 -> blocked/short
+# trace plaza start (-13.31,0,18.55) yaw 90: lift 0.43->1.23 (f22-26, within cap), then SLIDE climbs a walkable slope to y 2.31 (floor=true)

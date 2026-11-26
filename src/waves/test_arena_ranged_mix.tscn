@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/waves/test_arena.tscn" id="1_arena"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="5_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_pistol.tres" id="2_pistol"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_shotgun.tres" id="3_shotgun"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_smg.tres" id="4_smg"]
+
+[node name="TestArena" instance=ExtResource("1_arena")]
+start_wave = 5
+start_delay = 0.3
+debug_keep_heart_rate = 70.0
+debug_spawn_kinds = Array[ExtResource("5_ed")]([ExtResource("2_pistol"), ExtResource("3_shotgun"), ExtResource("4_smg")])
+debug_spawn_positions = PackedVector3Array(-3, 0, -3, 0, 0, -3, 3, 0, -3)
+
+[node name="Player" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)

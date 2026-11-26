@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ImpactEffectsData" format=3]
+
+[ext_resource type="Script" path="res://src/weapons/impact_effects_data.gd" id="1_fx"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/spark_01.png" id="2_spark"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/smoke_01.png" id="3_dust"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/scorch_01.png" id="4_hole"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/smoke_03.png" id="5_blood"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/dirt_01.png" id="6_s1"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/scorch_02.png" id="7_s2"]
+
+[resource]
+script = ExtResource("1_fx")
+spark_texture = ExtResource("2_spark")
+dust_texture = ExtResource("3_dust")
+hole_texture = ExtResource("4_hole")
+blood_texture = ExtResource("5_blood")
+splat_textures = Array[Texture2D]([ExtResource("6_s1"), ExtResource("7_s2")])

@@ -1,0 +1,48 @@
+PROBE data_valid=true layer=2 priority=56
+PROBE target rate=0 intensity=0.6000 color=(0.0, 0.0, 0.0, 1.0) fov=-8.000
+PROBE target rate=5 intensity=0.6000 color=(0.0, 0.0, 0.0, 1.0) fov=-8.000
+PROBE target rate=10 intensity=0.6000 color=(0.0, 0.0, 0.0, 1.0) fov=-8.000
+PROBE target rate=20 intensity=0.4800 color=(0.0, 0.0, 0.0, 1.0) fov=-6.400
+PROBE target rate=35 intensity=0.3000 color=(0.0, 0.0, 0.0, 1.0) fov=-4.000
+PROBE target rate=50 intensity=0.1200 color=(0.0, 0.0, 0.0, 1.0) fov=-1.600
+PROBE target rate=59 intensity=0.0120 color=(0.0, 0.0, 0.0, 1.0) fov=-0.160
+PROBE target rate=60 intensity=0.0000 color=(1.0, 1.0, 1.0, 1.0) fov=+0.000
+PROBE target rate=80 intensity=0.0000 color=(1.0, 1.0, 1.0, 1.0) fov=+0.000
+PROBE target rate=100 intensity=0.0000 color=(1.0, 1.0, 1.0, 1.0) fov=+0.000
+PROBE target rate=101 intensity=0.0028 color=(1.0, 1.0, 1.0, 1.0) fov=+0.222
+PROBE target rate=130 intensity=0.0833 color=(1.0, 1.0, 1.0, 1.0) fov=+6.667
+PROBE target rate=145 intensity=0.1250 color=(1.0, 1.0, 1.0, 1.0) fov=+10.000
+PROBE target rate=160 intensity=0.1667 color=(1.0, 1.0, 1.0, 1.0) fov=+13.333
+PROBE target rate=189 intensity=0.2472 color=(1.0, 1.0, 1.0, 1.0) fov=+19.778
+PROBE target rate=190 intensity=0.2500 color=(1.0, 1.0, 1.0, 1.0) fov=+20.000
+PROBE target rate=200 intensity=0.2500 color=(1.0, 1.0, 1.0, 1.0) fov=+20.000
+PROBE continuity sweep 0..220 step 0.5 bpm: max intensity step=0.0060 max fov step=0.111 deg
+PROBE settle rate=80 intensity=0.00000 fov_offset=0.00000 cam_fov=75.000
+PROBE jump 80->150 fov_offset per frame: f1=0.304 f2=0.600 f3=0.888 f4=1.168 f5=1.441 f36=7.024 f60=9.012 target=11.111 largest frame step=0.304 deg
+PROBE after 0.6 s smoothed=0.1127 of target 0.1389 (expect ~63%)
+PROBE jump 150->30 smoothed/colour: f1=0.131/white f21=0.011/white f41=0.138/black f61=0.233/black f81=0.287/black f101=0.318/black largest frame step=0.0097
+PROBE pulse rate=120 pulse_per_s=1.00 depth=0.000 drawn min=0.0553 max=0.0555 countdown=0.00
+PROBE pulse rate=160 pulse_per_s=1.00 depth=0.000 drawn min=0.1665 max=0.1667 countdown=0.00
+PROBE pulse rate=175 pulse_per_s=1.00 depth=0.250 drawn min=0.1563 max=0.2083 countdown=0.00
+PROBE pulse rate=185 pulse_per_s=1.00 depth=0.417 drawn min=0.1377 max=0.2361 countdown=0.00
+PROBE pulse rate=190 pulse_per_s=1.00 depth=0.500 drawn min=0.1250 max=0.2500 countdown=0.00
+PROBE pulse rate=40 pulse_per_s=1.00 depth=0.000 drawn min=0.2388 max=0.2400 countdown=0.00
+PROBE pulse rate=25 pulse_per_s=1.00 depth=0.250 drawn min=0.3150 max=0.4200 countdown=0.00
+PROBE pulse rate=15 pulse_per_s=1.00 depth=0.417 drawn min=0.3150 max=0.5400 countdown=0.00
+PROBE pulse rate=10 pulse_per_s=1.00 depth=0.500 drawn min=0.3000 max=0.6000 countdown=0.00
+PROBE countdown rate=193.5 countdown_left=4.52 pulse_per_s=2.00 depth=0.700 drawn min=0.0749 max=0.2500 troughs_in_2s=4
+PROBE validate pulse=1.0 countdown=2.0 -> OK []
+PROBE validate pulse=3.0 countdown=3.0 -> OK []
+PROBE validate pulse=3.01 countdown=2.0 -> FAIL ["pulse_per_second 3.01 is outside 0..3.0."]
+PROBE validate pulse=1.0 countdown=3.5 -> FAIL ["pulse_per_second_countdown 3.5 is outside 0..3.0."]
+PROBE validate pulse=-1.0 countdown=2.0 -> FAIL ["pulse_per_second -1.0 is outside 0..3.0."]
+PROBE validate pulse=nan countdown=2.0 -> FAIL ["pulse_per_second nan is outside 0..3.0."]
+PROBE validate pulse=1.0 countdown=inf -> FAIL ["pulse_per_second_countdown inf is outside 0..3.0."]
+PROBE invalid data loaded into a screen: is_data_valid=false pulse_per_s=0.00 depth=0.000 (pulse disabled)
+PROBE motion_scale=0 rate=190 fov_offset=0.0000 cam_fov=75.000 base=75.000 vignette=0.2499
+PROBE motion_scale=0.5 rate=190 fov_offset=10.000
+PROBE motion_scale=1 rate=190 fov_offset=20.000 cam_fov=95.000
+PROBE after run end: drawn=0.0000 fov_offset=0.0000 cam_fov=75.000 pulse_per_s=0.00
+PROBE superspeed rate=189.95 active=superspeed look_fov=+12.000 heart_fov=+19.353 main_fov=106.353 world_mirror_fov=106.353 viewmodel_fov=106.353 viewmodel_near=0.010
+PROBE run end paused: heart_fov=+0.000 drawn=0.0000 main_fov=87.000 world_mirror_fov=87.000 viewmodel_fov=87.000
+PROBE slow motion time_scale=0.3 wall=0.600 s progress=0.622 expected unscaled=0.632 expected if scaled=0.259

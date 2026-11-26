@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+[ext_resource type="Resource" path="res://assets/data/enemies/visual_ranged.tres" id="9_vis"]
+
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="1_ed"]
+[ext_resource type="Script" path="res://src/ai/ranged_gun_data.gd" id="2_gd"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_pistol.fbx" id="3_prop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/pistol.wav" id="4_snd"]
+
+[sub_resource type="Resource" id="Gun_pistol"]
+script = ExtResource("2_gd")
+attack_clip = &"enemy_attack_pistol_001"
+id = &"pistol"
+pattern = 0
+pellets_per_shot = 1
+pellet_spread_degrees = 0.0
+burst_shots = 1
+burst_interval_seconds = 0.1
+burst_pause_seconds = 1.0
+preferred_distance = 11.0
+prop_scene = ExtResource("3_prop")
+prop_position = Vector3(0.3, 1.05, -0.45)
+prop_scale = 1.4
+prop_color = Color(0.1, 0.1, 0.1, 1)
+prop_box_size = Vector3(0.1, 0.15, 0.5)
+hand_position = Vector3(0.003089, 0.030665, 0.008673)
+hand_rotation_degrees = Vector3(-80.973, 119.3273, 142.9552)
+shot_sound = ExtResource("4_snd")
+shot_volume_db = 0.0
+shot_pitch = 1.0
+shot_polyphony = 2
+sound_max_distance = 40.0
+sound_unit_size = 6.0
+
+[resource]
+script = ExtResource("1_ed")
+id = &"ranged_pistol"
+kind = 1
+display_name = "Pistol Gunman"
+health = 35.0
+move_speed = 3.8
+damage = 6.0
+body_color = Color(0.25, 0.45, 0.85, 1)
+repath_interval = 0.25
+band_min = 8.0
+band_max = 15.0
+spot_arrive_distance = 0.4
+no_line_wait_seconds = 0.8
+spot_check_height = 1.4
+aim_seconds = 0.6
+fire_rate = 1.6
+spread_degrees = 3.0
+shot_range = 30.0
+magazine_size = 6
+reload_seconds = 2.2
+ammo_drop_chance = 0.0
+ammo_weights = PackedFloat32Array(1, 1)
+dose_drop_chance = 0.5
+dose_weights = PackedFloat32Array(3, 1)
+gun = SubResource("Gun_pistol")
+visual = ExtResource("9_vis")

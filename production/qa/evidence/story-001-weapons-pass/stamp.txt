@@ -1,0 +1,12 @@
+Reviewed-Content-Hash: src/weapons/gun_data.gd cdabd40f6d39d012f1754049e24310b30b13f201
+Reviewed-Content-Hash: src/weapons/gun.gd 9799c603ecf27e8ecf7aa367560155bb72c03670
+Reviewed-Content-Hash: src/weapons/weapon_holder.gd b79036c3b1808f74ab1c36522251f8207f8dfaa5
+Reviewed-Content-Hash: src/player/player_controller.gd ca27e9c6adec48c37b2aecb11fbb75dbbf8f6afd
+Reviewed-Content-Hash: src/player/player.tscn 5cb72ad8a5aa645fccb0710e0b902c8958d38737
+Reviewed-Content-Hash: src/player/target_dummy.gd 8a0a71adc6514704887aa776465a3d9cdc199498
+Reviewed-Content-Hash: src/player/target_dummy.tscn 0cdfea6a84cd6f46f8f6abbb6ff200f8f7843657
+Reviewed-Content-Hash: src/player/test_range.gd 1b0194f9e7159a66f41d8dde2105b1d68157520f
+Reviewed-Content-Hash: src/player/test_range.tscn a862469f212ee717a4e0a28fa59d63d66ace81c6
+Reviewed-Content-Hash: assets/data/weapons/pistol.tres 8a6413b0cb24100ae875ea59dfe51291bbd86d76
+Reviewed-Content-Hash: assets/data/weapons/smg.tres 5ea57e6ef6fe89a0cc62e95fb8de155e779f5577
+Reviewed-Content-Hash: assets/data/weapons/shotgun.tres f1dd29649d31dc9e327cadfc02e2fe2970dfb00d

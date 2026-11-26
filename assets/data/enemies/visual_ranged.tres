@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyVisualData" format=3]
+
+[ext_resource type="Script" path="res://src/ai/enemy_visual_data.gd" id="1_s"]
+[ext_resource type="PackedScene" path="res://assets/art/enemies/enemy_base.fbx" id="2_base"]
+[ext_resource type="Material" path="res://assets/art/materials/placeholders.tres" id="3_body"]
+[ext_resource type="Material" path="res://assets/art/materials/manprop.tres" id="8_skin"]
+[ext_resource type="PackedScene" path="res://assets/art/enemies/enemy_a.fbx" id="4_skin"]
+[ext_resource type="PackedScene" path="res://assets/art/enemies/enemy_b.fbx" id="5_skin"]
+[ext_resource type="PackedScene" path="res://assets/art/enemies/enemy_c.fbx" id="6_skin"]
+
+[resource]
+script = ExtResource("1_s")
+base_scene = ExtResource("2_base")
+skin_scenes = Array[PackedScene]([ExtResource("4_skin"), ExtResource("5_skin"), ExtResource("6_skin")])
+body_material = ExtResource("3_body")
+skin_material = ExtResource("8_skin")
+prop_material = ExtResource("3_body")
+source_height = 1.7113
+attack_clip = &"enemy_attack_pistol_001"
+attack_upper_body_only = true
+aim_correction_max_degrees = 60.0
+aim_blend_seconds = 0.6
+attack_clip_hit_time = 0.0417

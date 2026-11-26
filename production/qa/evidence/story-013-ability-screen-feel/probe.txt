@@ -1,0 +1,26 @@
+PROBE layer=1 data=res://assets/data/player/ability_look.tres
+PROBE idle wS=0.000 wF=0.000 sat=1.000 con=1.000 exp=1.000 vig=0.000 ca=0.000 fov=0.00 camfov_delta=0.00 lp=22000 hp=10 pitch=1.000 rect_visible=false SFX[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ] Music[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ]
+PROBE slow ease-in max_step_per_frame=0.0299
+PROBE slow t=0.10 wS=0.104 wF=0.000 sat=0.922 con=1.003 exp=0.979 vig=0.047 ca=0.000 fov=0.00 camfov_delta=0.00 lp=15778 hp=10 pitch=0.984 rect_visible=true SFX[LowPass=15778.00(on) HighPass=10.00(off) Pitch=0.98(on) ] Music[LowPass=15778.00(on) HighPass=10.00(off) Pitch=0.98(on) ]
+PROBE slow ease-in max_step_per_frame=0.0499
+PROBE slow t=0.30 wS=0.648 wF=0.000 sat=0.514 con=1.019 exp=0.870 vig=0.292 ca=0.000 fov=0.00 camfov_delta=0.00 lp=2773 hp=10 pitch=0.903 rect_visible=true SFX[LowPass=2772.57(on) HighPass=10.00(off) Pitch=0.90(on) ] Music[LowPass=2772.57(on) HighPass=10.00(off) Pitch=0.90(on) ]
+PROBE slow ease-in max_step_per_frame=0.0473
+PROBE slow t=0.80 full wS=1.000 wF=0.000 sat=0.250 con=1.030 exp=0.800 vig=0.450 ca=0.000 fov=0.00 camfov_delta=0.00 lp=900 hp=10 pitch=0.850 rect_visible=true SFX[LowPass=900.00(on) HighPass=10.00(off) Pitch=0.85(on) ] Music[LowPass=900.00(on) HighPass=10.00(off) Pitch=0.85(on) ]
+PROBE slow ease-out max_step_per_frame=0.0357
+PROBE slow out t=0.35 wS=0.500 wF=0.000 sat=0.625 con=1.015 exp=0.900 vig=0.225 ca=0.000 fov=0.00 camfov_delta=0.00 lp=4450 hp=10 pitch=0.925 rect_visible=true SFX[LowPass=4449.72(on) HighPass=10.00(off) Pitch=0.93(on) ] Music[LowPass=4449.72(on) HighPass=10.00(off) Pitch=0.93(on) ]
+PROBE slow ease-out max_step_per_frame=0.0357
+PROBE slow out t=0.85 neutral wS=0.000 wF=0.000 sat=1.000 con=1.000 exp=1.000 vig=0.000 ca=0.000 fov=0.00 camfov_delta=0.00 lp=22000 hp=10 pitch=1.000 rect_visible=false SFX[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ] Music[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ]
+PROBE speed ease-in max_step_per_frame=0.0999
+PROBE speed t=0.15 wS=0.000 wF=0.648 sat=1.097 con=1.162 exp=1.000 vig=0.000 ca=0.194 fov=7.78 camfov_delta=7.78 lp=22000 hp=81 pitch=1.039 rect_visible=true SFX[LowPass=22000.00(off) HighPass=80.51(on) Pitch=1.04(on) ] Music[LowPass=22000.00(off) HighPass=80.51(on) Pitch=1.04(on) ]
+PROBE speed ease-in max_step_per_frame=0.0927
+PROBE speed t=0.65 full wS=0.000 wF=1.000 sat=1.150 con=1.250 exp=1.000 vig=0.000 ca=0.300 fov=12.00 camfov_delta=12.00 lp=22000 hp=250 pitch=1.060 rect_visible=true SFX[LowPass=22000.00(off) HighPass=250.00(on) Pitch=1.06(on) ] Music[LowPass=22000.00(off) HighPass=250.00(on) Pitch=1.06(on) ]
+PROBE speed run-end ease-out max_step_per_frame=0.0499
+PROBE run end t=0.25 wS=0.000 wF=0.500 sat=1.075 con=1.125 exp=1.000 vig=0.000 ca=0.150 fov=6.00 camfov_delta=6.00 lp=22000 hp=50 pitch=1.030 rect_visible=true SFX[LowPass=22000.00(off) HighPass=50.00(on) Pitch=1.03(on) ] Music[LowPass=22000.00(off) HighPass=50.00(on) Pitch=1.03(on) ]
+PROBE speed run-end ease-out max_step_per_frame=0.0499
+PROBE run end t=0.75 neutral wS=0.000 wF=0.000 sat=1.000 con=1.000 exp=1.000 vig=0.000 ca=0.000 fov=0.00 camfov_delta=-0.00 lp=22000 hp=10 pitch=1.000 rect_visible=false SFX[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ] Music[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ]
+PROBE slow early t=0.20 wS=0.352 wF=0.000 sat=0.736 con=1.011 exp=0.930 vig=0.158 ca=0.000 fov=0.00 camfov_delta=-0.00 lp=7141 hp=10 pitch=0.947 rect_visible=true SFX[LowPass=7141.40(on) HighPass=10.00(off) Pitch=0.95(on) ] Music[LowPass=7141.40(on) HighPass=10.00(off) Pitch=0.95(on) ]
+PROBE slow early-end max_step_per_frame=0.0339
+PROBE slow early end +1.0 s neutral wS=0.000 wF=0.000 sat=1.000 con=1.000 exp=1.000 vig=0.000 ca=0.000 fov=0.00 camfov_delta=-0.00 lp=22000 hp=10 pitch=1.000 rect_visible=false SFX[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ] Music[LowPass=22000.00(off) HighPass=10.00(off) Pitch=1.00(off) ]
+PROBE after free: SFX effects=0 Music effects=0
+PROBE re-added: SFX effects=3 Music effects=3
+PROBE re-added twice: SFX effects=3 Music effects=3

@@ -1,0 +1,40 @@
+extends SceneTree
+## Story 021: the player walks (move_forward held) into canteen table Prop5 from several sides; the table must not move.
+## godot --headless --path . -s res://.scratch/probes/p021p.gd -- <x,z> <yaw_deg> <frames> <label>
+var f: int = 0
+var game: Node
+var label: String
+var frames: int
+var props: Array[PushableProp] = []
+var start: Dictionary = {}
+var player: CharacterBody3D
+func _initialize() -> void:
+	var a: PackedStringArray = OS.get_cmdline_user_args()
+	var xz: PackedStringArray = a[0].split(",")
+	frames = int(a[2]); label = a[3]
+	game = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+	game.set(&"start_level_id", &"canteen")
+	game.set(&"debug_open_exit_immediately", true)
+	game.set(&"debug_keep_heart_rate", 70.0)
+	game.set(&"debug_override_player_pose", true)
+	game.set(&"debug_player_position", Vector3(float(xz[0]), 0.05, float(xz[1])))
+	game.set(&"debug_player_yaw_degrees", float(a[1]))
+	root.add_child(game)
+func _physics_process(_d: float) -> bool:
+	f += 1
+	if f == 10:
+		props = PushableProp.get_all(self)
+		player = game.get_node("Player") as CharacterBody3D
+		for p: PushableProp in props:
+			start[p] = [p.global_position, p.global_rotation.y]
+		Input.action_press(&"move_forward")
+	if f == 10 + frames:
+		Input.action_release(&"move_forward")
+		var moved: float = 0.0
+		var turned: float = 0.0
+		for p: PushableProp in props:
+			moved = maxf(moved, (p.global_position - (start[p][0] as Vector3)).length())
+			turned = maxf(turned, absf(rad_to_deg(angle_difference(start[p][1] as float, p.global_rotation.y))))
+		print("PROBE player_into_table %s player_end=%s table_moved_max=%.4f table_turned_max=%.3f" % [label, player.global_position, moved, turned])
+		quit()
+	return false

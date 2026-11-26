@@ -1,0 +1,92 @@
+extends SceneTree
+# Story 017 probe: MODE via env-free arg: "map" prints bench map, otherwise runs dive trials.
+var game: Node
+var p: CharacterBody3D
+var dive: DiveState
+
+func _init() -> void:
+	var args := OS.get_cmdline_user_args()
+	game = load("res://src/run/game.tscn").instantiate()
+	game.set("debug_open_exit_immediately", true)
+	game.set("debug_keep_heart_rate", 70.0)
+	game.set("log_events", false)
+	root.add_child(game)
+	for i in 15: await physics_frame
+	p = game.get_node("Player")
+	dive = p.get_node("DiveState")
+	if "map" in args:
+		_map()
+		quit()
+		return
+	await _run_trials(args)
+	quit()
+
+func _top(x: float, z: float) -> float:
+	var space := p.get_world_3d().direct_space_state
+	var h := space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(x, 3.5, z), Vector3(x, -1, z)))
+	return h.position.y if h else -9.0
+
+func _map() -> void:
+	# rows = z, cols = x from -6.4..-0.8 step .2 ; char = height class
+	var z := -15.0
+	while z <= 15.0:
+		var line := "%6.2f " % z
+		var x := -6.4
+		while x <= -0.8:
+			var y := _top(x, z)
+			line += "." if y < 0.2 else ("b" if y < 0.7 else ("T" if y < 1.1 else "#"))
+			x += 0.2
+		print(line)
+		z += 0.25
+
+func _run_trials(args: PackedStringArray) -> void:
+	# args: x_far(-1 dir) config: "table" or "bench" : z, near-edge x, far edge x, direction sign
+	var cases := {
+		"table": {"z": -4.59, "near": -1.125, "far": -2.295, "dir": -1.0},
+		"bench": {"z": float(args[1]) if args.size() > 1 else -8.9, "near": float(args[2]) if args.size() > 2 else -2.8, "far": float(args[3]) if args.size() > 3 else -4.0, "dir": -1.0},
+	}
+	var which: String = args[0] if args.size() > 0 else "table"
+	var c: Dictionary = cases[which]
+	var d := 0.4
+	var dmax := 2.61
+	if args.has("trace"):
+		d = float(args[args.size() - 1 - 0 - 1]) if false else float(args[args.size() - 2])
+		dmax = d + 0.01
+	while d <= dmax:
+		var r := await _trial(c, d)
+		print("TRIAL %s d=%.1f %s" % [which, d, r])
+		d += 0.1
+
+func _trial(c: Dictionary, d: float) -> String:
+	dive.set("_cooldown_left", 0.0)
+	var x0: float = c["near"] - c["dir"] * d * -1.0 if false else c["near"] + d
+	p.global_position = Vector3(x0, 0.05, c["z"])
+	p.rotation_degrees = Vector3(0, 90, 0)
+	p.velocity = Vector3.ZERO
+	for i in 12: await physics_frame
+	if not dive.try_start(Vector2.ZERO, 1.0):
+		return "NOSTART"
+	var maxy := 0.0
+	var on_top := false
+	var bad_getup := false
+	var frames := 0
+	var last_ph := -1
+	var trace: bool = OS.get_cmdline_user_args().has("trace")
+	var minx := 99.0
+	while dive.is_diving() and frames < 300:
+		await physics_frame
+		frames += 1
+		maxy = maxf(maxy, p.global_position.y)
+		minx = minf(minx, p.global_position.x)
+		if p.is_on_floor() and p.global_position.y > 0.3:
+			on_top = true
+		var ph := dive.get_phase()
+		if ph == DiveState.Phase.GET_UP and last_ph != ph and not p.is_on_floor():
+			bad_getup = true
+		last_ph = ph
+		if trace:
+			print("  T f=%d ph=%d pos=%s floor=%s" % [frames, ph, p.global_position, p.is_on_floor()])
+	var far: float = c["far"]
+	var px := p.global_position.x
+	var cleared := px < far - 0.1 and p.global_position.y < 0.3
+	return "end x=%.2f y=%.2f minx=%.2f maxy=%.2f ontop=%s badgetup=%s frames=%d -> %s" % [px, p.global_position.y, minx, maxy, on_top, bad_getup, frames, "CLEARS" if cleared else ("onTop" if on_top else "blocked/short")]

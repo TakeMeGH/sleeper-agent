@@ -1,0 +1,22 @@
+{
+    "buckle_drop": 0.35,
+    "buckle_seconds": 0.25,
+    "fall_side": "right",
+    "max_roll": 65,
+    "max_pitch": 30,
+    "fall_distance": 0.5,
+    "rest_height": 0.3,
+    "camera_radius": 0.2,
+    "bounce_height": 0.08,
+    "bounce_seconds": 0.2,
+    "collapse_seconds": 0.9,
+    "arms_drop_distance": 0.8,
+    "arms_drop_seconds": 0.22,
+    "drop_gun": true,
+    "gun_release_seconds": 0.08,
+    "gun_push_down": 1.0,
+    "gun_push_forward": 0.8,
+    "gun_spin": 200,
+    "gun_mass": 1.0,
+    "floor_probe_distance": 6
+}

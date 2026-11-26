@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/waves/test_arena.tscn" id="1_arena"]
+
+[node name="TestArena" instance=ExtResource("1_arena")]
+start_wave = 2
+start_delay = 0.3
+debug_keep_heart_rate = 70.0
+
+[node name="Player" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Spawn3" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -24)
+
+[node name="Spawn4" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -24)

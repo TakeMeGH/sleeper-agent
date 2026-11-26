@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="EnemyVisualData" format=3]
+
+[ext_resource type="Script" path="res://src/ai/enemy_visual_data.gd" id="1_s"]
+[ext_resource type="PackedScene" path="res://assets/art/enemies/enemy_base.fbx" id="2_base"]
+[ext_resource type="Material" path="res://assets/art/materials/enemy_boss_body.tres" id="3_body"]
+[ext_resource type="Material" path="res://assets/art/materials/placeholders.tres" id="8_prop"]
+[ext_resource type="Material" path="res://assets/art/materials/boss_plate.tres" id="9_plate"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_smg.fbx" id="7_prop"]
+
+[resource]
+script = ExtResource("1_s")
+base_scene = ExtResource("2_base")
+body_material = ExtResource("3_body")
+prop_material = ExtResource("8_prop")
+source_height = 1.7113
+plate_bones = PackedStringArray("spine_c", "spine_c", "spine_b", "shoulder_R", "shoulder_L")
+plate_offsets = PackedVector3Array(0, 0.05, 0.16, 0, 0.05, -0.15, 0, -0.02, 0.14, -0.075, 0.1, 0, 0.075, 0.1, 0)
+plate_sizes = PackedVector3Array(0.3, 0.3, 0.07, 0.28, 0.3, 0.07, 0.26, 0.15, 0.06, 0.18, 0.09, 0.2, 0.18, 0.09, 0.2)
+plate_material = ExtResource("9_plate")
+held_prop_scene = ExtResource("7_prop")
+held_prop_position = Vector3(0.003089, 0.030665, 0.008673)
+held_prop_rotation_degrees = Vector3(-19.9315, 5.4815, -88.8868)
+attack_clip = &"enemy_attack_smg"
+attack_upper_body_only = true
+aim_correction_max_degrees = 75.0
+aim_blend_seconds = 0.7
+attack_clip_hit_time = 0.0417
+walk_reference_speed = 1.04
+run_reference_speed = 3.97

@@ -1,0 +1,25 @@
+PROBE [flat] right after get-up: cooldown_left=1.18 try_start=false
+PROBE [flat] 75 frames after get-up: cooldown_left=0.00 on_floor=true try_start=true
+PROBE [flat] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@84 -> GET_UP@112 -> IDLE@148 -> DIVE_LAUNCH@223 -> AIRBORNE@238 -> SLIDE@247 -> GET_UP@275 -> IDLE@311
+PROBE [flat] started@60 ended@311 final_phase=IDLE diving=false pos=(2.46, 0.0, -5.95) vel=(0.0, 0.0, 0.0)
+PROBE [flat] try_start during dive succeeded 0 times (expect 0); gun shots fired during dive=23
+PROBE [noinput] try_start(ZERO)=true; dive moves along forward (-Z): checked by position below
+PROBE [noinput] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@84 -> GET_UP@112 -> IDLE@148
+PROBE [noinput] started@60 ended@148 final_phase=IDLE diving=false pos=(0.0, 0.0, -3.48) vel=(0.0, 0.0, 0.0)
+PROBE [wall] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@84 -> GET_UP@112 -> IDLE@148
+PROBE [wall] started@60 ended@148 final_phase=IDLE diving=false pos=(0.0, 0.0, -0.5) vel=(0.0, 0.0, 0.0)
+PROBE [wall] min player z=-0.50 (wall face at z=-0.85)
+PROBE [off_edge] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> IDLE@166
+PROBE [off_edge] started@60 ended@166 final_phase=IDLE diving=false pos=(0.0, -241.6, -8.69) vel=(0.0, -87.33, 0.0)
+PROBE [off_edge] max_airborne_seconds=1.50 -> 90 frames; airborne->end frames observed in phase list
+PROBE [step_hop] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@84 -> AIRBORNE@102 -> SLIDE@107 -> GET_UP@117 -> IDLE@153
+PROBE [step_hop] started@60 ended@153 final_phase=IDLE diving=false pos=(0.0, -0.4, -3.71) vel=(0.0, 0.0, 0.0)
+PROBE [step_hop] horizontal speed samples: DIVE:0.00, DIVE:2.50, DIVE:4.55, DIVE:4.55, DIVE:4.55, DIVE:4.55, AIRB:5.00, AIRB:5.00, AIRB:5.00, SLID:4.75, SLID:4.38, SLID:4.00, SLID:3.63, SLID:3.25, SLID:2.88, AIRB:2.75, SLID:2.75, SLID:2.38, SLID:2.00, SLID:1.63, GET_:1.25, GET_:0.88, GET_:0.50, GET_:0.13, GET_:0.00, GET_:0.00, GET_:0.00, GET_:0.00, GET_:0.00, GET_:0.00, GET_:0.00, GET_:0.00
+PROBE [v_trench] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@95 -> GET_UP@123 -> IDLE@159
+PROBE [v_trench] started@60 ended@159 final_phase=IDLE diving=false pos=(0.0, -1.91, -2.1) vel=(0.0, 0.0, 0.0)
+PROBE [v_steep] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@86 -> AIRBORNE@98 -> IDLE@189
+PROBE [v_steep] started@60 ended@189 final_phase=IDLE diving=false pos=(0.0, -203.2, -8.139999) vel=(0.0, -81.65, 0.0)
+PROBE [pitch_cap] phases: DIVE_LAUNCH@60 -> AIRBORNE@75 -> SLIDE@84 -> GET_UP@112 -> IDLE@148
+PROBE [pitch_cap] started@60 ended@148 final_phase=IDLE diving=false pos=(0.0, 0.0, -3.48) vel=(0.0, 0.0, 0.0)
+PROBE [pitch_cap] head pitch -89; min (head + camera) pitch during dive = -89.00 deg (must stay >= -89)
+PROBE done

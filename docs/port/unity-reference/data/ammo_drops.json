@@ -1,0 +1,43 @@
+{
+  "pickups": [
+    { "weapon": "SMG", "rounds": 30, "color": { "r": 0.95, "g": 0.8, "b": 0.2, "a": 1 } },
+    { "weapon": "Shotgun", "rounds": 6, "color": { "r": 0.9, "g": 0.25, "b": 0.2, "a": 1 } }
+  ],
+  "enemy_drops": [
+    {
+      "enemy": "melee",
+      "drop_chance": 0.25,
+      "drops": [
+        { "weapon": "SMG", "weight": 1 },
+        { "weapon": "Shotgun", "weight": 1 }
+      ]
+    },
+    {
+      "enemy": "ranged",
+      "drop_chance": 0.25,
+      "drops": [
+        { "weapon": "SMG", "weight": 1 },
+        { "weapon": "Shotgun", "weight": 1 }
+      ]
+    },
+    {
+      "enemy": "boss",
+      "drop_chance": 1,
+      "drops": [
+        { "weapon": "SMG", "weight": 1 },
+        { "weapon": "Shotgun", "weight": 1 }
+      ]
+    }
+  ],
+  "pickup_lifetime": 20,
+  "blink_time": 4,
+  "blink_rate": 3,
+  "pickup_radius": 1.5,
+  "pickup_cap": 12,
+  "drop_offset": 0.6,
+  "hover_height": 0.6,
+  "bob_height": 0.12,
+  "bob_speed": 2.0,
+  "spin_speed": 90,
+  "box_size": { "x": 0.35, "y": 0.2, "z": 0.25 }
+}

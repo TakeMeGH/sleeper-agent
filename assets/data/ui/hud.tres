@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="HudData" format=3]
+
+[ext_resource type="Script" path="res://src/ui/hud/hud_data.gd" id="1_data"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/hud/hud_bevel_tile.png" id="2_bevel"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/hud/hud_pulse_strip.png" id="3_pulse"]
+[ext_resource type="FontFile" path="res://assets/fonts/liberation_sans.ttf" id="4_font"]
+
+[resource]
+script = ExtResource("1_data")
+bar_height_ratio = 0.2
+reference_width = 1920.0
+box_width_ratios = PackedFloat32Array(9, 10, 5, 8, 9)
+bar_inset = 10.0
+box_gap = 4.0
+box_inset = 10.0
+bevel_width = 4.0
+track_bevel_width = 2.0
+panel_texture_scale = 3.0
+row_spacing = 12.0
+item_spacing = 12.0
+glyph_spacing = 4.0
+large_cell = Vector2(45, 63)
+small_cell = Vector2(30, 42)
+face_size = 144.0
+substance_icon_size = 48.0
+weapon_icon_size = 96.0
+heart_icon_size = 48.0
+pulse_size = Vector2(330, 48)
+pulse_art_scale = 3.0
+item_bar_height = 22.0
+label_font_size = 30.0
+zone_font_size = 32.0
+text_height = 36.0
+percent_width = 120.0
+unit_width = 80.0
+weapon_name_width = 150.0
+count_cells = 3
+heart_cells = 3
+enemies_cells = 3
+ammo_cells = 7
+font = ExtResource("4_font")
+font_embolden = 0.9
+font_bold_spacing_em = 0.07
+bevel_texture = ExtResource("2_bevel")
+pulse_texture = ExtResource("3_pulse")
+bevel_margin = 1
+glyph_order = "0123456789/:∞<>-."
+glyph_file_names = PackedStringArray("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "slash", "colon", "infinity", "left", "right", "minus", "dot")
+glyph_path_format = "res://assets/art/ui/hud/hud_glyph_%02d_%s.png"
+face_path_format = "res://assets/art/ui/hud/hud_face_%d.png"
+icon_path_format = "res://assets/art/ui/hud/hud_icon_%s.png"
+face_danger_steps = PackedFloat32Array(0.25, 0.5, 0.75)
+face_hysteresis_bpm = 2.0
+flinch_seconds = 0.45
+zone_names = PackedStringArray("PASS OUT", "SLOW", "NORMAL", "FAST", "HEART ATTACK")
+bpm_unit = "BPM"
+countdown_unit = "SEC"
+wave_format = "WAVE {wave}"
+time_format = "TIME {time}"
+enemies_text = "ENEMIES LEFT"
+item_left_format = "{percent}%"
+item_empty_text = "EMPTY"
+show_shift_text = false
+shift_active_formats = {&"slow_motion": "SLOW %.1f", &"superspeed": "SPEED %.1f"}
+shift_cooldown_format = "COOLDOWN %.1f"
+shift_ready_text = "SHIFT READY"
+shift_font_size = 20.0
+label_color = Color(0.92, 0.92, 0.9, 1)
+caption_color = Color(0.85, 0.85, 0.82, 1)
+number_color = Color(1, 1, 1, 1)
+dim_color = Color(0.4, 0.4, 0.42, 1)
+highlight_color = Color(1, 0.84, 0.4, 1)
+bar_color = Color(0.16, 0.16, 0.17, 1)
+box_color = Color(0.11, 0.11, 0.12, 1)
+panel_texture_tint = Color(1, 1, 1, 0.18)
+bar_bevel_tint = Color(0.56, 0.56, 0.56, 1)
+box_bevel_tint = Color(0.46, 0.46, 0.46, 1)
+item_bar_color = Color(0.9, 0.72, 0.3, 1)
+item_track_color = Color(0.05, 0.05, 0.06, 1)
+pulse_back_color = Color(0.02, 0.06, 0.03, 1)
+zone_colors = PackedColorArray(0.4, 0.55, 1, 1, 0.4, 0.85, 0.95, 1, 0.45, 0.92, 0.5, 1, 1, 0.75, 0.25, 1, 1, 0.25, 0.2, 1)

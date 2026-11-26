@@ -1,0 +1,187 @@
+extends SceneTree
+## Story 023 orchestrator probe: full opening, gates, moments, danger preempt, stale drop, restart, rebind, skip.
+## Hard cap 3600 frames and 90 s wall clock. Run with --max-fps 60.
+var frame: int = 0
+var t0: int = 0
+var g: Node
+var h: Node
+var step: int = 0
+var step_frame: int = 0
+var order: Array[String] = []
+var max_enemies_held: int = 0
+var max_enemies_before_release: int = 0
+var released_frame: int = -1
+var restarted: bool = false
+var target: float = -1.0
+
+func _initialize() -> void:
+	t0 = Time.get_ticks_msec()
+
+func p(s: String) -> void:
+	print("PROBE f=%d %s" % [frame, s])
+
+func goto(n: int) -> void:
+	step = n
+	step_frame = frame
+
+func _process(_d: float) -> bool:
+	frame += 1
+	if frame > 4800 or Time.get_ticks_msec() - t0 > 110000:
+		p("STOP cap reached step=%d" % step)
+		return true
+	if frame == 1:
+		g = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+		root.add_child(g)
+		current_scene = g
+		return false
+	h = root.get_node("TutorialHost")
+	if frame == 2:
+		h.hint_shown.connect(func(id: StringName) -> void: order.append(String(id)); p("hint_shown %s text='%s' targets=%s danger=%s" % [id, h.get_box().get_hint_text(), h.get_box().get_targets(), h.get_box().is_danger()]))
+		h.hint_ended.connect(func(id: StringName, done: bool) -> void: p("hint_ended %s completed=%s elapsed=%.2f" % [id, done, h.get_current_elapsed()]))
+		p("active=%s held=%s limits=%s" % [h.is_active(), h.is_wave_held(), h.get_heart_limits()])
+	if not is_instance_valid(g) or not g.is_inside_tree():
+		g = current_scene
+		return false
+	var heart: HeartRate = g.heart
+	var enemies: int = get_nodes_in_group(&"enemies").size()
+	var cur: StringName = h.get_current_hint_id()
+	if target > 0.0 and step >= 1 and step <= 5:
+		heart.change_rate(target - heart.get_rate())
+		g.debug_kill_enemies()
+	match step:
+		0: # opening: drive goals by state
+			if h.is_wave_held():
+				max_enemies_held = maxi(max_enemies_held, enemies)
+			if frame == 60:
+				heart.change_rate(-1000.0)
+				p("clamp low rate=%.1f zone=%d countdown=%.2f" % [heart.get_rate(), heart.get_zone(), heart.get_countdown_left()])
+				heart.change_rate(1000.0)
+				p("clamp high rate=%.1f zone=%d countdown=%.2f" % [heart.get_rate(), heart.get_zone(), heart.get_countdown_left()])
+				heart.change_rate(70.0 - heart.get_rate())
+			if cur == &"move_look":
+				g.player.global_position += Vector3(0.05, 0, 0)
+				g.player.rotation.y += 0.02
+			Input.action_release(&"dose_coffee")
+			Input.action_release(&"dose_cigarette")
+			if cur == &"coffee":
+				Input.action_press(&"dose_coffee")
+			elif cur == &"cigarette":
+				Input.action_press(&"dose_cigarette")
+			if released_frame < 0 and not h.is_wave_held():
+				released_frame = frame
+				p("released held=false limits=%s spawner_wave=%d enemies=%d shown=%s" % [h.get_heart_limits(), g.spawner.get_wave(), enemies, h.get_shown_ids()])
+			if cur == &"shoot":
+				target = 70.0
+				p("shoot up; limits=%s spawner_wave=%d enemies=%d max_enemies_while_held=%d" % [h.get_heart_limits(), g.spawner.get_wave(), enemies, max_enemies_held])
+				goto(1)
+		1: # fire one shot
+			Input.action_press(&"fire")
+			if frame - step_frame == 1:
+				g.player.weapon_holder.buffer_fire_press()
+			if frame - step_frame > 3:
+				Input.action_release(&"fire")
+			if cur != &"shoot" and frame - step_frame > 5:
+				Input.action_release(&"fire")
+				p("after shoot: cur=%s shots=%.0f" % [cur, h.get_fact(&"shots")])
+				g.debug_kill_enemies()
+				target = 30.0
+				heart.change_rate(30.0 - heart.get_rate())
+				p("set rate 30 zone=%d" % heart.get_zone())
+				goto(2)
+		2: # slow zone hint should show; then danger preempts it
+			g.debug_kill_enemies()
+			if frame - step_frame == 2 and h.get_shown_ids().has(&"slow_zone"):
+				p("slow_zone already shown; using pickup as the info hint to preempt")
+				var pk2: DropPickup = DropPickup.spawn(g, &"cigarette", g.player.global_position + Vector3(0, 0, -30), g.spawner.drop_data)
+				await_collect(pk2)
+			if (cur == &"slow_zone" or cur == &"pickup") and frame - step_frame > 30:
+				target = 5.0
+				heart.change_rate(-1000.0)
+				p("rate->%.1f countdown=%.2f (danger while slow_zone up)" % [heart.get_rate(), heart.get_countdown_left()])
+				goto(3)
+			elif frame - step_frame > 900:
+				p("FAIL slow_zone never shown cur=%s" % cur)
+				goto(3)
+		3:
+			g.debug_kill_enemies()
+			if cur == &"danger":
+				p("danger current; shown=%s" % [h.get_shown_ids()])
+				target = 70.0
+				goto(4)
+			elif frame - step_frame > 120:
+				p("FAIL danger did not preempt cur=%s" % cur)
+				target = 70.0
+				goto(4)
+		4: # while danger up: queue fast_zone then leave the zone (stale), and a hit
+			g.debug_kill_enemies()
+			if frame - step_frame == 10:
+				target = 150.0
+				g.player.take_hit(0.0, Vector3.ZERO, null)
+				p("fast zone + hit queued: q=%s" % [h.get_queue_ids()])
+			if frame - step_frame == 20:
+				target = 70.0
+				p("left fast zone; q=%s" % [h.get_queue_ids()])
+			if cur == &"first_hit":
+				p("first_hit up; fast_zone shown? %s q=%s" % [h.get_shown_ids().has(&"fast_zone"), h.get_queue_ids()])
+				goto(5)
+			elif frame - step_frame > 900:
+				p("FAIL first_hit never shown cur=%s" % cur)
+				goto(5)
+		5: # dive + pickup + fast zone again
+			g.debug_kill_enemies()
+			if frame - step_frame == 5:
+				var dive: DiveState = g.player.get_node("DiveState")
+				p("dive start=%s" % dive.try_start(Vector2.ZERO))
+				var pk: DropPickup = DropPickup.spawn(g, &"coffee", g.player.global_position + Vector3(0, 0, -30), g.spawner.drop_data)
+				if pk != null:
+					await_collect(pk)
+				target = 150.0
+			if frame - step_frame > 60:
+				if heart.get_rate() < 120.0:
+					heart.change_rate(150.0 - heart.get_rate())
+			if frame - step_frame > 1200 or (h.get_shown_ids().has(&"dive") and h.get_shown_ids().has(&"fast_zone") and h.get_shown_ids().has(&"pickup")) :
+				p("moments done: shown=%s order=%s" % [h.get_shown_ids(), order])
+				target = 70.0
+				heart.change_rate(70.0 - heart.get_rate())
+				p("rebind before: '%s'" % h.resolve_text("{DoseCoffee}"))
+				var ev := InputEventKey.new(); ev.physical_keycode = KEY_K
+				InputMap.action_erase_events(&"dose_coffee"); InputMap.action_add_event(&"dose_coffee", ev)
+				p("rebind after: '%s'" % h.resolve_text("{DoseCoffee}"))
+				var shown_before: Array = h.get_shown_ids()
+				p("restart; shown=%d" % shown_before.size())
+				reload_current_scene()
+				goto(6)
+		6:
+			if frame - step_frame == 30:
+				g = current_scene
+				p("after restart: active=%s held=%s game_held=%s limits=%s opening=%s shown=%d cur=%s" % [h.is_active(), h.is_wave_held(), g.is_wave_held(), h.get_heart_limits(), h.is_opening_running(), h.get_shown_ids().size(), cur])
+			if frame - step_frame == 200:
+				p("after restart 200: spawner_wave=%d cur=%s" % [g.spawner.get_wave(), cur])
+				h.simulate_moment(&"empty_gun")
+			if frame - step_frame > 200 and cur != &"":
+				Input.action_press(&"skip_tutorial")
+				goto(7)
+			elif frame - step_frame > 600:
+				p("no hint to skip on; pressing anyway")
+				Input.action_press(&"skip_tutorial")
+				goto(7)
+		7:
+			if frame - step_frame == 30:
+				p("skip progress at 0.5s=%.2f cur=%s skipped=%s" % [h.get_skip_progress(), cur, h.is_skipped()])
+			if frame - step_frame == 120:
+				Input.action_release(&"skip_tutorial")
+				p("after 2s Tab: skipped=%s cur=%s box_visible=%s" % [h.is_skipped(), cur, h.get_box().is_hint_visible()])
+				h.simulate_moment(&"dive")
+				reload_current_scene()
+				goto(8)
+		8:
+			if frame - step_frame == 60:
+				p("after skip+restart: skipped=%s active=%s cur=%s held=%s" % [h.is_skipped(), h.is_active(), cur, current_scene.is_wave_held()])
+				p("DONE order=%s" % [order])
+				return true
+	return false
+
+func await_collect(pk: DropPickup) -> void:
+	await physics_frame
+	await physics_frame
+	p("pickup collect=%s" % pk.collect(g.player))

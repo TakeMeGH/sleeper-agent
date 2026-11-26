@@ -1,0 +1,15 @@
+{
+    "attack_clip_hit_time": 0.4,
+    "attack_blend_time": 0.1,
+    "walk_reference_speed": 1.4,
+    "run_reference_speed": 3.5,
+    "speed_scale_min": 0.6,
+    "speed_scale_max": 1.6,
+    "locomotion_damp_time": 0.1,
+    "stagger_duration": 0.3,
+    "stagger_blend_time": 0.05,
+    "death_duration": 1.8,
+    "death_blend_time": 0.1,
+    "corpse_linger": 4.0,
+    "corpse_fade": 1.5
+}

@@ -1,0 +1,52 @@
+PROBE split 7/3=[3, 3, 1] 6/3=[3, 3] 5/1=[1, 1, 1, 1, 1]
+PROBE group_size(data)=3 group_spawn_interval=0.4 spawn_interval=0.75
+PROBE plan size3 { &"id": &"a", &"group": 0, &"member": 0, &"point_index": 0, &"time": 0.0 }
+PROBE plan size3 { &"id": &"b", &"group": 0, &"member": 1, &"point_index": 0, &"time": 0.4 }
+PROBE plan size3 { &"id": &"c", &"group": 0, &"member": 2, &"point_index": 0, &"time": 0.8 }
+PROBE plan size3 { &"id": &"d", &"group": 1, &"member": 0, &"point_index": 1, &"time": 1.55 }
+PROBE plan size3 { &"id": &"e", &"group": 1, &"member": 1, &"point_index": 1, &"time": 1.95 }
+PROBE plan size3 { &"id": &"f", &"group": 1, &"member": 2, &"point_index": 1, &"time": 2.35 }
+PROBE plan size3 { &"id": &"g", &"group": 2, &"member": 0, &"point_index": 2, &"time": 3.1 }
+PROBE deterministic same plan twice=true
+PROBE plan size1 { &"id": &"a", &"group": 0, &"member": 0, &"point_index": 0, &"time": 0.0 }
+PROBE plan size1 { &"id": &"b", &"group": 1, &"member": 0, &"point_index": 1, &"time": 0.75 }
+PROBE plan size1 { &"id": &"c", &"group": 2, &"member": 0, &"point_index": 2, &"time": 1.5 }
+PROBE plan size1 { &"id": &"d", &"group": 3, &"member": 0, &"point_index": 3, &"time": 2.25 }
+PROBE plan size1 { &"id": &"e", &"group": 4, &"member": 0, &"point_index": 0, &"time": 3.0 }
+PROBE plan next-wave first_group=2 { &"id": &"a", &"group": 0, &"member": 0, &"point_index": 2, &"time": 0.0 }
+PROBE plan next-wave first_group=2 { &"id": &"b", &"group": 0, &"member": 1, &"point_index": 2, &"time": 0.4 }
+PROBE plan next-wave first_group=2 { &"id": &"c", &"group": 0, &"member": 2, &"point_index": 2, &"time": 0.8 }
+PROBE plan next-wave first_group=2 { &"id": &"d", &"group": 1, &"member": 0, &"point_index": 3, &"time": 1.55 }
+PROBE wave 1 mix={ &"melee": 6 }
+PROBE wave 2 mix={ &"melee": 8, &"ranged_pistol": 2 }
+PROBE wave 3 mix={ &"melee": 10, &"ranged_pistol": 3, &"ranged_shotgun": 1 }
+PROBE wave 5 mix={ &"melee": 14, &"ranged_pistol": 5, &"ranged_shotgun": 3, &"ranged_smg": 1 }
+PROBE wave 6 mix={ &"melee": 16, &"ranged_pistol": 6, &"ranged_shotgun": 4, &"ranged_smg": 2 }
+PROBE wave 8 mix={ &"boss": 1, &"melee": 4, &"ranged_pistol": 1, &"ranged_shotgun": 1 }
+PROBE kind ranged_pistol pattern=0 pellets=1 spread=0.0 burst=1@0.1 pause=1.0 rate=1.6 pref=11.0 prop=res://assets/art/weapons/enemy_pistol.fbx snd=res://assets/audio/sfx/pistol.wav
+PROBE drops ranged_pistol ammo_chance=0.0 dose_chance=0.5
+PROBE drops ranged_pistol 400 rolls={ &"coffee": 144, &"cigarette": 36 }
+PROBE kind ranged_shotgun pattern=1 pellets=7 spread=8.0 burst=1@0.1 pause=1.0 rate=0.6 pref=6.0 prop=res://assets/art/weapons/enemy_shotgun.fbx snd=res://assets/audio/sfx/shotgun.wav
+PROBE drops ranged_shotgun ammo_chance=0.35 dose_chance=0.5
+PROBE drops ranged_shotgun 400 rolls={ &"coffee": 144, &"shotgun": 112, &"cigarette": 36, &"smg": 33 }
+PROBE kind ranged_smg pattern=2 pellets=1 spread=0.0 burst=4@0.09 pause=1.1 rate=1.0 pref=12.0 prop=res://assets/art/weapons/enemy_smg.fbx snd=res://assets/audio/sfx/smg.wav
+PROBE drops ranged_smg ammo_chance=0.35 dose_chance=0.5
+PROBE drops ranged_smg 400 rolls={ &"coffee": 144, &"smg": 107, &"cigarette": 36, &"shotgun": 38 }
+PROBE live ranged_pistol state=move_to_spot spot=Spot3 spot_dist_to_player=14.56 pref=11.0 los=true mag=6
+PROBE live ranged_shotgun state=move_to_spot spot=Spot4 spot_dist_to_player=14.56 pref=6.0 los=true mag=2
+PROBE live ranged_smg state=move_to_spot spot=Spot1 spot_dist_to_player=21.63 pref=12.0 los=true mag=24
+PROBE fire_once ranged_pistol rays_hit=0 hit_taken=0 rate 72.55->72.55 arcs=0 mag=5 burst_idx=0 cd=0.625
+PROBE fire_once ranged_shotgun rays_hit=2 hit_taken=2 rate 72.55->61.99 arcs=1 mag=1 burst_idx=0 cd=1.667
+PROBE fire_once ranged_smg rays_hit=0 hit_taken=0 rate 61.99->61.99 arcs=1 mag=23 burst_idx=1 cd=0.09
+PROBE states over 900 frames={ "ranged_pistol:move_to_spot": 115, "ranged_shotgun:move_to_spot": 184, "ranged_smg:move_to_spot": 796, "ranged_pistol:shoot": 519, "ranged_smg:shoot": 104, "ranged_shotgun:shoot": 346, "ranged_shotgun:reload": 370, "ranged_pistol:reload": 266 }
+PROBE after ranged_pistol pulls=14 mag=4 state=shoot
+PROBE after ranged_shotgun pulls=6 mag=0 state=reload
+PROBE after ranged_smg pulls=1 mag=23 state=shoot
+PROBE enemies present=3
+PROBE live hits per kind over 1200 frames={ "ranged_pistol": 17, "ranged_smg": 26, "ranged_shotgun": 34 }
+PROBE live end ranged_pistol pulls=20 state=shoot spot=ProbeSpot10
+PROBE live end ranged_shotgun pulls=8 state=reload spot=ProbeSpot5
+PROBE live end ranged_smg pulls=48 state=reload spot=ProbeSpot13
+PROBE cadence ranged_pistol cooldowns after each pull=[0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625] rays_hit per pull=[1, 0, 1, 1, 0, 1, 0, 0] mag=0
+PROBE cadence ranged_shotgun cooldowns after each pull=[1.667, 1.667, 1.667, 1.667, 1.667, 1.667, 1.667, 1.667] rays_hit per pull=[1, 1, 0, 0, 0, 0, 0, 0] mag=0
+PROBE cadence ranged_smg cooldowns after each pull=[0.09, 0.09, 0.09, 1.1, 0.09, 0.09, 0.09, 1.1] rays_hit per pull=[0, 0, 0, 0, 0, 0, 0, 0] mag=16

@@ -1,0 +1,197 @@
+extends SceneTree
+## Story 021 walk-in sweep (one trial per run):
+## godot --headless --path . -s res://.scratch/probes/p021s.gd -- <kind> <tx,tz> <yaw_deg> <lateral> <frames> [before] [after] [label]
+## kind = melee | pistol | boss. The enemy starts `before` m behind the table along the approach direction
+## (yaw 0 = travelling +z) offset sideways by `lateral`; the lure (player, or a single firing spot for ranged) is
+## `after` m beyond. Prints one PROBE line with overlap, table motion and stuck stats.
+const KINDS := {
+	"melee": "res://assets/data/enemies/melee.tres",
+	"pistol": "res://assets/data/enemies/ranged_pistol.tres",
+	"boss": "res://assets/data/enemies/boss.tres",
+}
+const WALL_LIMIT_MS: int = 120000
+var _wall_start: int = 0
+var _frame: int = 0
+var _max: int = 400
+var _kind: String
+var _label: String
+var _t: Vector3
+var _dir: Vector3
+var _perp: Vector3
+var _lat: float
+var _before: float = 3.5
+var _after: float = 5.0
+var _lure: Vector3
+var _game: Node
+var _spot: Marker3D
+var _enemy: EnemyBase
+var _props: Array[PushableProp] = []
+var _prev_pos: Dictionary = {}
+var _prev_yaw: Dictionary = {}
+var _start_pos: Dictionary = {}
+var _start_yaw: Dictionary = {}
+var _pen_max: float = -9.0
+var _vmax: float = 0.0
+var _yawrate_max: float = 0.0
+var _dy_max: float = 0.0
+var _restarts: int = 0
+var _moving: Dictionary = {}
+var _last_move_frame: int = -1
+var _first_push_frame: int = -1
+var _stuck_max: float = 0.0
+var _detoured: bool = false
+var _blocked_frames: int = 0
+var _enemy_start_dist: float = 0.0
+var _enemy_min_dist: float = 999.0
+var _still_frames: int = 0
+var _still_max: int = 0
+var _speed_sum: float = 0.0
+var _speed_n: int = 0
+
+
+func _initialize() -> void:
+	_wall_start = Time.get_ticks_msec()
+	var a: PackedStringArray = OS.get_cmdline_user_args()
+	_kind = a[0]
+	var tp: PackedStringArray = a[1].split(",")
+	_t = Vector3(float(tp[0]), 0.05, float(tp[1]))
+	var yaw: float = deg_to_rad(float(a[2]))
+	_lat = float(a[3])
+	_max = int(a[4])
+	if a.size() > 5: _before = float(a[5])
+	if a.size() > 6: _after = float(a[6])
+	_label = a[7] if a.size() > 7 else ""
+	_dir = Vector3(sin(yaw), 0.0, cos(yaw))
+	_perp = Vector3(_dir.z, 0.0, -_dir.x)
+	var start: Vector3 = _t - _dir * _before + _perp * _lat
+	_lure = _t + _dir * _after + _perp * _lat
+	if a.size() > 8:
+		var lp: PackedStringArray = a[8].split(",")
+		_lure = Vector3(float(lp[0]), 0.05, float(lp[1]))
+	_game = (load("res://src/levels/test_canteen_push_table.tscn") as PackedScene).instantiate()
+	var kinds: Array[EnemyData] = [load(KINDS[_kind]) as EnemyData]
+	_game.set(&"debug_spawn_kinds", kinds)
+	_game.set(&"debug_spawn_positions", PackedVector3Array([start]))
+	var player_pos: Vector3 = _lure
+	if _kind == "pistol":
+		player_pos = _lure + _perp * 2.0
+	_game.set(&"debug_override_player_pose", true)
+	_game.set(&"debug_player_position", player_pos)
+	_game.set(&"debug_keep_heart_rate", 70.0)
+	if a.size() > 9:
+		_game.set(&"start_level_id", StringName(a[9]))
+	root.add_child(_game)
+
+
+func _physics_process(delta: float) -> bool:
+	_frame += 1
+	# Hard caps first so no early return can skip them (the 021 pistol run once hung for hours).
+	if _frame >= _max + 120 or Time.get_ticks_msec() - _wall_start > WALL_LIMIT_MS:
+		print("PROBE trial %s kind=%s ABORTED frame=%d enemy_found=%s" % [_label, _kind, _frame, _enemy != null])
+		quit()
+		return true
+	if _kind == "pistol" and _spot == null and _frame >= 1:
+		for n: Node in get_nodes_in_group(&"firing_spot"):
+			n.remove_from_group(&"firing_spot")
+		_spot = Marker3D.new()
+		_spot.add_to_group(&"firing_spot")
+		root.add_child(_spot)
+		_spot.global_position = _lure
+	if _props.is_empty():
+		_props = PushableProp.get_all(self)
+		for p: PushableProp in _props:
+			_prev_pos[p] = p.global_position
+			_prev_yaw[p] = p.global_rotation.y
+			_start_pos[p] = p.global_position
+			_start_yaw[p] = p.global_rotation.y
+			_moving[p] = false
+	if _enemy == null:
+		var es: Array[Node] = get_nodes_in_group(&"enemies")
+		if not es.is_empty():
+			_enemy = es[0] as EnemyBase
+			_enemy_start_dist = _flat(_enemy.global_position, _lure)
+		return false
+	if not is_instance_valid(_enemy):
+		_finish()
+		return true
+	if _frame >= _max:
+		_finish()
+		return true
+	var r: float = (_enemy._collision.shape as CapsuleShape3D).radius
+	var e: Vector3 = _enemy.global_position
+	for p: PushableProp in _props:
+		var l: Vector3 = p.to_local(e)
+		var h: Vector2 = p.get_footprint_extents()
+		var dx: float = absf(l.x) - h.x
+		var dz: float = absf(l.z) - h.y
+		var d: float
+		if dx < 0.0 and dz < 0.0:
+			d = maxf(dx, dz)
+		else:
+			d = Vector2(maxf(dx, 0.0), maxf(dz, 0.0)).length()
+		_pen_max = maxf(_pen_max, r - d)
+		var pos: Vector3 = p.global_position
+		var step: Vector3 = pos - (_prev_pos[p] as Vector3)
+		var v: float = Vector2(step.x, step.z).length() / delta
+		var yr: float = absf(rad_to_deg(angle_difference(_prev_yaw[p] as float, p.global_rotation.y))) / delta
+		_vmax = maxf(_vmax, v)
+		_yawrate_max = maxf(_yawrate_max, yr)
+		_dy_max = maxf(_dy_max, absf(pos.y - (_start_pos[p] as Vector3).y))
+		var mv: bool = v > 0.05 or yr > 1.0
+		if mv:
+			_last_move_frame = _frame
+			if _first_push_frame < 0:
+				_first_push_frame = _frame
+			if not (_moving[p] as bool) and _first_push_frame != _frame:
+				_restarts += 1
+		_moving[p] = mv
+		if v > 0.05:
+			_speed_sum += v
+			_speed_n += 1
+		if p.was_blocked_last_push() and p.get_last_pusher() == _enemy:
+			_blocked_frames += 1
+		_prev_pos[p] = pos
+		_prev_yaw[p] = p.global_rotation.y
+	_stuck_max = maxf(_stuck_max, _enemy.get_stuck_time())
+	if _enemy.is_detouring():
+		_detoured = true
+	var dist: float = _flat(e, _lure)
+	_enemy_min_dist = minf(_enemy_min_dist, dist)
+	var ev: Vector3 = _enemy.get_real_velocity()
+	if Vector2(ev.x, ev.z).length() < 0.15 and dist > 1.5:
+		_still_frames += 1
+		_still_max = maxi(_still_max, _still_frames)
+	else:
+		_still_frames = 0
+	if _frame >= _max:
+		_finish()
+		return true
+	return false
+
+
+func _flat(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x - b.x, a.z - b.z).length()
+
+
+func _finish() -> void:
+	var moved: int = 0
+	var disp_max: float = 0.0
+	var yaw_total_max: float = 0.0
+	var resting: bool = true
+	for p: PushableProp in _props:
+		var dsp: float = _flat(p.global_position, _start_pos[p] as Vector3)
+		var dyaw: float = absf(rad_to_deg(angle_difference(_start_yaw[p] as float, p.global_rotation.y)))
+		if dsp > 0.02 or dyaw > 0.5:
+			moved += 1
+			resting = resting and p.is_resting()
+		disp_max = maxf(disp_max, dsp)
+		yaw_total_max = maxf(yaw_total_max, dyaw)
+	var es: float = _enemy.get_move_speed() if _enemy != null else 0.0
+	var vavg: float = _speed_sum / maxf(float(_speed_n), 1.0)
+	if _enemy != null and not is_instance_valid(_enemy):
+		_enemy = null
+	print("PROBE trial %s kind=%s yaw_dir=(%.2f,%.2f) lat=%.2f pen_max=%.3f props_moved=%d disp_max=%.2f yaw_total_max=%.1f tbl_v_max=%.2f tbl_v_avg=%.2f enemy_speed=%.2f ratio_avg=%.2f yawrate_max=%.1f dy_max=%.3f restarts=%d first_push_f=%d last_move_f=%d end_f=%d resting=%s blocked_frames=%d stuck_max=%.2f detoured=%s still_max_frames=%d enemy_dist start=%.2f min=%.2f" % [
+		_label, _kind, _dir.x, _dir.z, _lat, _pen_max, moved, disp_max, yaw_total_max, _vmax, vavg, es,
+		vavg / maxf(es, 0.01), _yawrate_max, _dy_max, _restarts, _first_push_frame, _last_move_frame, _frame,
+		resting, _blocked_frames, _stuck_max, _detoured, _still_max, _enemy_start_dist, _enemy_min_dist])
+	quit()

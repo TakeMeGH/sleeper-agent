@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PushablePropData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/levels/pushable_prop_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+scene_token = "dynamic_table"
+mass = 25.0
+friction = 0.5
+spin_friction_radius = 0.6
+linear_damping = 1.0
+angular_damping = 2.5
+restitution = 0.15
+bounce_min_speed = 0.6
+max_speed = 4.0
+max_turn_rate = 75.0
+rotate_shrink = 0.015

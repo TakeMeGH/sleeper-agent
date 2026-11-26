@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+
+[node name="TestRangeFeelKill" instance=ExtResource("1_base")]
+debug_gun_index = 2
+debug_override_player_pose = true
+debug_player_position = Vector3(0, 0, -14)
+debug_dummy_health = 1.0
+debug_fire_after_frames = 32

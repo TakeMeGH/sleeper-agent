@@ -1,0 +1,21 @@
+import re,sys
+def load(f):
+    d={}
+    for l in open(f):
+        m=re.match(r'DIVE s=([-\d.]+),([-\d.]+),([-\d.]+) y=(\d+) e=([-\d.]+),([-\d.]+),([-\d.]+) lift=([-\d.]+) thr=(\w+) ceil=(\w+) tall=([-\d.]+)',l)
+        if m:
+            g=m.groups(); d[(g[0],g[2],g[3])]=(float(g[1]),float(g[4]),float(g[5]),float(g[6]),float(g[7]),g[8],g[9],float(g[10]))
+    return d
+for lvl in sys.argv[1:]:
+    a=load(f'.scratch/probes/p017e_{lvl}_sweep.log'); b=load(f'.scratch/probes/p017e_{lvl}_sweep_nolift.log')
+    common=set(a)&set(b)
+    lifted=sum(1 for k in a if a[k][4]>0)
+    thr=sum(1 for k in a if a[k][5]=='true'); ceil=sum(1 for k in a if a[k][6]=='true')
+    thr0=sum(1 for k in b if b[k][5]=='true'); ceil0=sum(1 for k in b if b[k][6]=='true')
+    higher=[(k,a[k],b[k]) for k in common if a[k][2]>b[k][2]+0.3]
+    maxend=max(v[2] for v in a.values()) if a else None
+    maxend0=max(v[2] for v in b.values()) if b else None
+    tall=sum(1 for k in a if a[k][7]>0.85); tallclimb=sum(1 for k in a if a[k][7]>0.85 and a[k][2]-a[k][0]>a[k][7]-0.1)
+    print(f"PROBE cmp {lvl}: dives lift={len(a)} nolift={len(b)} common={len(common)} with_lift_used={lifted} through_geometry lift/nolift={thr}/{thr0} head_in_ceiling lift/nolift={ceil}/{ceil0} max_end_y lift/nolift={maxend}/{maxend0} tall_contacts={tall} tall_climbed={tallclimb} ends_higher_with_lift(>0.3m)={len(higher)}")
+    for k,x,y in sorted(higher, key=lambda t:-t[1][2])[:12]:
+        print(f"PROBE   higher: start=({k[0]},{x[0]:.2f},{k[1]}) yaw={k[2]} end_y lift={x[2]:.2f} nolift={y[2]:.2f} lift={x[4]:.2f}")

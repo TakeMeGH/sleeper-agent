@@ -1,0 +1,22 @@
+"""sheet.py <raw dir> <first> <step> <out dir> <name>: copies every <step>th frame from <first> (max 12) out of a
+Movie Maker raw folder into <out dir>/<name>/ and writes <out dir>/<name>_sheet.png (4-column contact sheet)."""
+import sys, os, glob, shutil
+from PIL import Image, ImageDraw, ImageEnhance
+
+raw, first, step, out_dir, name = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5]
+files = sorted(glob.glob(os.path.join(raw, "f*.png")))
+keep = [(i, f) for i, f in enumerate(files) if i >= first and (i - first) % step == 0][:12]
+dest = os.path.join(out_dir, name)
+os.makedirs(dest, exist_ok=True)
+w, h, cols = 640, 360, 4
+rows = (len(keep) + cols - 1) // cols
+sheet = Image.new("RGB", (w * cols, max(h * rows, h)), (0, 0, 0))
+for k, (i, f) in enumerate(keep):
+    shutil.copy(f, os.path.join(dest, "frame_%04d.png" % i))
+    im = ImageEnhance.Brightness(Image.open(f).convert("RGB").crop((0, 0, 2560 if False else Image.open(f).size[0], int(Image.open(f).size[1] * 0.8))).resize((w, h))).enhance(2.2)
+    dr = ImageDraw.Draw(im)
+    dr.rectangle([0, 0, 110, 20], fill=(0, 0, 0))
+    dr.text((4, 4), "frame %d" % i, fill=(255, 255, 0))
+    sheet.paste(im, ((k % cols) * w, (k // cols) * h))
+sheet.save(os.path.join(out_dir, name + "_sheet.png"))
+print("kept", len(keep), "of", len(files))

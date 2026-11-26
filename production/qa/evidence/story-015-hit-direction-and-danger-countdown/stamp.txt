@@ -1,0 +1,17 @@
+Reviewed-Content-Hash: src/ui/hud/hit_arcs.gd 238db2829973012eb35f0b1f691b3282ff912f01
+Reviewed-Content-Hash: src/ui/hud/hit_arcs_data.gd 666dbcf8da3a4997c2881428875df4e972f06901
+Reviewed-Content-Hash: src/ui/hud/danger_countdown_label.gd dcf63e59771ec4de3532aaf9244db4971c9fd533
+Reviewed-Content-Hash: assets/data/ui/hit_arcs.tres ce8c6dd223c422ca38417d4be618eab75de5433a
+Reviewed-Content-Hash: src/player/player_controller.gd 6368de867c6e664feabbdf577f86861b7cef4c10
+Reviewed-Content-Hash: src/ai/melee_enemy.gd d5571fe17d22011f7c696e98ac23d5606efe331b
+Reviewed-Content-Hash: src/ai/enemy_base.gd 89b21beb0caf0c56dab412969208f7b9273bab05
+Reviewed-Content-Hash: src/player/hit_arcs_debug.gd e76ee2f394090dbadb255a086f7b2d1c7f808af0
+Reviewed-Content-Hash: src/player/test_range.tscn d5d1df4fe0b306cd42cb15c836146aa4c36c7001
+Reviewed-Content-Hash: src/waves/test_arena.tscn 12d23cffbb27f8ba684861b37a9fc94d9fc2308a
+Reviewed-Content-Hash: src/run/game.tscn 2b4687a8f7fd06d9ff70b14d57454bce715b7ec4
+Reviewed-Content-Hash: src/player/test_range_hit_arcs_front.tscn b4669f259a5f41b464940b820fad35c58ad3e500
+Reviewed-Content-Hash: src/player/test_range_hit_arcs_left.tscn a6f59e00adb5fafbdc5d8e315dfea634ac0c7e35
+Reviewed-Content-Hash: src/player/test_range_hit_arcs_behind.tscn 0a1c816a05e0d917d807f5ac636586807f14a0da
+Reviewed-Content-Hash: src/player/test_range_hit_arcs_two.tscn 79106aabe318b1475304fd2431af214173765197
+Reviewed-Content-Hash: src/player/test_range_danger_countdown.tscn 166f5793f7971b6bacb8963acd9d4c9e9a84f4e2
+Reviewed-Content-Hash: production/session-logs/build-notes.md c51aa6a771d1418f70becd1e6b0277d99ff66b02

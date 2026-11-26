@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/waves/test_arena_enemy_models.tscn" id="1_base"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="5_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/melee.tres" id="2_melee"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_pistol.tres" id="3_pistol"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_shotgun.tres" id="6_shotgun"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_smg.tres" id="7_smg"]
+[ext_resource type="Resource" path="res://assets/data/enemies/boss.tres" id="4_boss"]
+
+[node name="TestArena" instance=ExtResource("1_base")]
+debug_spawn_kinds = Array[ExtResource("5_ed")]([ExtResource("3_pistol"), ExtResource("6_shotgun"), ExtResource("7_smg")])
+debug_spawn_positions = PackedVector3Array(-1.1, 0, 4, 0, 0, 4, 1.1, 0, 4)
+debug_skin_indices = PackedInt32Array(0, 1, 2)
+debug_poses = PackedStringArray("attack@0.3", "attack@0.3", "attack@0.1")

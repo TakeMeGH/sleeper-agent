@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+
+[node name="TestCanteenDiveOnTable" instance=ExtResource("1_game")]
+start_level_id = &"canteen"
+debug_open_exit_immediately = true
+debug_keep_heart_rate = 70.0
+debug_override_player_pose = true
+debug_player_position = Vector3(0.075, 0.05, -4.59)
+debug_player_yaw_degrees = 90.0
+debug_dive_after_frames = 30

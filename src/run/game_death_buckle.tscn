@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+
+[node name="Game" instance=ExtResource("1_game")]
+debug_end_run_after_seconds = 0.8
+debug_end_reason = &"passed_out"
+debug_preset_kills = 37
+debug_preset_time_seconds = 754.0
+debug_preset_wave = 7
+
+[node name="DeathCollapse" parent="." index="11"]
+debug_freeze_at_seconds = 0.14
+
+[node name="RunFlow" parent="." index="12"]
+debug_hold_stage = &""
+log_events = true

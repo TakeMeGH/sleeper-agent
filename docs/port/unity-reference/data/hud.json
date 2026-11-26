@@ -1,0 +1,33 @@
+{
+  "glyph_order": "0123456789/:∞<>-.",
+  "face_level_count": 5,
+  "face_danger_steps": [0.25, 0.5, 0.75],
+  "face_hysteresis_bpm": 2,
+  "flinch_seconds": 0.45,
+
+  "zone_names": ["PASS OUT", "SLOW", "NORMAL", "FAST", "HEART ATTACK"],
+  "bpm_unit": "BPM",
+  "countdown_unit": "SEC",
+  "wave_format": "WAVE {wave}",
+  "time_format": "TIME {time}",
+  "item_left_format": "{percent}%",
+  "item_empty_text": "EMPTY",
+
+  "ability_ready_slow": "SHIFT: SLOW-MO",
+  "ability_ready_fast": "SHIFT: SUPERSPEED",
+  "ability_unavailable": "SHIFT: --",
+  "ability_active_slow": "SLOW-MO {seconds}",
+  "ability_active_fast": "SUPERSPEED {seconds}",
+  "ability_cooldown": "COOLDOWN {seconds}",
+
+  "label_color": { "r": 0.92, "g": 0.92, "b": 0.9, "a": 1 },
+  "dim_color": { "r": 0.4, "g": 0.4, "b": 0.42, "a": 1 },
+  "highlight_color": { "r": 1, "g": 0.84, "b": 0.4, "a": 1 },
+  "zone_colors": [
+    { "r": 0.4, "g": 0.55, "b": 1, "a": 1 },
+    { "r": 0.4, "g": 0.85, "b": 0.95, "a": 1 },
+    { "r": 0.45, "g": 0.92, "b": 0.5, "a": 1 },
+    { "r": 1, "g": 0.75, "b": 0.25, "a": 1 },
+    { "r": 1, "g": 0.25, "b": 0.2, "a": 1 }
+  ]
+}

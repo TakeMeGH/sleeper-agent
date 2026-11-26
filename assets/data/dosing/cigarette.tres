@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SubstanceData" format=3]
+
+[ext_resource type="Script" path="res://src/dosing/substance_data.gd" id="1_sdata"]
+
+[resource]
+script = ExtResource("1_sdata")
+kind = &"cigarette"
+display_name = "Cigarette"
+input_action = &"dose_cigarette"
+seconds_per_item = 3.0
+start_count = 3
+max_count = 5
+ramp_seconds = PackedFloat32Array(0, 1, 3)
+ramp_bpm_per_second = PackedFloat32Array(-2, -8, -30)

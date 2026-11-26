@@ -1,0 +1,12 @@
+Reviewed-Content-Hash: src/ui/screen_effects/ability_look.gd 1a42f60f6c967335232dbef0efc7901078e16acb
+Reviewed-Content-Hash: src/ui/screen_effects/ability_look_data.gd a8769ae4a5b69c7c9d0c01059da5e34fe707e7ec
+Reviewed-Content-Hash: src/ui/screen_effects/ability_look_profile.gd 929c209141d771ea33b2c6e2a76d93845a1727ca
+Reviewed-Content-Hash: src/ui/screen_effects/ability_look.gdshader b08f967d3867b38aa364505aefbfb1939a2d2929
+Reviewed-Content-Hash: assets/data/player/ability_look.tres 8000edf091be7ca5ff08221dc385dfb36a314902
+Reviewed-Content-Hash: src/ui/hud/hud.tscn aec0c1edaed640f0aa231824c175f229a29646fd
+Reviewed-Content-Hash: src/player/test_range.tscn 205a55f4f5fbf5f03e6c9b77ac480f3cf849e52b
+Reviewed-Content-Hash: src/waves/test_arena.tscn 620b451c6cc4e1e49f6b64ca0768eb92189d663e
+Reviewed-Content-Hash: src/run/game.tscn a4e6435d92519d2a37f8bbc1ce4b9187d5a58d9a
+Reviewed-Content-Hash: src/player/test_range_look_normal.tscn fa00d2f39229e65a628d89fa5fec3c3f85ad031a
+Reviewed-Content-Hash: src/player/test_range_look_slow.tscn bce71935aed60ba2620027a700b2fb231107334e
+Reviewed-Content-Hash: src/player/test_range_look_speed.tscn e879e149229ae19a9d4eb84ec11d5ee0d0b68c68

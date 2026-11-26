@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/ui/hud/hud.gd" id="1_hud"]
+[ext_resource type="Resource" path="res://assets/data/ui/hud.tres" id="2_data"]
+
+[node name="StatusBar" type="Node"]
+script = ExtResource("1_hud")
+data = ExtResource("2_data")
+
+[node name="WorldLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="WorldContainer" type="SubViewportContainer" parent="WorldLayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="WorldViewport" type="SubViewport" parent="WorldLayer/WorldContainer"]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="WorldCamera" type="Camera3D" parent="WorldLayer/WorldContainer/WorldViewport"]
+unique_name_in_owner = true
+
+[node name="BarLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 3

@@ -1,0 +1,329 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/levels/level_base.gd" id="1_lvl"]
+[ext_resource type="Script" path="res://src/levels/level_exit.gd" id="2_exit"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_main.fbx" id="3_main"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_dynamic_bin.fbx" id="4_prop"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_static_debris.fbx" id="5_prop"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_static_pillar.fbx" id="6_prop"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/canteen/canteen_door_enemy_a.fbx" id="20_art_canteen_door_enemy_a"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/canteen/canteen_door_enemy_b.fbx" id="21_art_canteen_door_enemy_b"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_dynamic_railing_a.fbx" id="23_art_plaza_dynamic_railing_a"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_dynamic_railing_b.fbx" id="24_art_plaza_dynamic_railing_b"]
+[ext_resource type="PackedScene" path="res://assets/art/levels/plaza/plaza_dynamic_railing_c.fbx" id="25_art_plaza_dynamic_railing_c"]
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 1
+background_color = Color(0.0809, 0.1637, 0.2956, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.1591, 0.2193, 0.3396, 1)
+ambient_light_energy = 1.0
+tonemap_mode = 0
+adjustment_enabled = true
+adjustment_saturation = 0.85
+
+[sub_resource type="NavigationMesh" id="NavMesh_1"]
+geometry_parsed_geometry_type = 1
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.75
+agent_radius = 0.5
+agent_max_climb = 1.0
+
+[node name="Plaza" type="Node3D" node_paths=PackedStringArray("nav_region", "player_start", "level_exit")]
+script = ExtResource("1_lvl")
+level_id = &"plaza"
+nav_region = NodePath("NavigationRegion3D")
+player_start = NodePath("PlayerStart")
+level_exit = NodePath("LevelExit")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1.0000, 0.0004, -0.0090, -0.0090, -0.0470, 0.9989, 0.0000, 0.9989, 0.0470, 0, 20, 0)
+light_color = Color(0.5196, 0.6873, 0.8931, 1)
+light_energy = 1.0
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_normal_bias = 0.4
+shadow_blur = 1.5
+directional_shadow_max_distance = 60.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavMesh_1")
+
+[node name="Model" parent="NavigationRegion3D" groups=["generated_collision"] instance=ExtResource("3_main")]
+
+[node name="Props" type="Node3D" parent="NavigationRegion3D" groups=["generated_collision"]]
+
+[node name="Prop0" parent="NavigationRegion3D/Props" instance=ExtResource("6_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.3200, 0.0000, -28.8600)
+
+[node name="Prop1" parent="NavigationRegion3D/Props" instance=ExtResource("6_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 9.7400, 0.0000, -13.3400)
+
+[node name="Prop2" parent="NavigationRegion3D/Props" instance=ExtResource("6_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, -9.5100, 0.0000, -13.4700)
+
+[node name="Prop3" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 8.5400, 0.0000, -17.9900)
+
+[node name="Prop4" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -8.4600, 0.0000, -17.9900)
+
+[node name="Prop5" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(0.2648, 0.0000, 0.9643, -0.0000, 1.0000, 0.0000, -0.9643, -0.0000, 0.2648, -14.4900, 0.0000, 23.1500)
+
+[node name="Prop6" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 20.3200, 0.0000, 17.1100)
+
+[node name="Prop7" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, -20.1400, 0.0000, 24.2300)
+
+[node name="Prop8" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, -20.1000, 0.0000, 17.9000)
+
+[node name="Prop9" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(0.2648, 0.0000, 0.9643, -0.0000, 1.0000, 0.0000, -0.9643, -0.0000, 0.2648, 18.9500, 0.0000, 20.6100)
+
+[node name="Prop10" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 13.0300, 0.0000, 22.5000)
+
+[node name="Prop11" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.9200, 8.4300, -15.7400)
+
+[node name="Prop12" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.9200, 16.8050, -27.2700)
+
+[node name="Prop13" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(0.0001, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, -0.0000, 0.0001, 12.6100, 8.4300, -15.7700)
+
+[node name="Prop14" parent="NavigationRegion3D/Props" instance=ExtResource("4_prop")]
+transform = Transform3D(0.0001, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, -0.0000, 0.0001, 12.6100, 16.8050, -27.3000)
+
+[node name="Prop15" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.1800, 8.3880, -17.4000)
+
+[node name="Prop16" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.1800, 16.8000, -21.2800)
+
+[node name="Prop17" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.1800, 16.8000, -13.2000)
+
+[node name="Prop18" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-0.0000, -0.0000, -1.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -0.0000, -12.1700, 8.3880, -8.6300)
+
+[node name="Prop19" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-0.0000, -0.0000, -1.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -0.0000, -12.1700, 8.3880, -4.6100)
+
+[node name="Prop20" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-0.0000, -0.0000, -1.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -0.0000, -12.1700, 16.8000, 2.7800)
+
+[node name="Prop21" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-0.0000, -0.0000, -1.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -0.0000, -12.1700, 16.8000, 6.8000)
+
+[node name="Prop22" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -10.1100, 8.3850, 12.5470)
+
+[node name="Prop23" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -8.1820, 16.8000, -1.2800)
+
+[node name="Prop24" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -2.0000, 16.7970, -27.5800)
+
+[node name="Prop25" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 2.0500, 8.3850, -27.6400)
+
+[node name="Prop26" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 6.0800, 8.3850, -27.6400)
+
+[node name="Prop27" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 9.9500, 8.3850, 8.9930)
+
+[node name="Prop28" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, -0.0000, -0.0000, -1.0000, 10.0830, 16.7900, 0.5600)
+
+[node name="Prop29" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(-0.0000, -0.0000, -1.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -0.0000, 12.2400, 16.7900, 10.8100)
+
+[node name="Prop30" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, 12.2700, 8.3880, -21.4700)
+
+[node name="Prop31" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, 12.2700, 16.7900, -5.0900)
+
+[node name="Prop32" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, 12.2700, 16.8000, -21.1600)
+
+[node name="Prop33" parent="NavigationRegion3D/Props" instance=ExtResource("23_art_plaza_dynamic_railing_a")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, 12.2700, 16.8000, -17.1800)
+
+[node name="Prop34" parent="NavigationRegion3D/Props" instance=ExtResource("24_art_plaza_dynamic_railing_b")]
+transform = Transform3D(0.0000, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0000, -12.2170, 8.4150, 6.7970)
+
+[node name="Prop35" parent="NavigationRegion3D/Props" instance=ExtResource("24_art_plaza_dynamic_railing_b")]
+transform = Transform3D(0.0000, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, -0.0000, 0.0000, -12.2000, 16.8030, -25.2650)
+
+[node name="Prop36" parent="NavigationRegion3D/Props" instance=ExtResource("24_art_plaza_dynamic_railing_b")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -6.0300, 8.4150, -27.7100)
+
+[node name="Prop37" parent="NavigationRegion3D/Props" instance=ExtResource("24_art_plaza_dynamic_railing_b")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -1.9200, 8.4150, 8.9600)
+
+[node name="Prop38" parent="NavigationRegion3D/Props" instance=ExtResource("24_art_plaza_dynamic_railing_b")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 2.0300, 16.8030, -27.5800)
+
+[node name="Prop39" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(0.0000, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, -0.0000, 0.0000, -12.1820, 8.4090, -21.4130)
+
+[node name="Prop40" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -10.0320, 16.7970, -27.3960)
+
+[node name="Prop41" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, -1.9900, 8.4090, -27.7000)
+
+[node name="Prop42" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 2.0700, 8.4090, 9.0400)
+
+[node name="Prop43" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 6.0700, 16.7970, -27.6000)
+
+[node name="Prop44" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(-1.0000, 0.0000, 0.0001, -0.0000, 1.0000, 0.0000, -0.0001, -0.0000, -1.0000, 6.1800, 8.4090, 12.6000)
+
+[node name="Prop45" parent="NavigationRegion3D/Props" instance=ExtResource("25_art_plaza_dynamic_railing_c")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 0.0000, 0.0000, -0.0000, 1.0000, 10.0830, 8.4000, -15.1020)
+
+[node name="Prop46" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.0114, 0.0000, -0.9999, 0.0000, 1.0000, 0.0000, 0.9999, 0.0000, -0.0114, -20.3600, 7.5600, 13.4600)
+
+[node name="Prop47" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.0114, 0.0000, -0.9999, 0.0000, 1.0000, 0.0000, 0.9999, 0.0000, -0.0114, -19.6900, 16.6600, 13.9500)
+
+[node name="Prop48" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.0114, 0.0000, -0.9999, 0.0000, 1.0000, 0.0000, 0.9999, 0.0000, -0.0114, -15.6800, 16.6600, 15.7200)
+
+[node name="Prop49" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.0114, 0.0000, -0.9999, 0.0000, 1.0000, 0.0000, 0.9999, 0.0000, -0.0114, -15.5600, 8.4300, 14.5500)
+
+[node name="Prop50" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 15.4200, 8.0900, 14.2600)
+
+[node name="Prop51" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 15.9700, 16.6600, 16.4000)
+
+[node name="Prop52" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.0114, 0.0000, -0.9999, 0.0000, 1.0000, 0.0000, 0.9999, 0.0000, -0.0114, 19.2000, 16.6600, 13.7300)
+
+[node name="Prop53" parent="NavigationRegion3D/Props" instance=ExtResource("5_prop")]
+transform = Transform3D(-0.3111, 0.0000, -0.9504, 0.0000, 1.0000, 0.0000, 0.9504, 0.0000, -0.3111, 20.9600, 8.0900, 15.2600)
+
+[node name="Decor" type="Node3D" parent="NavigationRegion3D"]
+
+[node name="canteen_door_enemy_a_1" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(-1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 0.0000, -0.0002, 0.0000, -1.0000, -20.0792, 8.4793, -26.5313)
+
+[node name="canteen_door_enemy_a_2" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(-1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 0.0000, -0.0002, 0.0000, -1.0000, -19.6692, 0.0000, -6.5313)
+
+[node name="canteen_door_enemy_a_3" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(0.0002, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0002, -7.2352, 1.2793, 25.0796)
+
+[node name="canteen_door_enemy_a_4" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(-0.0002, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.0000, -0.0002, -0.6683, 0.0293, -35.0454)
+
+[node name="canteen_door_enemy_a_5" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(-0.0002, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.0000, -0.0002, 3.3167, 8.3593, -35.4174)
+
+[node name="canteen_door_enemy_a_6" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(0.0002, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0002, 4.7648, 1.2793, 25.0796)
+
+[node name="canteen_door_enemy_a_7" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(1.0000, 0.0000, -0.0002, 0.0000, 1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 19.7958, 0.0000, -3.9945)
+
+[node name="canteen_door_enemy_a_8" parent="NavigationRegion3D/Decor" instance=ExtResource("20_art_canteen_door_enemy_a")]
+transform = Transform3D(1.0000, 0.0000, -0.0002, 0.0000, 1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 20.1558, 8.4193, -24.0145)
+
+[node name="canteen_door_enemy_b_1" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(-1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 0.0000, -0.0002, 0.0000, -1.0000, -20.0788, 8.4792, -23.9951)
+
+[node name="canteen_door_enemy_b_2" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(-1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 0.0000, -0.0002, 0.0000, -1.0000, -19.6688, -0.0000, -3.9951)
+
+[node name="canteen_door_enemy_b_3" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(0.0002, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0002, -4.6990, 1.2792, 25.0791)
+
+[node name="canteen_door_enemy_b_4" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(-0.0002, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.0000, -0.0002, -3.2045, 0.0292, -35.0450)
+
+[node name="canteen_door_enemy_b_5" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(-0.0002, 0.0000, -1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.0000, -0.0002, 0.7805, 8.3592, -35.4170)
+
+[node name="canteen_door_enemy_b_6" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(0.0002, 0.0000, 1.0000, -0.0000, 1.0000, 0.0000, -1.0000, -0.0000, 0.0002, 7.3010, 1.2792, 25.0791)
+
+[node name="canteen_door_enemy_b_7" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(1.0000, 0.0000, -0.0002, 0.0000, 1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 19.7953, -0.0000, -6.5307)
+
+[node name="canteen_door_enemy_b_8" parent="NavigationRegion3D/Decor" instance=ExtResource("21_art_canteen_door_enemy_b")]
+transform = Transform3D(1.0000, 0.0000, -0.0002, 0.0000, 1.0000, 0.0000, 0.0002, 0.0000, 1.0000, 20.1553, 8.4192, -26.5507)
+
+[node name="PlayerStart" type="Marker3D" parent="."]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 0.040, 0.000, 14.416)
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn1Right" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -20.697, 0.000, -5.272)
+
+[node name="Spawn1Left" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 20.620, 0.000, -5.260)
+
+[node name="Spawn1Front" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -2.107, 0.000, -35.880)
+
+[node name="Spawn2Right" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -16.000, 0.000, -25.000)
+
+[node name="Spawn2Left" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 16.000, 0.000, -25.000)
+
+[node name="Spawn2Front" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 3.000, 0.000, -34.000)
+
+[node name="Spawn3Right" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -17.000, 0.000, 8.000)
+
+[node name="Spawn3Left" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 17.000, 0.000, 8.000)
+
+[node name="Spawn3Front" type="Marker3D" parent="SpawnPoints" groups=["spawn_point"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -8.000, 0.000, -30.000)
+
+[node name="FiringSpots" type="Node3D" parent="."]
+
+[node name="SpotA" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -7.000, 0.000, -22.000)
+
+[node name="SpotB" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 7.000, 0.000, -22.000)
+
+[node name="SpotC" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -9.000, 0.000, 0.000)
+
+[node name="SpotD" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 9.000, 0.000, 0.000)
+
+[node name="SpotE" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 0.000, 0.000, -8.000)
+
+[node name="SpotF" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, -6.000, 0.000, 24.000)
+
+[node name="SpotG" type="Marker3D" parent="FiringSpots" groups=["firing_spot"]]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 6.000, 0.000, 26.000)
+
+[node name="LevelExit" type="Area3D" parent="."]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1, 0, 0.0000, 0, 1.0000, 0, 0.072, -20)
+script = ExtResource("2_exit")

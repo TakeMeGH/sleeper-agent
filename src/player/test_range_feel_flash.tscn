@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+
+[node name="TestRangeFeelFlash" instance=ExtResource("1_base")]
+debug_gun_index = 1
+debug_fire_after_frames = 36
+debug_flash_hold_frames = 8

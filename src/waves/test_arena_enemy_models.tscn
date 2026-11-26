@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/waves/test_arena.tscn" id="1_arena"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="5_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/melee.tres" id="2_melee"]
+[ext_resource type="Resource" path="res://assets/data/enemies/ranged_pistol.tres" id="3_pistol"]
+[ext_resource type="Resource" path="res://assets/data/enemies/boss.tres" id="4_boss"]
+
+[node name="TestArena" instance=ExtResource("1_arena")]
+start_delay = 0.3
+debug_keep_heart_rate = 70.0
+debug_spawn_kinds = Array[ExtResource("5_ed")]([ExtResource("2_melee"), ExtResource("3_pistol"), ExtResource("4_boss")])
+debug_spawn_positions = PackedVector3Array(-1.9, 0, 2.5, 0, 0, 2.5, 2.2, 0, 2.5)
+
+[node name="Player" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)

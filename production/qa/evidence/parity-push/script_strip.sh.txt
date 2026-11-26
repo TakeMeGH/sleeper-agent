@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# strip.sh <name> <res://scene.tscn> <frames> <first> <step>
+# Movie Maker capture into .scratch/feel/raw/<name>/, then sheet.py keeps every <step>th frame from <first>
+# in production/qa/evidence/parity-push/<name>/ plus <name>_sheet.png.
+set -u
+G="/e/GodotEngine/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe"
+RAW=".scratch/feel/raw/$1"
+rm -f "$RAW"/f*.png; mkdir -p "$RAW" production/qa/evidence/parity-push
+timeout 300 "$G" --path . --windowed --resolution 1280x720 --write-movie "$RAW/f.png" --quit-after "$3" "$2" > ".scratch/feel/raw/$1.log" 2>&1
+echo "capture exit=$?"
+python .scratch/feel/sheet.py "$RAW" "$4" "$5" production/qa/evidence/parity-push "$1"
+grep -E "SCRIPT ERROR|^ERROR" ".scratch/feel/raw/$1.log" | grep -v remote | head -5

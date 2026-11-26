@@ -1,0 +1,133 @@
+extends SceneTree
+## Story 008 probe: wave mix, boss armour, kill signals, drops -> add methods, ranged line of fire.
+
+var arena: Node3D
+var spawner: WaveSpawner
+var player: Node3D
+var shots: Array = []
+var killed: int = 0
+var left_events: Array[int] = []
+
+
+func _initialize() -> void:
+	arena = (load("res://src/waves/test_arena.tscn") as PackedScene).instantiate()
+	arena.set("start_delay", 100000.0)
+	arena.set("log_events", false)
+	root.add_child(arena)
+	_run.call_deferred()
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await physics_frame
+
+
+func _run() -> void:
+	await _frames(5)
+	spawner = arena.get_node("WaveSpawner") as WaveSpawner
+	player = get_first_node_in_group("player") as Node3D
+	spawner.stop()
+	# 1. Wave mix and scaling
+	for w in range(1, 9):
+		var sc: Dictionary = spawner.get_wave_scaling(w, &"melee")
+		print("PROBE wave=%d mix=%s total=%d melee_scale=h%.2f s%.2f d%.2f" % [w, spawner.get_wave_mix(w),
+			spawner.build_wave_queue(w).size(), sc["health"], sc["speed"], sc["damage"]])
+	var wd: WaveData = spawner.data
+	# 2. Boss armour
+	var boss: BossEnemy = spawner.spawn_enemy(wd.get_enemy_data(&"boss"), Vector3(20, 0, 20), 1) as BossEnemy
+	await _frames(2)
+	print("PROBE boss start health=%.1f armour=%.1f plates=%d" % [boss.get_health(), boss.get_armour(), boss.get_plate_count()])
+	var hits: int = 0
+	while not boss.is_armour_broken() and hits < 100:
+		var h0: float = boss.get_health()
+		var a0: float = boss.get_armour()
+		boss.take_hit(40.0, Vector3.ZERO)
+		hits += 1
+		if hits <= 2 or boss.is_armour_broken():
+			print("PROBE boss hit40 #%d health %.1f->%.1f armour %.1f->%.1f broken=%s plates=%d" % [hits, h0, boss.get_health(), a0, boss.get_armour(), boss.is_armour_broken(), boss.get_plate_count()])
+	var h1: float = boss.get_health()
+	boss.take_hit(40.0, Vector3.ZERO)
+	print("PROBE boss after break hit40 health %.1f->%.1f (full damage=%s)" % [h1, boss.get_health(), is_equal_approx(h1 - boss.get_health(), 40.0)])
+	await _frames(3)
+	print("PROBE boss plates after break=%d" % boss.get_plate_count())
+	boss.queue_free()
+	await _frames(2)
+	# 3. Kill signals + pushback
+	spawner.enemy_killed.connect(func(_e: EnemyBase) -> void: killed += 1)
+	spawner.enemies_left_changed.connect(func(c: int) -> void: left_events.append(c))
+	var rs: RunState = arena.get_node("RunState") as RunState
+	var m: EnemyBase = spawner.spawn_enemy(wd.get_enemy_data(&"melee"), Vector3(-20, 0, 20), 1)
+	await _frames(2)
+	var left0: int = spawner.get_enemies_left()
+	m.take_hit(1.0, Vector3(1, 0, 0) * 8.0)
+	print("PROBE pushback dir=(8,0,0) knockback=%s health=%.1f/%.1f" % [m.get_knockback_velocity(), m.get_health(), m.get_max_health()])
+	m.take_hit(10000.0, Vector3.FORWARD)
+	await _frames(3)
+	print("PROBE kill: dead=%s enemy_killed=%d left %d->%d events=%s runstate.enemies_left=%d" % [is_instance_valid(m) and m.is_dead() or not is_instance_valid(m), killed, left0, spawner.get_enemies_left(), left_events, rs.enemies_left])
+	# 4. Drops: roller numbers + pickups calling the add methods
+	var md: EnemyData = wd.get_enemy_data(&"melee")
+	print("PROBE roll melee rolls(0.1,0.1,0.1,0.1)=%s rolls(0.9,0.9,0.9,0.9)=%s rolls(0.2,0.9,0.4,0.8)=%s" % [DropRoller.roll_drops(md, 0.1, 0.1, 0.1, 0.1), DropRoller.roll_drops(md, 0.9, 0.9, 0.9, 0.9), DropRoller.roll_drops(md, 0.2, 0.9, 0.4, 0.8)])
+	print("PROBE roll boss=%s" % [DropRoller.roll_drops(wd.get_enemy_data(&"boss"), 0.99, 0.5, 0.99, 0.5)])
+	var holder: WeaponHolder = player.get("weapon_holder") as WeaponHolder
+	var inv: SubstanceInventory = player.get_node("SubstanceInventory") as SubstanceInventory
+	var ammo_log: Array = []
+	holder.ammo_changed.connect(func(id: StringName, mag: int, spare: int) -> void: ammo_log.append([id, mag, spare]))
+	var drop_data: DropData = spawner.drop_data
+	for k: StringName in [&"smg", &"shotgun", &"coffee", &"cigarette"]:
+		var before: int = inv.get_count(k) if not (k == &"smg" or k == &"shotgun") else -1
+		var p: DropPickup = DropPickup.spawn(arena, k, Vector3(40, 0, 40), drop_data)
+		var ok: bool = p.collect(player)
+		var after: int = inv.get_count(k) if before >= 0 else -1
+		print("PROBE pickup %s collect=%s substance %d->%d ammo_changed=%s" % [k, ok, before, after, ammo_log])
+		ammo_log.clear()
+	# real death drop path: guaranteed boss drops spawn pickups
+	var b2: EnemyBase = spawner.spawn_enemy(wd.get_enemy_data(&"boss"), Vector3(20, 0, -24), 1)
+	await _frames(2)
+	b2.take_hit(100000.0, Vector3.ZERO)
+	b2.take_hit(100000.0, Vector3.ZERO)
+	await _frames(3)
+	var kinds: Array = []
+	for n in get_nodes_in_group(&"drop_ammo") + get_nodes_in_group(&"drop_dose"):
+		if n is DropPickup and not n.is_queued_for_deletion():
+			kinds.append((n as DropPickup).kind)
+	print("PROBE boss death drops spawned=%s" % [kinds])
+	# 5. Ranged line of fire
+	player.global_position = Vector3(0, 0, 0)
+	var r_blocked: RangedEnemy = spawner.spawn_enemy(wd.get_enemy_data(&"ranged"), Vector3(0, 0, -15.5), 1) as RangedEnemy
+	var r_clear: RangedEnemy = spawner.spawn_enemy(wd.get_enemy_data(&"ranged"), Vector3(5, 0, -12), 1) as RangedEnemy
+	await _frames(3)
+	print("PROBE ranged behind CoverC (0,-15.5) line=%s ; ranged in open (5,-12) line=%s" % [r_blocked.has_line_of_fire(), r_clear.has_line_of_fire()])
+	r_blocked.queue_free()
+	r_clear.queue_free()
+	await _frames(2)
+	for ppos: Vector3 in [Vector3(0, 0, 6), Vector3(0, 0, 0)]:
+		shots.clear()
+		var ranged: Array[RangedEnemy] = []
+		for pos: Vector3 in [Vector3(-20, 0, -20), Vector3(20, 0, -20), Vector3(0, 0, -25)]:
+			var r: RangedEnemy = spawner.spawn_enemy(wd.get_enemy_data(&"ranged"), pos, 1) as RangedEnemy
+			r.shot_fired.connect(func(hit: bool) -> void: shots.append([r.name, r.has_line_of_fire(), hit, r.get_magazine()]))
+			ranged.append(r)
+		var states: Dictionary = {}
+		var reload_seen: bool = false
+		var max_mag_drop: int = 99
+		for f in 720:
+			await physics_frame
+			player.global_position = ppos
+			for r in ranged:
+				states[r.get_state()] = true
+				max_mag_drop = mini(max_mag_drop, r.get_magazine())
+				if r.get_state() == &"reload":
+					reload_seen = true
+		var without_line: int = 0
+		for s in shots:
+			if not s[1]:
+				without_line += 1
+		var spots: Array = []
+		for r in ranged:
+			spots.append(r.get_spot().name if r.get_spot() != null else "none")
+		print("PROBE ranged 12s player=%s: shots=%d shots_without_line=%d states=%s reload_seen=%s min_magazine=%d spots=%s" % [ppos, shots.size(), without_line, states.keys(), reload_seen, max_mag_drop, spots])
+		print("PROBE ranged sample shots [name,line,hit,mag]=%s" % [shots.slice(0, 8)])
+		for r in ranged:
+			r.queue_free()
+		await _frames(3)
+	quit(0)

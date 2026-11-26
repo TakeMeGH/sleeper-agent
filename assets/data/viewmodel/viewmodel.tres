@@ -1,0 +1,545 @@
+[gd_resource type="Resource" script_class="ViewmodelData" format=3]
+
+[ext_resource type="Script" path="res://src/viewmodel/viewmodel_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://src/viewmodel/viewmodel_gun_data.gd" id="2_gun"]
+[ext_resource type="Script" path="res://src/viewmodel/viewmodel_substance_data.gd" id="3_sub"]
+[ext_resource type="Script" path="res://src/viewmodel/viewmodel_hand_key.gd" id="4_key"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_pistol.fbx" id="10_pistol"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_smg.fbx" id="11_smg"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_shotgun.fbx" id="12_shotgun"]
+[ext_resource type="PackedScene" path="res://assets/art/props/player_kopi.fbx" id="13_kopi"]
+[ext_resource type="PackedScene" path="res://assets/art/props/player_rokok.fbx" id="14_rokok"]
+[ext_resource type="PackedScene" path="res://assets/third_party/drillimpact_psx_first_person_arms/arms_rig.fbx" id="15_arms"]
+[ext_resource type="Material" path="res://assets/art/materials/bot.tres" id="20_bot"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/manprop.tres" id="21_manprop"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/manprop_unlit.tres" id="22_unlit"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/viewmodel_arms.tres" id="23_arms"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/arms_magazine.tres" id="24_mag"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/arms_shell.tres" id="25_shell"]
+
+[sub_resource type="Resource" id="Key_1"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.37, -0.03, 0.07)
+rotation_degrees = Vector3(0, -10, 90)
+curl = Vector3(35, 85, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Key_2"]
+script = ExtResource("4_key")
+time = 0.07
+position = Vector3(-0.375, -0.14, 0.09)
+rotation_degrees = Vector3(20, -10, 90)
+curl = Vector3(45, 60, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Key_3"]
+script = ExtResource("4_key")
+time = 0.14
+position = Vector3(-0.36, -0.24, 0.13)
+rotation_degrees = Vector3(25, -10, 80)
+curl = Vector3(50, 55, 25)
+prop = 0
+
+[sub_resource type="Resource" id="Key_4"]
+script = ExtResource("4_key")
+time = 0.24
+position = Vector3(-0.32, -0.34, 0.15)
+rotation_degrees = Vector3(-19.54, -12.75, 94.33)
+curl = Vector3(20, 25, 10)
+prop = 0
+
+[sub_resource type="Resource" id="Key_5"]
+script = ExtResource("4_key")
+time = 0.3
+position = Vector3(-0.32, -0.32, 0.15)
+rotation_degrees = Vector3(-19.54, -12.75, 94.33)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_6"]
+script = ExtResource("4_key")
+time = 0.42
+position = Vector3(-0.031, -0.185, 0.048)
+rotation_degrees = Vector3(29.28, -13.79, 83.16)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_7"]
+script = ExtResource("4_key")
+time = 0.5
+position = Vector3(-0.031, -0.115, 0.048)
+rotation_degrees = Vector3(29.28, -13.79, 83.16)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_8"]
+script = ExtResource("4_key")
+time = 0.56
+position = Vector3(-0.031, -0.103, 0.048)
+rotation_degrees = Vector3(29.28, -13.79, 83.16)
+curl = Vector3(35, 40, 20)
+prop = 0
+
+[sub_resource type="Resource" id="Key_9"]
+script = ExtResource("4_key")
+time = 0.72
+position = Vector3(-0.059, 0.026, 0.04)
+rotation_degrees = Vector3(-11.27, -4.16, 20.41)
+curl = Vector3(20, 25, 10)
+prop = 0
+
+[sub_resource type="Resource" id="Key_10"]
+script = ExtResource("4_key")
+time = 0.84
+position = Vector3(-0.054, 0.051, 0.07)
+rotation_degrees = Vector3(-11.27, -4.16, 20.41)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_11"]
+script = ExtResource("4_key")
+time = 0.93
+position = Vector3(-0.054, 0.051, 0.11)
+rotation_degrees = Vector3(-11.27, -4.16, 20.41)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_12"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.054, 0.056, 0.105)
+rotation_degrees = Vector3(-11.27, -4.16, 20.41)
+curl = Vector3(25, 30, 15)
+prop = 0
+
+[sub_resource type="Resource" id="Key_13"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.054, 0.056, 0.105)
+rotation_degrees = Vector3(-11.27, -4.16, 20.41)
+curl = Vector3(25, 30, 15)
+prop = 0
+
+[sub_resource type="Resource" id="Key_14"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.375, -0.14, 0.09)
+rotation_degrees = Vector3(20, -10, 90)
+curl = Vector3(45, 60, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Gun_pistol"]
+script = ExtResource("2_gun")
+gun_id = &"pistol"
+model = ExtResource("10_pistol")
+model_material = ExtResource("20_bot")
+model_offset = Vector3(0.001, -0.003, -0.011)
+model_rotation_degrees = Vector3(20.14, -26.13, -2.03)
+model_scale = 1.45
+model_fix_degrees = Vector3(-67.85357, -173.5492, 61.65537)
+hold_position = Vector3(0.17, -0.16, -0.32)
+kick_back = 0.05
+kick_pitch_degrees = 6
+kick_side = 0.012
+kick_roll_degrees = 4
+settle_seconds = 0.15
+raise_seconds = 0.4
+raise_dip_depth = 0.12
+raise_dip_degrees = 35
+arms_root_position = Vector3(-0.17, -1.583, 0.28)
+arms_root_rotation_degrees = Vector3(0, 0, 0)
+arms_scale = 1
+reach_limit = 0.98
+forearm_twist_follow = 0.5
+curl_axis = Vector3(-1, 0, 0)
+thumb_axis = Vector3(0, 0, 0)
+curl_joint_weights = Vector3(1, 1.1, 0.7)
+grip_position = Vector3(0.023, 0.003, 0.052)
+grip_rotation_degrees = Vector3(0, 10, -90)
+grip_curl = Vector3(35, 85, 25)
+grip_pole = Vector3(0.6, -1, 0.2)
+magazine_size = Vector3(0.088, 0.035, 0.029)
+magazine_offset = Vector3(0, -0.035, -0.09)
+magazine_rotation_degrees = Vector3(0, 0, 0)
+shell_size = Vector3(0.02, 0.02, 0.07)
+shell_offset = Vector3(0, -0.03, -0.095)
+shell_rotation_degrees = Vector3(0, 0, 0)
+shell_reload = false
+shell_cycle_seconds = 0.45
+reload_in_at = 0.35
+blend_in_speed = 8
+blend_out_speed = 4
+finish_seconds = 0.3
+reload_keys = Array[ExtResource("4_key")]([SubResource("Key_1"), SubResource("Key_2"), SubResource("Key_3"), SubResource("Key_4"), SubResource("Key_5"), SubResource("Key_6"), SubResource("Key_7"), SubResource("Key_8"), SubResource("Key_9"), SubResource("Key_10"), SubResource("Key_11"), SubResource("Key_12")])
+finish_keys = Array[ExtResource("4_key")]([SubResource("Key_13"), SubResource("Key_14")])
+
+[sub_resource type="Resource" id="Key_15"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.36, -0.01, 0.04)
+rotation_degrees = Vector3(0, -10, 90)
+curl = Vector3(35, 85, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Key_16"]
+script = ExtResource("4_key")
+time = 0.08
+position = Vector3(-0.365, -0.12, 0.06)
+rotation_degrees = Vector3(20, -10, 90)
+curl = Vector3(45, 60, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Key_17"]
+script = ExtResource("4_key")
+time = 0.15
+position = Vector3(-0.35, -0.22, 0.1)
+rotation_degrees = Vector3(25, -10, 80)
+curl = Vector3(50, 55, 25)
+prop = 0
+
+[sub_resource type="Resource" id="Key_18"]
+script = ExtResource("4_key")
+time = 0.25
+position = Vector3(-0.31, -0.33, 0.07)
+rotation_degrees = Vector3(-25.62, -2.27, 90.88)
+curl = Vector3(20, 25, 10)
+prop = 0
+
+[sub_resource type="Resource" id="Key_19"]
+script = ExtResource("4_key")
+time = 0.31
+position = Vector3(-0.31, -0.31, 0.07)
+rotation_degrees = Vector3(-25.62, -2.27, 90.88)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_20"]
+script = ExtResource("4_key")
+time = 0.42
+position = Vector3(-0.016, -0.151, -0.077)
+rotation_degrees = Vector3(14.35, -2.11, 89.37)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_21"]
+script = ExtResource("4_key")
+time = 0.5
+position = Vector3(-0.016, -0.071, -0.077)
+rotation_degrees = Vector3(14.35, -2.11, 89.37)
+curl = Vector3(50, 55, 25)
+prop = 1
+
+[sub_resource type="Resource" id="Key_22"]
+script = ExtResource("4_key")
+time = 0.56
+position = Vector3(-0.016, -0.059, -0.077)
+rotation_degrees = Vector3(14.35, -2.11, 89.37)
+curl = Vector3(35, 40, 20)
+prop = 0
+
+[sub_resource type="Resource" id="Key_23"]
+script = ExtResource("4_key")
+time = 0.72
+position = Vector3(-0.06, 0.035, -0.056)
+rotation_degrees = Vector3(-2.05, 5.64, -0.1)
+curl = Vector3(20, 25, 10)
+prop = 0
+
+[sub_resource type="Resource" id="Key_24"]
+script = ExtResource("4_key")
+time = 0.84
+position = Vector3(-0.06, 0.055, -0.026)
+rotation_degrees = Vector3(-2.05, 5.64, -0.1)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_25"]
+script = ExtResource("4_key")
+time = 0.93
+position = Vector3(-0.06, 0.055, 0.024)
+rotation_degrees = Vector3(-2.05, 5.64, -0.1)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_26"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.06, 0.06, 0.019)
+rotation_degrees = Vector3(-2.05, 5.64, -0.1)
+curl = Vector3(25, 30, 15)
+prop = 0
+
+[sub_resource type="Resource" id="Key_27"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.06, 0.06, 0.019)
+rotation_degrees = Vector3(-2.05, 5.64, -0.1)
+curl = Vector3(25, 30, 15)
+prop = 0
+
+[sub_resource type="Resource" id="Key_28"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.365, -0.12, 0.06)
+rotation_degrees = Vector3(20, -10, 90)
+curl = Vector3(45, 60, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Gun_smg"]
+script = ExtResource("2_gun")
+gun_id = &"smg"
+model = ExtResource("11_smg")
+model_material = ExtResource("20_bot")
+model_offset = Vector3(0.016, -0.012, 0.057)
+model_rotation_degrees = Vector3(72.62, 18.19, -30.42)
+model_scale = 1.66
+hold_position = Vector3(0.16, -0.18, -0.29)
+kick_back = 0.022
+kick_pitch_degrees = 2
+kick_side = 0.006
+kick_roll_degrees = 1.5
+settle_seconds = 0.07
+raise_seconds = 0.4
+raise_dip_depth = 0.12
+raise_dip_degrees = 35
+arms_root_position = Vector3(-0.16, -1.563, 0.25)
+arms_root_rotation_degrees = Vector3(0, -15, 0)
+arms_scale = 1
+reach_limit = 0.98
+forearm_twist_follow = 0.5
+curl_axis = Vector3(-1, 0, 0)
+thumb_axis = Vector3(0, 0, 0)
+curl_joint_weights = Vector3(1, 1.1, 0.7)
+grip_position = Vector3(0.027, -0.003, 0.062)
+grip_rotation_degrees = Vector3(0, 8, -90)
+grip_curl = Vector3(35, 85, 25)
+grip_pole = Vector3(0.6, -1, 0.2)
+magazine_size = Vector3(0.12, 0.055, 0.03)
+magazine_offset = Vector3(0, -0.035, -0.09)
+magazine_rotation_degrees = Vector3(0, 0, 0)
+shell_size = Vector3(0.02, 0.02, 0.07)
+shell_offset = Vector3(0, -0.03, -0.095)
+shell_rotation_degrees = Vector3(0, 0, 0)
+shell_reload = false
+shell_cycle_seconds = 0.45
+reload_in_at = 0.45
+blend_in_speed = 8
+blend_out_speed = 4
+finish_seconds = 0.35
+reload_keys = Array[ExtResource("4_key")]([SubResource("Key_15"), SubResource("Key_16"), SubResource("Key_17"), SubResource("Key_18"), SubResource("Key_19"), SubResource("Key_20"), SubResource("Key_21"), SubResource("Key_22"), SubResource("Key_23"), SubResource("Key_24"), SubResource("Key_25"), SubResource("Key_26")])
+finish_keys = Array[ExtResource("4_key")]([SubResource("Key_27"), SubResource("Key_28")])
+
+[sub_resource type="Resource" id="Key_29"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.01, -0.085, -0.004)
+rotation_degrees = Vector3(36.85, -7.05, 175.86)
+curl = Vector3(35, 40, 20)
+prop = 3
+
+[sub_resource type="Resource" id="Key_30"]
+script = ExtResource("4_key")
+time = 0.14
+position = Vector3(-0.03, -0.125, 0.026)
+rotation_degrees = Vector3(21.95, -6.08, 177.82)
+curl = Vector3(25, 30, 15)
+prop = 3
+
+[sub_resource type="Resource" id="Key_31"]
+script = ExtResource("4_key")
+time = 0.38
+position = Vector3(-0.31, -0.34, 0.13)
+rotation_degrees = Vector3(-7.9, -5.69, -179.11)
+curl = Vector3(20, 25, 10)
+prop = 0
+
+[sub_resource type="Resource" id="Key_32"]
+script = ExtResource("4_key")
+time = 0.5
+position = Vector3(-0.31, -0.325, 0.13)
+rotation_degrees = Vector3(-7.9, -5.69, -179.11)
+curl = Vector3(45, 50, 25)
+prop = 2
+
+[sub_resource type="Resource" id="Key_33"]
+script = ExtResource("4_key")
+time = 0.8
+position = Vector3(-0.025, -0.135, 0.026)
+rotation_degrees = Vector3(36.85, -7.05, 175.86)
+curl = Vector3(45, 50, 25)
+prop = 2
+
+[sub_resource type="Resource" id="Key_34"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.01, -0.085, -0.004)
+rotation_degrees = Vector3(36.85, -7.05, 175.86)
+curl = Vector3(35, 40, 20)
+prop = 0
+
+[sub_resource type="Resource" id="Key_35"]
+script = ExtResource("4_key")
+time = 0
+position = Vector3(-0.01, -0.085, -0.004)
+rotation_degrees = Vector3(36.85, -7.05, 175.86)
+curl = Vector3(35, 40, 20)
+prop = 0
+
+[sub_resource type="Resource" id="Key_36"]
+script = ExtResource("4_key")
+time = 0.3
+position = Vector3(-0.021, -0.025, -0.17)
+rotation_degrees = Vector3(0, -6, 160)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_37"]
+script = ExtResource("4_key")
+time = 0.55
+position = Vector3(-0.021, -0.025, -0.095)
+rotation_degrees = Vector3(0, -6, 160)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_38"]
+script = ExtResource("4_key")
+time = 0.72
+position = Vector3(-0.021, -0.025, -0.17)
+rotation_degrees = Vector3(0, -6, 160)
+curl = Vector3(55, 60, 30)
+prop = 0
+
+[sub_resource type="Resource" id="Key_39"]
+script = ExtResource("4_key")
+time = 1
+position = Vector3(-0.365, -0.14, 0.07)
+rotation_degrees = Vector3(20, -10, 90)
+curl = Vector3(45, 60, 25)
+prop = 3
+
+[sub_resource type="Resource" id="Gun_shotgun"]
+script = ExtResource("2_gun")
+gun_id = &"shotgun"
+model = ExtResource("12_shotgun")
+model_material = ExtResource("20_bot")
+model_offset = Vector3(0.02, -0.002, 0.049)
+model_rotation_degrees = Vector3(32.61, 15.64, -26.52)
+model_scale = 0.91
+hold_position = Vector3(0.16, -0.16, -0.3)
+kick_back = 0.09
+kick_pitch_degrees = 10
+kick_side = 0.03
+kick_roll_degrees = 8
+settle_seconds = 0.3
+raise_seconds = 0.5
+raise_dip_depth = 0.12
+raise_dip_degrees = 35
+arms_root_position = Vector3(-0.16, -1.583, 0.26)
+arms_root_rotation_degrees = Vector3(0, -15, 0)
+arms_scale = 1
+reach_limit = 0.98
+forearm_twist_follow = 0.5
+curl_axis = Vector3(-1, 0, 0)
+thumb_axis = Vector3(0, 0, 0)
+curl_joint_weights = Vector3(1, 1.1, 0.7)
+grip_position = Vector3(0.032, -0.022, 0.099)
+grip_rotation_degrees = Vector3(0, 8, -90)
+grip_curl = Vector3(35, 85, 25)
+grip_pole = Vector3(0.6, -1, 0.2)
+magazine_size = Vector3(0.075, 0.03, 0.025)
+magazine_offset = Vector3(0, -0.035, -0.09)
+magazine_rotation_degrees = Vector3(0, 0, 0)
+shell_size = Vector3(0.02, 0.02, 0.07)
+shell_offset = Vector3(0, -0.03, -0.095)
+shell_rotation_degrees = Vector3(0, 0, 0)
+shell_reload = true
+shell_cycle_seconds = 0.45
+reload_in_at = 0
+blend_in_speed = 8
+blend_out_speed = 4
+finish_seconds = 0.55
+reload_keys = Array[ExtResource("4_key")]([SubResource("Key_29"), SubResource("Key_30"), SubResource("Key_31"), SubResource("Key_32"), SubResource("Key_33"), SubResource("Key_34")])
+finish_keys = Array[ExtResource("4_key")]([SubResource("Key_35"), SubResource("Key_36"), SubResource("Key_37"), SubResource("Key_38"), SubResource("Key_39")])
+
+[sub_resource type="Resource" id="Sub_coffee"]
+script = ExtResource("3_sub")
+kind = &"coffee"
+model = ExtResource("13_kopi")
+surface_materials = Array[Material]([ExtResource("21_manprop"), ExtResource("21_manprop")])
+rest_position = Vector3(-0.17, -0.135, -0.3)
+rest_rotation_degrees = Vector3(-15, -10, 90)
+rest_curl = Vector3(35, 85, 25)
+raised_position = Vector3(-0.0862, -0.1257, -0.2402)
+raised_rotation_degrees = Vector3(44.71, 174.26, -98.13)
+raised_curl = Vector3(40, 85, 25)
+prop_offset = Vector3(0.005, -0.048, -0.075)
+prop_rotation_degrees = Vector3(0, 0, -90)
+prop_scale = 1
+fx_offset = Vector3(0, 0.0475, 0)
+fx_idle_rate = 1.5
+fx_raised_rate = 4.5
+fx_raised_threshold = 0.85
+fx_lifetime = 1.8
+fx_fade_seconds = 1.4
+fx_rise_speed = 0.08
+fx_drift = 0.02
+fx_scatter = 0.004
+fx_start_size = 0.018
+fx_end_size = 0.075
+fx_color = Color(0.92, 0.94, 1, 0.28)
+
+[sub_resource type="Resource" id="Sub_cigarette"]
+script = ExtResource("3_sub")
+kind = &"cigarette"
+model = ExtResource("14_rokok")
+surface_materials = Array[Material]([ExtResource("21_manprop"), ExtResource("22_unlit")])
+rest_position = Vector3(-0.17, -0.135, -0.3)
+rest_rotation_degrees = Vector3(-15, -10, 90)
+rest_curl = Vector3(20, 45, 15)
+raised_position = Vector3(-0.091, -0.2202, -0.175)
+raised_rotation_degrees = Vector3(68.02, -68.29, 47.99)
+raised_curl = Vector3(10, 30, 20)
+prop_offset = Vector3(0.01, -0.01, -0.13)
+prop_rotation_degrees = Vector3(90, 0, 0)
+prop_scale = 0.5
+fx_offset = Vector3(0, 0, -0.0425)
+fx_idle_rate = 3
+fx_raised_rate = 7
+fx_raised_threshold = 0.85
+fx_lifetime = 2.6
+fx_fade_seconds = 2
+fx_rise_speed = 0.12
+fx_drift = 0.03
+fx_scatter = 0.002
+fx_start_size = 0.01
+fx_end_size = 0.09
+fx_color = Color(0.78, 0.8, 0.84, 0.22)
+
+[resource]
+script = ExtResource("1_data")
+guns = Array[ExtResource("2_gun")]([SubResource("Gun_pistol"), SubResource("Gun_smg"), SubResource("Gun_shotgun")])
+substances = Array[ExtResource("3_sub")]([SubResource("Sub_coffee"), SubResource("Sub_cigarette")])
+render_layer = 20
+view_near = 0.01
+view_far = 5.0
+view_fov = 60.0
+fbx_rotation_degrees = Vector3(0, 180, 0)
+show_arms = true
+arms_scene = ExtResource("15_arms")
+arms_material = ExtResource("23_arms")
+magazine_material = ExtResource("24_mag")
+shell_material = ExtResource("25_shell")
+raise_seconds = 0.35
+lower_seconds = 0.25
+swap_lower_seconds = 0.18
+swap_raise_seconds = 0.22
+empty_seconds = 0.3
+free_hand_pole = Vector3(-0.6, -1, 0.2)
+lowered_position = Vector3(-0.21, -0.38, -0.2)
+lowered_rotation_degrees = Vector3(20, -10, 90)
+lowered_curl = Vector3(45, 60, 20)
+empty_position = Vector3(-0.21, -0.235, -0.25)
+empty_rotation_degrees = Vector3(15, -10, 80)
+empty_curl = Vector3(10, 20, 5)
+fx_enabled = true

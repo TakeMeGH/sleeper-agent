@@ -1,0 +1,50 @@
+extends SceneTree
+## Story 014 probe 2: combined FOV with superspeed (main + visible mirror cameras), run end while paused,
+## and unscaled-time smoothing under slow motion.
+
+
+func _init() -> void:
+	var sc: Node = load("res://src/player/test_range_hr_screen_high_speed.tscn").instantiate()
+	root.add_child(sc)
+	await process_frame
+	var hs: HeartRateScreen = sc.get_node("HeartRateScreen")
+	var cam: Camera3D = sc.get_node("Player/Head/Camera3D")
+	var heart: HeartRate = sc.get_node("Player/HeartRate")
+	var shift: ShiftAbility = sc.get_node("Player/ShiftAbility")
+	var look: AbilityLook = sc.get_node("AbilityLook")
+	var hud: Hud = hs.hud
+	var vm: Node = sc.get_node("Player/Head/Camera3D/Viewmodel")
+	for i in 120:
+		await physics_frame
+	await process_frame
+	var wc: Camera3D = hud.get(&"_world_camera")
+	var vc: Camera3D = vm.get(&"_view_camera")
+	print("PROBE superspeed rate=%.2f active=%s look_fov=%+.3f heart_fov=%+.3f main_fov=%.3f world_mirror_fov=%.3f viewmodel_fov=%.3f viewmodel_near=%.3f" % [heart.get_rate(), shift.get_active_kind(), look.get_current_values()[&"fov_offset"], hs.get_fov_offset(), cam.fov, wc.fov, vc.fov, vc.near])
+	# Run end while paused (as RunEndScreen does): the visible cameras must lose the heart offset.
+	paused = true
+	hs.on_run_ended(&"heart_attack")
+	await process_frame
+	await process_frame
+	print("PROBE run end paused: heart_fov=%+.3f drawn=%.4f main_fov=%.3f world_mirror_fov=%.3f viewmodel_fov=%.3f" % [hs.get_fov_offset(), hs.get_vignette_intensity(), cam.fov, wc.fov, vc.fov])
+	paused = false
+	sc.queue_free()
+	await process_frame
+
+	# Unscaled time: slow motion 0.3, the screen's own _process, rate jump 80 -> 150.
+	var sc2: Node = load("res://src/player/test_range_hr_screen_normal.tscn").instantiate()
+	root.add_child(sc2)
+	for i in 30:
+		await physics_frame
+	var hs2: HeartRateScreen = sc2.get_node("HeartRateScreen")
+	var heart2: HeartRate = sc2.get_node("Player/HeartRate")
+	sc2.set(&"debug_heart_rate", 150.0)
+	heart2.change_rate(150.0 - heart2.get_rate())
+	Engine.time_scale = 0.3
+	var t0: int = Time.get_ticks_usec()
+	while Time.get_ticks_usec() - t0 < 600000:
+		await process_frame
+	var wall: float = (Time.get_ticks_usec() - t0) / 1e6
+	var frac: float = hs2.get_smoothed_intensity() / hs2.compute_target(heart2.get_rate())[&"intensity"]
+	print("PROBE slow motion time_scale=0.3 wall=%.3f s progress=%.3f expected unscaled=%.3f expected if scaled=%.3f" % [wall, frac, 1.0 - exp(-wall / 0.6), 1.0 - exp(-wall * 0.3 / 0.6)])
+	Engine.time_scale = 1.0
+	quit()

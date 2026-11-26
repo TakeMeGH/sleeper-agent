@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/textures/rs_textures_bot.png" id="1_tex"]
+
+[resource]
+resource_name = "placeholders"
+albedo_texture = ExtResource("1_tex")
+metallic = 0.0
+metallic_specular = 0.5
+roughness = 1.0
+texture_filter = 0

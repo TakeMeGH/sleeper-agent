@@ -1,0 +1,30 @@
+{
+  "rest_low_rate": 60,
+  "rest_high_rate": 100,
+  "low_full_rate": 10,
+  "high_full_rate": 190,
+  "curve_exponent": 1.0,
+  "response_seconds": 0.6,
+  "vignette_smoothness": 0.6,
+
+  "warn_low_band": 30,
+  "warn_high_band": 30,
+  "pulse_depth_max": 0.5,
+  "pulse_depth_countdown": 0.7,
+  "pulse_per_second": 1.0,
+  "pulse_per_second_countdown": 2.0,
+
+  "low": {
+    "vignette_intensity": 0.6,
+    "color": { "r": 0, "g": 0, "b": 0, "a": 1 },
+    "fov_delta": -8
+  },
+
+  "high": {
+    "vignette_intensity": 0.25,
+    "color": { "r": 1, "g": 1, "b": 1, "a": 1 },
+    "fov_delta": 20,
+    "overlay_inner_radius": 0.5,
+    "overlay_outer_radius": 1.05
+  }
+}

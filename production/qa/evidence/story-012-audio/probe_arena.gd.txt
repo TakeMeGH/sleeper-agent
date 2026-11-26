@@ -1,0 +1,113 @@
+extends SceneTree
+# Story 012 probe 2: kill + dry click on test_range dummies, then music/footsteps/landing/run end in test_arena_boss.
+
+func dump(tag: String, node: AudioEmitter) -> void:
+	for e in node.get_event_log():
+		print("PROBE ", tag, " event=", e[&"event"], " stream=", e[&"stream"].get_file(), " vol_db=", snappedf(e[&"volume_db"], 0.01), " pos=", e[&"position"])
+	node.clear_event_log()
+
+func frames(n: int) -> void:
+	for i in n: await physics_frame
+
+func _init() -> void:
+	# --- Part 1: kill sound and dry click in the range.
+	var range_scene: Node = load("res://src/player/test_range.tscn").instantiate()
+	root.add_child(range_scene)
+	await frames(5)
+	var player: Node = range_scene.get_node("Player")
+	var sfx: SfxPlayer = player.get_node("SfxPlayer")
+	var holder: WeaponHolder = player.get_node("Head/Camera3D/WeaponHolder")
+	var cam: Camera3D = player.get_node("Head/Camera3D")
+	var exclude: Array[RID] = [player.get_rid()]
+	for d in range_scene.find_children("*", "TargetDummy", true, false):
+		(d as TargetDummy).max_health = 0.5
+	holder.switch_to(2)
+	await frames(40)
+	sfx.clear_event_log()
+	var sg: Gun = holder.get_current_gun()
+	sg.magazine = sg.data.magazine_size
+	holder.shot_hit.connect(func(pos, n, col, dmg, k, d): print("PROBE raw_shot_hit collider=", (col as Node).name if col is Node else "null", " damageable=", dmg, " killed=", k))
+	for d in range_scene.find_children("*", "TargetDummy", true, false): print("PROBE dummy ", d.name, " at ", d.global_position, " dead=", d.is_dead())
+	(player as Node3D).global_position = Vector3(0.0, (player as Node3D).global_position.y, -15.0)
+	await frames(2)
+	sg.try_fire(cam, exclude)
+	print("PROBE shotgun blast pellets=", sg.data.pellets, " hit=", sfx.get_event_count(&"hit"), " kill=", sfx.get_event_count(&"kill"), " surface=", sfx.get_event_count(&"surface"))
+	dump("shotgun_kill_blast", sfx)
+	holder.switch_to(1)
+	await frames(40)
+	var smg: Gun = holder.get_current_gun()
+	smg.magazine = 0
+	smg.spare = 0
+	sfx.clear_event_log()
+	smg.try_fire(cam, exclude)
+	await frames(30)
+	smg.try_fire(cam, exclude)
+	dump("smg_empty_no_spare", sfx)
+	range_scene.queue_free()
+	await frames(3)
+	# --- Part 2: arena boss wave.
+	var arena: Node = load("res://src/waves/test_arena_boss.tscn").instantiate()
+	root.add_child(arena)
+	await frames(3)
+	var p: CharacterBody3D = arena.get_node("Player")
+	var music: MusicDirector = p.get_node("MusicDirector")
+	var feet: Footsteps = p.get_node("Footsteps")
+	var hra: HeartRateAudio = p.get_node("HeartRateAudio")
+	var t0: int = Time.get_ticks_msec()
+	var saw_boss: bool = false
+	for i in 900:
+		await process_frame
+		if music.get_current_track() == &"boss":
+			saw_boss = true
+			break
+	print("PROBE boss_alive=", music.is_boss_alive(), " track=", music.get_current_track(), " after_ms=", Time.get_ticks_msec() - t0)
+	for i in 40: music.tick(0.05)
+	print("PROBE music during boss combat_level=", snappedf(music.get_track_level(&"combat"), 0.01), " boss_level=", snappedf(music.get_track_level(&"boss"), 0.01), " boss_db=", snappedf(music.get_track_volume_db(&"boss"), 0.1), " boss_playing=", music.is_track_playing(&"boss"))
+	var bosses: Array = []
+	for e in get_nodes_in_group(&"enemies"):
+		if e is BossEnemy: bosses.append(e)
+	print("PROBE bosses_alive=", bosses.size())
+	for b in bosses:
+		for k in 60:
+			if is_instance_valid(b) and b.is_in_group(&"enemies"): b.take_hit(1000.0, Vector3.ZERO)
+	for i in 40:
+		await process_frame
+	for i in 40: music.tick(0.05)
+	print("PROBE music after boss death track=", music.get_current_track(), " combat_level=", snappedf(music.get_track_level(&"combat"), 0.01), " boss_level=", snappedf(music.get_track_level(&"boss"), 0.01), " boss_playing=", music.is_track_playing(&"boss"), " combat_playing=", music.is_track_playing(&"combat"))
+	dump("music", music)
+	# Footsteps: real input.
+	feet.clear_event_log()
+	Input.action_press(&"move_forward")
+	await frames(30)
+	for i in 5: feet.tick(0.05)
+	print("PROBE walking is_walking=", feet.is_walking(), " playing=", feet.is_footsteps_playing(), " level=", snappedf(feet.get_footstep_level(), 0.01), " speed=", snappedf(Vector2(p.velocity.x, p.velocity.z).length(), 0.01))
+	Input.action_release(&"move_forward")
+	await frames(20)
+	for i in 10: feet.tick(0.05)
+	print("PROBE stopped is_walking=", feet.is_walking(), " playing=", feet.is_footsteps_playing())
+	# Dive landing via the real dive input.
+	Input.action_press(&"dive")
+	await frames(2)
+	Input.action_release(&"dive")
+	await frames(120)
+	print("PROBE after dive landing_count=", feet.get_event_count(&"landing"))
+	# Long fall: lift the player 4 m.
+	p.global_position.y += 4.0
+	await frames(120)
+	print("PROBE after 4m fall landing_count=", feet.get_event_count(&"landing"))
+	# Short drop 0.3 m: no landing.
+	p.global_position.y += 0.3
+	await frames(60)
+	print("PROBE after 0.3m drop landing_count=", feet.get_event_count(&"landing"))
+	dump("feet", feet)
+	# Heart loops on run end.
+	var heart: HeartRate = p.get_node("HeartRate")
+	heart.change_rate(120.0 - heart.get_rate())
+	for i in 30: hra.tick(0.05)
+	print("PROBE before end high_playing=", hra.is_high_playing(), " high_lin=", snappedf(hra.get_high_linear(), 0.01))
+	hra.clear_event_log()
+	heart.run_ended.emit(&"heart_attack")
+	for i in 30: hra.tick(0.05)
+	print("PROBE after run end has_ended=", hra.has_ended(), " low_playing=", hra.is_low_playing(), " high_playing=", hra.is_high_playing())
+	dump("heart_end", hra)
+	quit()

@@ -1,0 +1,9 @@
+{
+  "_comment": "Story 044: the coffee and cigarette consume loops (schema in ConsumeAudioConfig.cs). Fades in real seconds; volumes 0 to 1 (above 0).",
+  "fade_in_seconds": 0.05,
+  "fade_out_seconds": 0.25,
+  "sounds": [
+    { "substance_id": "coffee", "clip": "ngopi.wav", "volume": 0.8 },
+    { "substance_id": "cigarette", "clip": "ngudud.wav", "volume": 0.8 }
+  ]
+}

@@ -1,0 +1,10 @@
+Reviewed-Content-Hash: src/tutorial/hint_box.gd d0ef7d7ea0b01bf487bbec7f9550bcc7d46b3b42
+Reviewed-Content-Hash: src/tutorial/tutorial_data.gd 93917084418ae89f23e45d373b3f1c9214c2d478
+Reviewed-Content-Hash: src/tutorial/tutorial_goal.gd 02dcbea0f5699e31a28694a5fbb185c92df54f1e
+Reviewed-Content-Hash: src/tutorial/tutorial_hint.gd c84738ceae71fc3ac04a14edfb7aa764f4e78078
+Reviewed-Content-Hash: src/tutorial/tutorial_host.gd 09b97c5e32667f7e06137f6173f6f41bef1126e6
+Reviewed-Content-Hash: assets/data/tutorial/tutorial.tres 049cf17a65f9e12c205119f2378266004897c1ac
+Reviewed-Content-Hash: src/ui/hud/hud.gd f227759a307b40854c9e4329a293643ad6ab2083
+Reviewed-Content-Hash: src/heart/heart_rate.gd 0485a6b2ee54cc7f285a2fd6d834f7fb3599c441
+Reviewed-Content-Hash: src/run/level_rotation.gd b3a457e839d1b2797fea3dd080aec341c52a6146
+Reviewed-Content-Hash: project.godot d970136302ea3b221e3afecc90fb098b0dcbffb3

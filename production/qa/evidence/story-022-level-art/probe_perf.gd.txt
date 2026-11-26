@@ -1,0 +1,39 @@
+extends SceneTree
+## Story 022 perf probe (windowed): -- <canteen|plaza> <wave>. Hard cap 40000 frames, 45 s wall clock.
+var _g: Node
+var _frame: int = 0
+var _t0: int = 0
+var _samples: Array[float] = []
+var _max_enemies: int = 0
+var _wave: int = 6
+func _initialize() -> void:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	_wave = int(args[1]) if args.size() > 1 else 6
+	_g = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+	_g.set(&"start_level_id", StringName(args[0] if args.size() > 0 else "canteen"))
+	_g.set(&"debug_keep_heart_rate", true)
+	root.add_child(_g)
+	_t0 = Time.get_ticks_msec()
+func _process(_d: float) -> bool:
+	_frame += 1
+	if _frame == 60:
+		var sp: Node = _g.get(&"spawner")
+		sp.call(&"stop")
+		sp.call(&"start", _wave, 1)
+		print("PROBE restarted spawner at wave ", _wave)
+	var player: Node3D = _g.get(&"player") as Node3D
+	if player != null and _frame > 60:
+		player.set(&"invulnerable", true)
+	var n: int = get_nodes_in_group(&"enemies").size()
+	_max_enemies = maxi(_max_enemies, n)
+	if Time.get_ticks_msec() - _t0 > 6000 and n > 0:
+		_samples.append(1.0 / maxf(_d, 0.0001))
+	if _frame >= 40000 or Time.get_ticks_msec() - _t0 > 45000:
+		_samples.sort()
+		var avg: float = 0.0
+		for s: float in _samples:
+			avg += s
+		avg = avg / maxf(1.0, float(_samples.size()))
+		print("PROBE perf level=", _g.call(&"get_current_level_id"), " frames=", _frame, " samples=", _samples.size(), " max_enemies=", _max_enemies, " fps_avg=", snappedf(avg, 0.1), " fps_min=", _samples[0] if _samples.size() > 0 else -1.0, " fps_p5=", _samples[int(_samples.size() * 0.05)] if _samples.size() > 0 else -1.0, " wall_ms=", Time.get_ticks_msec() - _t0, " vsync=", DisplayServer.window_get_vsync_mode())
+		quit()
+	return false

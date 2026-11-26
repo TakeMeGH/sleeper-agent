@@ -1,0 +1,13 @@
+Reviewed-Content-Hash: src/ui/hud/hud.gd 1701a7033e158df1f18005b537afd46176105532
+Reviewed-Content-Hash: src/ui/hud/hud.tscn 9d74c917a2156dcc4ee3fa3684e5ebaa51a46a33
+Reviewed-Content-Hash: src/ui/hud/glyph_row.gd 0949bd2b538fa1e8794840c44220b36558be9ff5
+Reviewed-Content-Hash: src/ui/hud/hud_data.gd 7cda1ce099d6cf50a644d22613821402a1ccce4f
+Reviewed-Content-Hash: assets/data/ui/hud.tres 4a51688539f00d12b715ee96f2f25d12f69cca29
+Reviewed-Content-Hash: src/run/run_state.gd a69800eb16d1c0025faf54cd288eaf0a277595e4
+Reviewed-Content-Hash: src/player/test_range.gd 7031be8898e9088793b431207cb9befce88bb1ca
+Reviewed-Content-Hash: src/player/test_range.tscn 77a7aaeceaf4f034b0f8315fb0945f919dc09079
+Reviewed-Content-Hash: src/player/test_range_hr_calm.tscn 6b6381789f71706e3e4cf76afbab0592d8dfc680
+Reviewed-Content-Hash: src/player/test_range_hr_near_10.tscn 4375e30ae5808fa47452dd136cd11ce4d043c241
+Reviewed-Content-Hash: src/player/test_range_hr_below_10.tscn 0e45807e6260c73a49d1c6237750c4039585780a
+Reviewed-Content-Hash: src/player/test_range_hr_above_190.tscn 7e38d7028778383b429dc55c1a34f0c0ce23f925
+Reviewed-Content-Hash: project.godot ad64402900dc23cf6bf222aed139ebb5cb4d39ca

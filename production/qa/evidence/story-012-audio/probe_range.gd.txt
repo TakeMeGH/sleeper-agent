@@ -1,0 +1,86 @@
+extends SceneTree
+# Story 012 integration probe on test_range.tscn: real Gun/WeaponHolder/HeartRate/SubstanceInventory signals.
+var sfx: SfxPlayer
+var log_from: int = 0
+
+func dump(tag: String, node: AudioEmitter) -> void:
+	var l: Array[Dictionary] = node.get_event_log()
+	for i in range(0, l.size()):
+		pass
+	for e in l:
+		print("PROBE ", tag, " event=", e[&"event"], " stream=", e[&"stream"].get_file(), " vol_db=", snappedf(e[&"volume_db"], 0.01), " pos=", e[&"position"])
+	node.clear_event_log()
+
+func frames(n: int) -> void:
+	for i in n: await physics_frame
+
+func _init() -> void:
+	var scene: Node = load("res://src/player/test_range.tscn").instantiate()
+	root.add_child(scene)
+	await frames(5)
+	var player: Node = scene.get_node("Player")
+	sfx = player.get_node("SfxPlayer")
+	var hra: HeartRateAudio = player.get_node("HeartRateAudio")
+	var feet: Footsteps = player.get_node("Footsteps")
+	var music: MusicDirector = player.get_node("MusicDirector")
+	var holder: WeaponHolder = player.get_node("Head/Camera3D/WeaponHolder")
+	var cam: Camera3D = player.get_node("Head/Camera3D")
+	var heart: HeartRate = player.get_node("HeartRate")
+	var subs: SubstanceInventory = player.get_node("SubstanceInventory")
+	print("PROBE buses count=", AudioServer.bus_count, " names=", [AudioServer.get_bus_name(0), AudioServer.get_bus_name(1), AudioServer.get_bus_name(2)], " send1=", AudioServer.get_bus_send(1), " send2=", AudioServer.get_bus_send(2))
+	print("PROBE voices3d_cap=", sfx.config.voice_cap_3d, " pool3d_children=", sfx.get_voice_count_3d())
+	var buses := {}
+	for c in sfx.get_children():
+		if c is AudioStreamPlayer or c is AudioStreamPlayer3D: buses[c.get_class() + ":" + String(c.bus)] = true
+	for c in music.find_children("*", "AudioStreamPlayer", true, false): buses["music:" + String(c.bus)] = true
+	for c in hra.find_children("*", "AudioStreamPlayer", true, false): buses["heart:" + String(c.bus)] = true
+	for c in feet.find_children("*", "AudioStreamPlayer", true, false): buses["feet:" + String(c.bus)] = true
+	print("PROBE player_buses=", buses.keys())
+	dump("music_at_start", music)
+	sfx.clear_event_log()
+	var exclude: Array[RID] = [player.get_rid()]
+	for gi in 3:
+		holder.switch_to(gi)
+		await frames(40)
+		var gun: Gun = holder.get_current_gun()
+		gun.magazine = gun.data.magazine_size
+		for s in 5:
+			gun.try_fire(cam, exclude)
+			await frames(int(ceil(60.0 / maxf(gun.data.fire_rate, 0.1))) + 2 if "fire_rate" in gun.data else 20)
+		dump("gun=" + String(gun.data.gun_id) + " shots", sfx)
+		gun.magazine = 0
+		gun.try_fire(cam, exclude)
+		dump("gun=" + String(gun.data.gun_id) + " empty", sfx)
+		gun.start_reload()
+		var f: int = 0
+		while gun.is_reloading() and f < 600:
+			var before: int = sfx.get_event_log().size()
+			await physics_frame
+			await process_frame
+			f += 1
+			var l: Array[Dictionary] = sfx.get_event_log()
+			for i in range(before, l.size()):
+				print("PROBE gun=", gun.data.gun_id, " reload frame=", f, " progress=", snappedf(gun.get_reload_progress(), 0.01), " event=", l[i][&"event"], " stream=", l[i][&"stream"].get_file())
+		sfx.clear_event_log()
+	# Substances: hold coffee via tick until one unit is used, release.
+	subs.add_substance(&"coffee", 3)
+	for i in 10: subs.tick(1.0 / 60.0, true, false)
+	await process_frame
+	print("PROBE consume coffee held playing=", sfx.is_consume_playing(&"coffee"), " level=", snappedf(sfx.get_consume_level(&"coffee"), 0.01))
+	for i in 200: subs.tick(1.0 / 60.0, true, false)
+	subs.tick(1.0 / 60.0, false, false)
+	for i in 10: sfx.tick(0.05)
+	print("PROBE consume coffee after release playing=", sfx.is_consume_playing(&"coffee"))
+	subs.tick(1.0 / 60.0, false, true)
+	sfx.tick(0.1)
+	print("PROBE consume cigarette held playing=", sfx.is_consume_playing(&"cigarette"))
+	subs.tick(1.0 / 60.0, false, false)
+	for i in 10: sfx.tick(0.05)
+	dump("substance", sfx)
+	# Heart: drive the real HeartRate to each rate, then settle the smoothing.
+	for r in [80.0, 30.0, 10.0, 150.0, 190.0]:
+		heart.change_rate(r - heart.get_rate())
+		for i in 40: hra.tick(0.05)
+		print("PROBE heart rate=", snappedf(heart.get_rate(), 0.1), " low_lin=", snappedf(hra.get_low_linear(), 0.001), " low_db=", snappedf(hra.get_low_volume_db(), 0.1), " low_playing=", hra.is_low_playing(), " high_lin=", snappedf(hra.get_high_linear(), 0.001), " high_db=", snappedf(hra.get_high_volume_db(), 0.1), " high_playing=", hra.is_high_playing())
+	dump("heart", hra)
+	quit()

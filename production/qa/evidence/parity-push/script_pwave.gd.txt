@@ -1,0 +1,92 @@
+extends SceneTree
+## Parity-push wave probe: real canteen wave (no debug spawns); counts, over all tables, restarts, yaw-rate
+## sign flips while turning (wobble), stop snaps, max enemy/footprint overlap, and the busiest push.
+## godot --headless --path . -s res://.scratch/probes/pwave.gd -- <frames>
+const WALL_LIMIT_MS: int = 150000
+var _wall: int = 0
+var _f: int = 0
+var _max: int = 1800
+var _props: Array[PushableProp] = []
+var _pp: Dictionary = {}
+var _py: Dictionary = {}
+var _pv: Dictionary = {}
+var _pyr: Dictionary = {}
+var _mv: Dictionary = {}
+var _restarts: int = 0
+var _flips: int = 0
+var _snaps: int = 0
+var _pen: float = -9.0
+var _moving_frames: int = 0
+var _vmax: float = 0.0
+var _yrmax: float = 0.0
+var _enemies_max: int = 0
+var _moved_props: Dictionary = {}
+
+
+func _initialize() -> void:
+	_wall = Time.get_ticks_msec()
+	var a: PackedStringArray = OS.get_cmdline_user_args()
+	if a.size() > 0:
+		_max = int(a[0])
+	var game: Node = (load("res://src/run/game.tscn") as PackedScene).instantiate()
+	game.set(&"start_level_id", &"canteen")
+	game.set(&"debug_keep_heart_rate", 70.0)
+	game.set(&"debug_override_player_pose", true)
+	game.set(&"debug_player_position", Vector3(0.2, 0.05, -10.0))
+	root.add_child(game)
+
+
+func _physics_process(delta: float) -> bool:
+	_f += 1
+	if _f >= _max or Time.get_ticks_msec() - _wall > WALL_LIMIT_MS:
+		print("WAVE frames=%d enemies_max=%d props_moved=%d moving_frames=%d restarts=%d yaw_flips=%d snaps=%d pen_max=%.3f vmax=%.2f yrmax=%.1f wall_ms=%d" % [
+			_f, _enemies_max, _moved_props.size(), _moving_frames, _restarts, _flips, _snaps, _pen, _vmax, _yrmax, Time.get_ticks_msec() - _wall])
+		quit()
+		return true
+	if _props.is_empty():
+		_props = PushableProp.get_all(self)
+		for p: PushableProp in _props:
+			_pp[p] = p.global_position
+			_py[p] = p.global_rotation.y
+			_pv[p] = 0.0
+			_pyr[p] = 0.0
+			_mv[p] = false
+		return false
+	var enemies: Array[Node] = get_nodes_in_group(&"enemies")
+	_enemies_max = maxi(_enemies_max, enemies.size())
+	for p: PushableProp in _props:
+		var step: Vector3 = p.global_position - (_pp[p] as Vector3)
+		var v: float = Vector2(step.x, step.z).length() / delta
+		var yr: float = rad_to_deg(angle_difference(_py[p] as float, p.global_rotation.y)) / delta
+		var mv: bool = v > 0.05 or absf(yr) > 1.0
+		if mv:
+			_moving_frames += 1
+			_moved_props[p] = true
+		if mv and not (_mv[p] as bool):
+			_restarts += 1
+		if absf(yr) > 5.0 and absf(_pyr[p] as float) > 5.0 and signf(yr) != signf(_pyr[p] as float):
+			_flips += 1
+		if (_pv[p] as float) > 0.4 and v < 0.05:
+			_snaps += 1
+		_vmax = maxf(_vmax, v)
+		_yrmax = maxf(_yrmax, absf(yr))
+		_mv[p] = mv
+		_pv[p] = v
+		_pyr[p] = yr
+		_pp[p] = p.global_position
+		_py[p] = p.global_rotation.y
+		for n: Node in enemies:
+			var e: EnemyBase = n as EnemyBase
+			if e == null or e.is_queued_for_deletion() or e._collision == null:
+				continue
+			var l: Vector3 = p.to_local(e.global_position)
+			if absf(l.y) > 1.0:
+				continue
+			var h: Vector2 = p.get_footprint_extents()
+			var dx: float = absf(l.x) - h.x
+			var dz: float = absf(l.z) - h.y
+			var d: float = maxf(dx, dz) if (dx < 0.0 and dz < 0.0) else Vector2(maxf(dx, 0.0), maxf(dz, 0.0)).length()
+			var r: float = (e._collision.shape as CapsuleShape3D).radius
+			if not e._dead:
+				_pen = maxf(_pen, r - d)
+	return false

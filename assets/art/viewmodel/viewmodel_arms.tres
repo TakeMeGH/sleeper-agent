@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/third_party/drillimpact_psx_first_person_arms/arms_gloves_01.png" id="1_tex"]
+
+[resource]
+resource_name = "ViewmodelArms"
+albedo_texture = ExtResource("1_tex")
+metallic = 0.0
+roughness = 0.85
+texture_filter = 0

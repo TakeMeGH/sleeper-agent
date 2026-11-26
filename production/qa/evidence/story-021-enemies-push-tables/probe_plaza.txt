@@ -1,0 +1,3 @@
+PROBE plaza props top_level=11 with_collider=11 pushable=2 without=[] nav_polys=1
+PROBE plaza pushable Prop3 at (8.54, 0.0, -17.99) nearest_nav=(8.376953, 0.3225, -17.98041)
+PROBE plaza pushable Prop4 at (-8.46, 0.0, -17.99) nearest_nav=(-8.312599, 0.3225, -17.99)

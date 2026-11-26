@@ -1,0 +1,32 @@
+{
+  "keep_start_end_flash": 1,
+  "vignette_smoothness": 0.6,
+
+  "slow_motion": {
+    "ease_in_seconds": 0.5,
+    "ease_out_seconds": 0.7,
+    "saturation": -75,
+    "contrast": 3,
+    "post_exposure": 0.8,
+    "color_filter": { "r": 0.62, "g": 0.78, "b": 1.0, "a": 1 },
+    "vignette_intensity": 0.3,
+    "chromatic_aberration": 0,
+    "fov_delta": 0,
+    "lowpass_hz": 900,
+    "highpass_hz": 10
+  },
+
+  "superspeed": {
+    "ease_in_seconds": 0.25,
+    "ease_out_seconds": 0.5,
+    "saturation": 15,
+    "contrast": 12,
+    "post_exposure": 1.0,
+    "color_filter": { "r": 1.0, "g": 0.88, "b": 0.7, "a": 1 },
+    "vignette_intensity": 0,
+    "chromatic_aberration": 0.3,
+    "fov_delta": 12,
+    "lowpass_hz": 22000,
+    "highpass_hz": 250
+  }
+}

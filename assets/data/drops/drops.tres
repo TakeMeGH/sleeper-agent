@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="DropData" format=3]
+
+[ext_resource type="Script" path="res://src/ai/drop_data.gd" id="1_dd"]
+[ext_resource type="PackedScene" path="res://assets/art/props/drop_ammo.fbx" id="2_ammo"]
+[ext_resource type="PackedScene" path="res://assets/art/props/drop_kopi.fbx" id="3_kopi"]
+[ext_resource type="PackedScene" path="res://assets/art/props/drop_rokok.fbx" id="4_rokok"]
+[ext_resource type="Material" path="res://assets/art/viewmodel/manprop_unlit.tres" id="5_mat"]
+[ext_resource type="Texture2D" path="res://assets/third_party/kenney_particle_pack/flare_01.png" id="6_glow"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/sfx_dose_pickup.wav" id="7_sfx"]
+
+[resource]
+script = ExtResource("1_dd")
+smg_rounds = 30
+shotgun_rounds = 6
+dose_amount = 1
+pickup_lifetime = 20.0
+blink_time = 4.0
+blink_rate = 3.0
+pickup_radius = 1.5
+pickup_height_tolerance = 2.5
+ammo_cap = 12
+dose_cap = 12
+drop_offset = 0.6
+drop_spread_radius = 1.2
+floor_probe_up = 1.0
+floor_probe_down = 3.0
+floor_collision_mask = 1
+hover_height = 0.6
+bob_height = 0.12
+bob_speed = 2.0
+spin_speed_degrees = 90.0
+ammo_model = ExtResource("2_ammo")
+coffee_model = ExtResource("3_kopi")
+cigarette_model = ExtResource("4_rokok")
+model_material = ExtResource("5_mat")
+fbx_rotation_degrees = Vector3(0, 180, 0)
+ammo_model_scale = Vector3(0.35, 0.2, 0.25)
+dose_model_scale = Vector3(1, 1, 1)
+smg_color = Color(0.95, 0.8, 0.2, 1)
+shotgun_color = Color(0.9, 0.25, 0.2, 1)
+dose_blink_hides_model = false
+cast_shadows = false
+glow_texture = ExtResource("6_glow")
+glow_size = 0.9
+coffee_glow_color = Color(1, 0.6, 0.15, 1)
+cigarette_glow_color = Color(1, 0.45, 0.1, 0.7)
+coffee_glow_height = 0.055
+cigarette_glow_height = 0.128
+dose_pickup_sound = ExtResource("7_sfx")
+pickup_volume = 0.8
+pickup_sound_bus = &"SFX"

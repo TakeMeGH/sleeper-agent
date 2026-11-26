@@ -1,0 +1,39 @@
+{
+    "delay_between_waves": 5,
+    "spawn_interval": 0.75,
+    "group_size": 3,
+    "group_spawn_interval": 0.4,
+    "enemies": [
+        {
+            "id": "melee",
+            "first_wave": 1,
+            "base_count": 6,
+            "extra_per_wave": 2,
+            "max_count": 20,
+            "health_scale_per_wave": 0.1,
+            "speed_scale_per_wave": 0.03,
+            "damage_scale_per_wave": 0.1
+        },
+        {
+            "id": "ranged",
+            "first_wave": 2,
+            "base_count": 2,
+            "extra_per_wave": 1,
+            "max_count": 8,
+            "health_scale_per_wave": 0.1,
+            "speed_scale_per_wave": 0.02,
+            "damage_scale_per_wave": 0.08
+        }
+    ],
+    "boss": {
+        "id": "boss",
+        "interval": 4,
+        "health_scale_per_wave": 0.1,
+        "speed_scale_per_wave": 0.02,
+        "damage_scale_per_wave": 0.08,
+        "escort": [
+            { "enemy": "melee", "count": 4 },
+            { "enemy": "ranged", "count": 2 }
+        ]
+    }
+}

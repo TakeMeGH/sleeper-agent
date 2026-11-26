@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/waves/test_arena_enemy_models.tscn" id="1_base"]
+
+[node name="TestArena" instance=ExtResource("1_base")]
+debug_poses = PackedStringArray("idle@0.3", "idle@0.3", "idle@0.3")
+debug_kill_after_frames = 40
+debug_kill_direction = Vector3(1, 0, 0.4)

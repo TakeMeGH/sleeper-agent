@@ -1,0 +1,35 @@
+{
+  "emitting_window_seconds": 0.5,
+  "slots": [
+    {
+      "id": "coffee",
+      "idle_rate": 1.5,
+      "raised_rate": 4.5,
+      "raised_threshold": 0.85,
+      "lifetime": 1.8,
+      "fade_time": 1.4,
+      "rise_speed": 0.08,
+      "drift": 0.02,
+      "scatter": 0.004,
+      "start_size": 0.018,
+      "end_size": 0.075,
+      "color": { "r": 0.92, "g": 0.94, "b": 1.0, "a": 0.28 },
+      "pool_size": 16
+    },
+    {
+      "id": "cigarette",
+      "idle_rate": 3.0,
+      "raised_rate": 7.0,
+      "raised_threshold": 0.85,
+      "lifetime": 2.6,
+      "fade_time": 2.0,
+      "rise_speed": 0.12,
+      "drift": 0.03,
+      "scatter": 0.002,
+      "start_size": 0.01,
+      "end_size": 0.09,
+      "color": { "r": 0.78, "g": 0.8, "b": 0.84, "a": 0.22 },
+      "pool_size": 32
+    }
+  ]
+}

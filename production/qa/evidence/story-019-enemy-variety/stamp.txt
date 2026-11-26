@@ -1,0 +1,11 @@
+Reviewed-Content-Hash: src/ai/ranged_gun_data.gd 200dc8500ce661975db80cdb9903a3c5729f598e
+Reviewed-Content-Hash: src/ai/ranged_enemy.gd 31ad7b246398112ef01ac99b4153a264fae1b7ce
+Reviewed-Content-Hash: src/ai/enemy_base.gd 71bc31a78c5597439b61c7d8a1027508e52b5937
+Reviewed-Content-Hash: src/ai/enemy_data.gd c7656fc07a2c0e54f877dd49ec3815d384b1b8b9
+Reviewed-Content-Hash: src/waves/wave_spawner.gd a1816b712f9845ee4293ff328d8ab7245419b0a1
+Reviewed-Content-Hash: src/waves/test_arena.gd a149661f7365cce896e521104f6e966557ab3505
+Reviewed-Content-Hash: src/waves/test_arena_ranged_mix.tscn 50611c16233208fcdef543cd05fca4ed0de8d659
+Reviewed-Content-Hash: assets/data/enemies/ranged_pistol.tres a7c2326f9ad6e642db9d1b124adc35f109f891be
+Reviewed-Content-Hash: assets/data/enemies/ranged_shotgun.tres 68af480b871ae4bf424476dc901d01f70bfdeb3f
+Reviewed-Content-Hash: assets/data/enemies/ranged_smg.tres c31fb0ee133ae9c911c53e57fcb4eb6de8f14846
+Reviewed-Content-Hash: assets/data/waves/default_waves.tres 7d1b08715cc74af3cf0ba3d96a5f6e0b8344656b

@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+[ext_resource type="Resource" path="res://assets/data/enemies/visual_ranged.tres" id="9_vis"]
+
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="1_ed"]
+[ext_resource type="Script" path="res://src/ai/ranged_gun_data.gd" id="2_gd"]
+[ext_resource type="PackedScene" path="res://assets/art/weapons/enemy_smg.fbx" id="3_prop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/smg.wav" id="4_snd"]
+
+[sub_resource type="Resource" id="Gun_smg"]
+script = ExtResource("2_gd")
+attack_clip = &"enemy_attack_smg"
+id = &"smg"
+pattern = 2
+pellets_per_shot = 1
+pellet_spread_degrees = 0.0
+burst_shots = 4
+burst_interval_seconds = 0.09
+burst_pause_seconds = 1.1
+preferred_distance = 12.0
+prop_scene = ExtResource("3_prop")
+prop_position = Vector3(0.3, 1.05, -0.45)
+prop_scale = 1.6
+prop_color = Color(0.9, 0.8, 0.15, 1)
+prop_box_size = Vector3(0.1, 0.18, 0.4)
+hand_position = Vector3(0.003089, 0.030665, 0.008673)
+hand_rotation_degrees = Vector3(-19.9315, 5.4815, -88.8868)
+shot_sound = ExtResource("4_snd")
+shot_volume_db = 0.0
+shot_pitch = 1.15
+shot_polyphony = 4
+sound_max_distance = 40.0
+sound_unit_size = 6.0
+
+[resource]
+script = ExtResource("1_ed")
+id = &"ranged_smg"
+kind = 1
+display_name = "SMG Gunman"
+health = 30.0
+move_speed = 4.3
+damage = 3.0
+body_scale = 0.95
+body_color = Color(0.9, 0.78, 0.15, 1)
+repath_interval = 0.25
+band_min = 9.0
+band_max = 16.0
+spot_arrive_distance = 0.4
+no_line_wait_seconds = 0.8
+spot_check_height = 1.4
+aim_seconds = 0.5
+fire_rate = 1.0
+spread_degrees = 4.0
+shot_range = 32.0
+magazine_size = 24
+reload_seconds = 2.4
+ammo_drop_chance = 0.35
+ammo_weights = PackedFloat32Array(3, 1)
+dose_drop_chance = 0.5
+dose_weights = PackedFloat32Array(3, 1)
+gun = SubResource("Gun_smg")
+visual = ExtResource("9_vis")

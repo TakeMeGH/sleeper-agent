@@ -1,0 +1,25 @@
+PROBE angle front = -0.0
+PROBE angle right = 90.0
+PROBE angle left = -90.0
+PROBE angle behind = -180.0
+PROBE angle front_high = -0.0
+PROBE angle left_low = -90.0
+PROBE turn before angle=-90.0
+PROBE turn after yaw+90 (left turn) angle=0.0 (source now in front expected 0)
+PROBE cleared arcs=0
+PROBE merge within 20deg (merge_angle=25.0): arcs=1 age=0.00 angle=20.0
+PROBE hit 60deg away: arcs=2
+PROBE pool size=6
+PROBE after 8 hits at 0,45..315 deg CCW: arcs=6 angles=[-90.0, -135.0, 180.0, 135.0, 90.0, 45.0] (first two = oldest reused)
+PROBE no-source hits: arcs=0
+PROBE take_hit with source via signal: arcs=1 angle=90.0
+PROBE time_scale 0.1 after 580 real ms: arcs=1 alpha=1.00 age=0.57
+PROBE time_scale 0.1 after 1180 real ms: arcs=0 (hold+fade=1.10)
+PROBE run end: arcs=1 (new hit refused)
+PROBE run end after 1.3 s: arcs=0
+PROBE countdown sequence=["5", "4", "3", "2", "1", ""] ended=true shown_after=false colour=(1.0, 0.84, 0.4, 1.0)
+PROBE label direct: 3.4 -> ''; stop -> shown=false
+PROBE no-source take_hit begin
+PROBE no-source take_hit end
+PROBE live countdown shown=true text='4' left=3.80
+PROBE after recovery rate=79 countdown_left=0.00 shown=false

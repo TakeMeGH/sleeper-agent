@@ -1,0 +1,10 @@
+{
+    "health": 50,
+    "move_speed": 3.5,
+    "contact_range": 1.5,
+    "contact_damage": 10,
+    "contact_interval": 1,
+    "attack_windup": 0.5,
+    "repath_interval": 0.25,
+    "navmesh_snap_distance": 2
+}

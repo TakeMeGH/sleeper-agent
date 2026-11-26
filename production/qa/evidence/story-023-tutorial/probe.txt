@@ -1,0 +1,46 @@
+PROBE f=2 active=true held=true limits=(40.0, 160.0)
+PROBE f=60 clamp low rate=40.0 zone=1 countdown=0.00
+PROBE f=60 clamp high rate=160.0 zone=3 countdown=0.00
+PROBE f=87 hint_shown move_look text='Move with WASD, look with the mouse' targets=[] danger=false
+PROBE f=182 hint_ended move_look completed=true elapsed=1.51
+PROBE f=221 hint_shown heart_falls text='Your heart rate keeps falling' targets=[&"heart_panel"] danger=false
+PROBE f=550 hint_ended heart_falls completed=true elapsed=5.01
+PROBE f=589 hint_shown coffee text='Hold Q to drink coffee and raise it' targets=[&"coffee_row", &"heart_panel"] danger=false
+PROBE f=689 hint_ended coffee completed=true elapsed=1.53
+PROBE f=730 hint_shown cigarette text='Hold E to smoke and calm it' targets=[&"cigarette_row", &"heart_panel"] danger=false
+PROBE f=832 hint_ended cigarette completed=true elapsed=1.53
+PROBE f=834 released held=false limits=(40.0, 160.0) spawner_wave=0 enemies=0 shown=[&"move_look", &"heart_falls", &"coffee", &"cigarette"]
+PROBE f=924 hint_shown shoot text='Press left mouse to shoot' targets=[&"gun_panel"] danger=false
+PROBE f=925 shoot up; limits=(-inf, inf) spawner_wave=1 enemies=1 max_enemies_while_held=0
+PROBE f=2929 hint_ended shoot completed=true elapsed=30.01
+PROBE f=2930 after shoot: cur= shots=0
+PROBE f=2930 set rate 30 zone=1
+PROBE f=2971 hint_shown slow_zone text='Slow zone: press Shift for slow motion' targets=[&"heart_panel"] danger=false
+PROBE f=2972 rate->0.0 countdown=0.00 (danger while slow_zone up)
+PROBE f=2973 hint_ended slow_zone completed=true elapsed=0.02
+PROBE f=2974 hint_shown danger text='Danger! Bring your heart rate back before the timer ends' targets=[&"heart_panel"] danger=true
+PROBE f=2975 danger current; shown=[&"move_look", &"heart_falls", &"coffee", &"cigarette", &"shoot", &"slow_zone"]
+PROBE f=2985 fast zone + hit queued: q=[&"first_hit"]
+PROBE f=2995 left fast zone; q=[&"first_hit", &"fast_zone"]
+PROBE f=3111 hint_ended danger completed=true elapsed=2.01
+PROBE f=3151 hint_shown first_hit text='Every hit you take lowers your heart rate' targets=[&"heart_panel"] danger=false
+PROBE f=3152 first_hit up; fast_zone shown? false q=[]
+PROBE f=3157 dive start=true
+PROBE f=3158 pickup collect=true
+PROBE f=3421 hint_ended first_hit completed=true elapsed=4.01
+PROBE f=3461 hint_shown fast_zone text='Fast zone: press Shift for super speed' targets=[&"heart_panel"] danger=false
+PROBE f=3761 hint_ended fast_zone completed=true elapsed=4.51
+PROBE f=3802 hint_shown pickup text='Pickups refill your ammo and your coffee and cigarettes' targets=[&"substance_panel", &"gun_panel"] danger=false
+PROBE f=4066 hint_ended pickup completed=true elapsed=4.01
+PROBE f=4106 hint_shown dive text='Space dives the way you move; you can shoot while diving' targets=[&"status_bar"] danger=false
+PROBE f=4353 moments done: shown=[&"move_look", &"heart_falls", &"coffee", &"cigarette", &"shoot", &"slow_zone", &"danger", &"first_hit", &"fast_zone", &"pickup"] order=["move_look", "heart_falls", "coffee", "cigarette", "shoot", "slow_zone", "danger", "first_hit", "fast_zone", "pickup", "dive"]
+PROBE f=4353 rebind before: 'Q'
+PROBE f=4353 rebind after: 'K'
+PROBE f=4353 restart; shown=10
+PROBE f=4383 after restart: active=true held=false game_held=false limits=(-inf, inf) opening=false shown=10 cur=
+PROBE f=4553 after restart 200: spawner_wave=1 cur=
+PROBE f=4553 hint_shown empty_gun text='Magazine empty: press R to reload' targets=[&"gun_panel"] danger=false
+PROBE f=4584 skip progress at 0.5s=0.30 cur=empty_gun skipped=false
+PROBE f=4674 after 2s Tab: skipped=true cur= box_visible=false
+PROBE f=4734 after skip+restart: skipped=true active=false cur= held=false
+PROBE f=4734 DONE order=["move_look", "heart_falls", "coffee", "cigarette", "shoot", "slow_zone", "danger", "first_hit", "fast_zone", "pickup", "dive", "empty_gun"]

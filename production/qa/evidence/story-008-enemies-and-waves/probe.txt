@@ -1,0 +1,31 @@
+PROBE wave=1 mix={ &"melee": 6 } total=6 melee_scale=h1.00 s1.00 d1.00
+PROBE wave=2 mix={ &"melee": 8, &"ranged": 2 } total=10 melee_scale=h1.10 s1.03 d1.10
+PROBE wave=3 mix={ &"melee": 10, &"ranged": 3 } total=13 melee_scale=h1.20 s1.06 d1.20
+PROBE wave=4 mix={ &"boss": 1, &"melee": 4, &"ranged": 2 } total=7 melee_scale=h1.30 s1.09 d1.30
+PROBE wave=5 mix={ &"melee": 14, &"ranged": 5 } total=19 melee_scale=h1.40 s1.12 d1.40
+PROBE wave=6 mix={ &"melee": 16, &"ranged": 6 } total=22 melee_scale=h1.50 s1.15 d1.50
+PROBE wave=7 mix={ &"melee": 18, &"ranged": 7 } total=25 melee_scale=h1.60 s1.18 d1.60
+PROBE wave=8 mix={ &"boss": 1, &"melee": 4, &"ranged": 2 } total=7 melee_scale=h1.70 s1.21 d1.70
+PROBE boss start health=600.0 armour=300.0 plates=5
+PROBE boss hit40 #1 health 600.0->588.0 armour 300.0->272.0 broken=false plates=5
+PROBE boss hit40 #2 health 588.0->576.0 armour 272.0->244.0 broken=false plates=5
+PROBE boss hit40 #11 health 480.0->460.0 armour 20.0->0.0 broken=true plates=0
+PROBE boss after break hit40 health 460.0->420.0 (full damage=true)
+PROBE boss plates after break=0
+PROBE pushback dir=(8,0,0) knockback=(4.8, 0.0, 0.0) health=49.0/50.0
+PROBE kill: dead=true enemy_killed=1 left 2->1 events=[1] runstate.enemies_left=1
+PROBE roll melee rolls(0.1,0.1,0.1,0.1)=[&"smg", &"coffee"] rolls(0.9,0.9,0.9,0.9)=[] rolls(0.2,0.9,0.4,0.8)=[&"shotgun", &"cigarette"]
+PROBE roll boss=[&"smg", &"smg", &"shotgun", &"shotgun", &"coffee", &"coffee", &"cigarette", &"cigarette"]
+PROBE pickup smg collect=true substance -1->-1 ammo_changed=[[&"smg", 30, 120]]
+PROBE pickup shotgun collect=true substance -1->-1 ammo_changed=[[&"shotgun", 6, 30]]
+PROBE pickup coffee collect=true substance 7->8 ammo_changed=[]
+PROBE pickup cigarette collect=true substance 3->4 ammo_changed=[]
+PROBE boss death drops spawned=[&"smg", &"smg", &"smg", &"shotgun", &"shotgun", &"coffee", &"coffee", &"cigarette", &"cigarette"]
+PROBE ranged behind CoverC (0,-15.5) line=false ; ranged in open (5,-12) line=true
+PROBE ranged 12s player=(0.0, 0.0, 6.0): shots=1 shots_without_line=0 states=[&"move_to_spot", &"shoot"] reload_seen=false min_magazine=5 spots=[&"Spot4", &"Spot2", &"Spot3"]
+PROBE ranged sample shots [name,line,hit,mag]=[[&"ranged_8", true, true, 6]]
+PROBE ranged 12s player=(0.0, 0.0, 0.0): shots=12 shots_without_line=0 states=[&"move_to_spot", &"shoot", &"reload"] reload_seen=true min_magazine=0 spots=[&"Spot3", &"Spot4", &"Spot1"]
+PROBE ranged sample shots [name,line,hit,mag]=[[&"ranged_9", true, true, 6], [&"ranged_10", true, false, 6], [&"ranged_9", true, false, 5], [&"ranged_10", true, false, 5], [&"ranged_9", true, true, 4], [&"ranged_10", true, true, 4], [&"ranged_9", true, false, 3], [&"ranged_10", true, false, 3]]
+PROBE melee states=["chase@0 d=7.94", "windup@110 d=1.58", "swing@146 d=1.58", "recover@162 d=1.58", "chase@219 d=1.58", "windup@220 d=1.58", "swing@256 d=1.58", "recover@272 d=1.58", "chase@329 d=1.58", "windup@330 d=1.58"]
+PROBE melee player heart jumps (take_hit -> apply_hit, damage 15.0)=["f154 72.1->57.0", "f264 51.6->36.5"]
+PROBE wave loop (kill all on spawn, 15 s) events=["started 1", "cleared 1 (left=0 runstate wave=1 left=0)", "started 2", "cleared 2 (left=0 runstate wave=2 left=0)"] kills=16

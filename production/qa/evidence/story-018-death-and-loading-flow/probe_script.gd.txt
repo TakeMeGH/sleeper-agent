@@ -1,0 +1,320 @@
+extends SceneTree
+## Story 018 probe. Usage: godot --headless --max-fps 60 --path . -s res://.scratch/probes/p018.gd -- <mode>
+## Modes: flow, slowmo, comfort0, notip, tip0, skip_enter, skip_click, restart, restart_mid, wall_side,
+## wall_face, hit_left, fallside, loadfail, travel
+
+var mode: String = "flow"
+var game: Node
+var frame: int = 0
+var t_end: int = -1
+var t_stage: Dictionary = {}
+var stages: Array[String] = []
+var clip_frames: int = 0
+var clip_checks: int = 0
+var max_roll: float = 0.0
+var max_pitch: float = 0.0
+var last_cam_y: float = INF
+var cam_y_rises: int = 0
+var start_cam: Vector3 = Vector3.ZERO
+var max_horiz: float = 0.0
+var fade_violation: int = 0
+var ready_frame: int = -1
+var clear_frame: int = -1
+var first_alpha: float = -1.0
+var done_at: int = -1
+var game_id: int = 0
+var restart_called_ms: int = -1
+var restart_alpha_before_reload: float = -1.0
+var reloaded: bool = false
+var new_first_alpha: float = -1.0
+var new_ready_frame: int = -1
+var new_clear_frame: int = -1
+var new_frame: int = 0
+var new_violation: int = 0
+var skip_sent_ms: int = -1
+var gun_samples: Array[String] = []
+var tip_seen: bool = false
+var level_loads: int = 0
+var travel_violation: int = 0
+var travel_max_alpha: float = 0.0
+var travel_started_frame: int = -1
+
+
+func P(s: String) -> void:
+	print("PROBE ", s)
+
+
+func _initialize() -> void:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	if args.size() > 0:
+		mode = args[0]
+	var ps: PackedScene = load("res://src/run/game.tscn")
+	game = ps.instantiate()
+	game.set("log_events", false)
+	if mode not in ["travel", "loadfail", "restart_mid", "fallside"]:
+		game.set("debug_end_run_after_seconds", 1.2)
+		game.set("debug_end_countdown_seconds", 0.5)
+		game.set("debug_end_reason", &"heart_attack" if mode == "hit_left" else &"passed_out")
+	if mode == "travel":
+		game.set("debug_open_exit_immediately", true)
+	if mode == "wall_side" or mode == "wall_face":
+		game.set("debug_override_player_pose", true)
+		game.set("debug_player_position", Vector3(-7.1, 0.05, 0.0))
+		game.set("debug_player_yaw_degrees", 180.0 if mode == "wall_side" else 90.0)
+	if mode == "loadfail":
+		var d: Resource = (game.get("data") as Resource).duplicate()
+		var bad := PackedScene.new()
+		var n := Node3D.new()
+		bad.pack(n)
+		n.free()
+		var scenes: Array[PackedScene] = []
+		scenes.assign(d.get("level_scenes"))
+		for i: int in scenes.size():
+			scenes[i] = bad
+		d.set("level_scenes", scenes)
+		game.set("data", d)
+	root.add_child(game)
+	current_scene = game
+	game_id = game.get_instance_id()
+	var flow: Node = game.get_node("RunFlow")
+	flow.stage_changed.connect(_on_stage)
+	game.get_node("RunEndScreen").run_end_requested.connect(_on_end)
+	var col: Node = game.get_node("DeathCollapse")
+	col.phase_changed.connect(func(p: int, _q: int) -> void: _mark("phase_" + str(col.call("get_phase_name"))))
+	col.gun_released.connect(func(_b: Node) -> void: _mark("gun_released"))
+	if mode == "comfort0":
+		col.call("set_motion_scale", 0.0)
+	if mode == "notip":
+		game.get_node("DeathTip").call("set_tip_list_override", PackedStringArray())
+	if mode == "tip0":
+		var td: Resource = (game.get_node("DeathTip").get("data") as Resource)
+		td.set("tip_hold_seconds", 0.0)
+	if mode == "travel":
+		game.connect("level_loaded", func(id: StringName, v: int) -> void:
+			level_loads += 1
+			P("level_loaded %s visit=%d frame=%d alpha=%.3f" % [id, v, frame, _alpha()]))
+	var fade: Node = game.get_node("ScreenFade")
+	P("layers fade=%d tip=%d results=%d hud=%d" % [fade.get("layer"), game.get_node("DeathTip").get("layer"),
+		game.get_node("RunEndScreen").get("layer"), game.get_node("Hud").get("layer")])
+
+
+func _alpha() -> float:
+	if not is_instance_valid(game):
+		return -1.0
+	return float(game.get_node("ScreenFade").call("get_alpha"))
+
+
+func _ms() -> int:
+	return Time.get_ticks_msec() - t_end if t_end >= 0 else -1
+
+
+func _mark(what: String) -> void:
+	t_stage[what] = _ms()
+	stages.append(what)
+	P("event %s at %d ms (frame %d) alpha=%.3f ts=%.2f" % [what, _ms(), frame, _alpha(), Engine.time_scale])
+
+
+func _on_end(reason: StringName) -> void:
+	t_end = Time.get_ticks_msec()
+	var cross: Control = game.get_node("Hud/Crosshair")
+	P("run_end_requested %s frame=%d" % [reason, frame])
+	start_cam = (game.get_node("Player/Head/Camera3D") as Camera3D).global_position
+	await process_frame
+	P("crosshair_visible_after_end=%s" % cross.visible)
+	P("fall_side=%.0f cam_start=%s" % [game.get_node("DeathCollapse").call("get_fall_side"), start_cam])
+
+
+func _on_stage(stage: StringName, _prev: StringName) -> void:
+	_mark("stage_" + String(stage))
+	if String(stage) == "tip":
+		tip_seen = true
+	if String(stage) == "results" and done_at < 0:
+		done_at = frame
+
+
+func _check_clip(cam: Camera3D) -> void:
+	var space: PhysicsDirectSpaceState3D = cam.get_world_3d().direct_space_state
+	var q := PhysicsShapeQueryParameters3D.new()
+	var s := SphereShape3D.new()
+	s.radius = 0.1
+	q.shape = s
+	q.transform = Transform3D(Basis.IDENTITY, cam.global_position)
+	q.collision_mask = 1
+	q.exclude = [game.get_node("Player").get_rid()]
+	var hits: Array[Dictionary] = space.intersect_shape(q, 4)
+	clip_checks += 1
+	if hits.size() > 0:
+		clip_frames += 1
+
+
+func _ray(from: Vector3, dir: Vector3, dist: float) -> float:
+	var space: PhysicsDirectSpaceState3D = game.get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(from, from + dir * dist, 1, [game.get_node("Player").get_rid()])
+	var r: Dictionary = space.intersect_ray(q)
+	return from.distance_to(r.position) if not r.is_empty() else -1.0
+
+
+func _process(_delta: float) -> bool:
+	frame += 1
+	if reloaded:
+		return _after_reload()
+	if not is_instance_valid(game) or current_scene == null or current_scene.get_instance_id() != game_id:
+		reloaded = true
+		P("scene reloaded at %d ms after restart call; alpha just before reload=%.3f" % [Time.get_ticks_msec() - restart_called_ms, restart_alpha_before_reload])
+		game = current_scene
+		return false
+	var a: float = _alpha()
+	if frame == 1:
+		first_alpha = a
+		P("frame1 alpha=%.3f ready=%s" % [a, game.call("is_level_ready")])
+	var ready: bool = game.call("is_level_ready")
+	if ready and ready_frame < 0:
+		ready_frame = frame
+	if a < 0.999 and not ready and t_end < 0 and mode != "loadfail" and travel_started_frame < 0:
+		fade_violation += 1
+	if a <= 0.001 and clear_frame < 0:
+		clear_frame = frame
+		P("level clear frame=%d ready_frame=%d violations=%d" % [frame, ready_frame, fade_violation])
+	if restart_called_ms >= 0:
+		restart_alpha_before_reload = a
+	var cam: Camera3D = game.get_node("Player/Head/Camera3D")
+	var col: Node = game.get_node("DeathCollapse")
+	if mode == "slowmo" and t_end >= 0:
+		Engine.time_scale = 0.1
+	if bool(col.call("is_active")) and not bool(col.call("is_finished")):
+		_check_clip(cam)
+		max_roll = maxf(max_roll, absf(col.call("get_roll_degrees")))
+		max_pitch = maxf(max_pitch, absf(col.call("get_pitch_degrees")))
+		var y: float = cam.global_position.y
+		if y > last_cam_y + 0.0005:
+			cam_y_rises += 1
+		last_cam_y = y
+		var h := Vector2(cam.global_position.x - start_cam.x, cam.global_position.z - start_cam.z).length()
+		max_horiz = maxf(max_horiz, h)
+	if t_end >= 0 and frame % 30 == 0 and not bool(game.get_node("RunEndScreen").call("is_shown")):
+		var g: RigidBody3D = col.call("get_gun_body")
+		if g != null:
+			var pp: Vector3 = game.get_node("Player").global_position
+			gun_samples.append("ms=%d gun=%s v=%.3f sleep=%s dist_to_player=%.2f" % [_ms(), g.global_position, g.linear_velocity.length(), g.sleeping, Vector2(g.global_position.x - pp.x, g.global_position.z - pp.z).length()])
+	# mode actions
+	if mode == "fallside" and frame == 90:
+		_fallside()
+		return true
+	if (mode == "wall_side" or mode == "wall_face") and frame == 20:
+		var o: Vector3 = cam.global_position
+		var right: Vector3 = cam.global_transform.basis.x
+		P("wall rays right=%.2f left=%.2f fwd=%.2f" % [_ray(o, right, 3.0), _ray(o, -right, 3.0), _ray(o, -cam.global_transform.basis.z, 3.0)])
+	if mode == "hit_left" and t_end < 0 and frame == 60:
+		var pl: Node3D = game.get_node("Player")
+		var left: Vector3 = -pl.global_transform.basis.x
+		col.call("record_hit", pl.global_position + left * 5.0)
+		P("recorded hit from the left at frame 60")
+	if (mode == "skip_enter" or mode == "skip_click") and t_stage.has("stage_tip") and skip_sent_ms < 0 and _ms() - int(t_stage["stage_tip"]) > 700:
+		skip_sent_ms = _ms()
+		if mode == "skip_enter":
+			var k := InputEventKey.new()
+			k.keycode = KEY_ENTER
+			k.physical_keycode = KEY_ENTER
+			k.pressed = true
+			Input.parse_input_event(k)
+		else:
+			var m := InputEventMouseButton.new()
+			m.button_index = MOUSE_BUTTON_LEFT
+			m.pressed = true
+			m.position = Vector2(640, 360)
+			Input.parse_input_event(m)
+		P("skip input sent at %d ms, tip showing=%s" % [skip_sent_ms, game.get_node("DeathTip").call("is_showing")])
+	if skip_sent_ms >= 0 and _ms() - skip_sent_ms > 2000:
+		P("2 s after skip: results_shown=%s restarting=%s same_scene=%s stages=%s" % [game.get_node("RunEndScreen").call("is_shown"), game.get_node("RunEndScreen").get("_restarting"), current_scene.get_instance_id() == game_id, ",".join(stages)])
+		return true
+	if mode == "restart" and done_at > 0 and frame == done_at + 60 and restart_called_ms < 0:
+		restart_called_ms = Time.get_ticks_msec()
+		P("restart_run called alpha=%.3f" % a)
+		game.get_node("RunEndScreen").call("restart_run")
+	if mode == "restart_mid" and frame == 150 and restart_called_ms < 0:
+		restart_called_ms = Time.get_ticks_msec()
+		P("restart_run (mid-run) called alpha=%.3f" % a)
+		game.get_node("RunEndScreen").call("restart_run")
+	if mode == "travel":
+		if frame == 150:
+			travel_started_frame = frame
+			P("travel start alpha=%.3f" % a)
+			game.call("travel_to_next_level")
+		if travel_started_frame > 0:
+			travel_max_alpha = maxf(travel_max_alpha, a)
+			if level_loads >= 1 and a < 0.999 and not bool(game.call("is_level_ready")):
+				travel_violation += 1
+			if level_loads >= 1 and a <= 0.001 and frame > travel_started_frame + 5:
+				P("travel done frame=%d max_alpha=%.3f clear-before-ready violations=%d level=%s" % [frame, travel_max_alpha, travel_violation, game.call("get_current_level_id")])
+				return true
+		if frame > 900:
+			P("travel TIMEOUT alpha=%.3f loads=%d" % [a, level_loads])
+			return true
+	if mode == "loadfail" and frame == 120:
+		P("loadfail at frame 120: alpha=%.3f ready=%s clear_frame=%d" % [a, game.call("is_level_ready"), clear_frame])
+		return true
+	if done_at > 0 and frame == done_at + 30 and mode not in ["restart", "skip_enter", "skip_click"]:
+		_summary()
+		return true
+	if frame > 1500:
+		P("TIMEOUT stages=%s" % ",".join(stages))
+		_summary()
+		return true
+	return false
+
+
+func _after_reload() -> bool:
+	new_frame += 1
+	var a: float = _alpha()
+	if new_frame == 1:
+		new_first_alpha = a
+		P("new scene frame1 alpha=%.3f ready=%s paused=%s ts=%.2f" % [a, game.call("is_level_ready"), paused, Engine.time_scale])
+	var ready: bool = game.call("is_level_ready")
+	if ready and new_ready_frame < 0:
+		new_ready_frame = new_frame
+	if a < 0.999 and not ready:
+		new_violation += 1
+	if a <= 0.001 and new_clear_frame < 0:
+		new_clear_frame = new_frame
+		P("new scene clear at frame %d, ready at %d, clear-before-ready violations=%d" % [new_frame, new_ready_frame, new_violation])
+		return true
+	if new_frame > 300:
+		P("new scene TIMEOUT alpha=%.3f" % a)
+		return true
+	return false
+
+
+func _fallside() -> void:
+	var col: Node = game.get_node("DeathCollapse")
+	var cam: Camera3D = game.get_node("Player/Head/Camera3D")
+	var o: Vector3 = cam.global_position
+	var right: Vector3 = Vector3(cam.global_transform.basis.x.x, 0.0, cam.global_transform.basis.x.z).normalized()
+	P("fallside origin=%s right=%s rays right=%.2f left=%.2f" % [o, right, _ray(o, right, 1.2), _ray(o, -right, 1.2)])
+	for i: int in 3:
+		P("fallside run%d no_hit=%.0f hit_right_recent=%.0f hit_left_recent=%.0f hit_right_old=%.0f hit_ahead=%.0f" % [i,
+			col.call("compute_fall_side", o, right, null, -1.0),
+			col.call("compute_fall_side", o, right, o + right * 4.0, 0.5),
+			col.call("compute_fall_side", o, right, o - right * 4.0, 0.5),
+			col.call("compute_fall_side", o, right, o + right * 4.0, 3.0),
+			col.call("compute_fall_side", o, right, o + Vector3(right.z, 0, -right.x) * 4.0, 0.5)])
+	# a wall to the right: origin near the canteen wall at x -7.7, right pointing -x
+	var wo := Vector3(-7.2, o.y, 0.0)
+	P("fallside wall origin=%s ray -x=%.2f +x=%.2f -> side(right=-x)=%.0f side(right=+x)=%.0f" % [wo, _ray(wo, Vector3(-1, 0, 0), 1.2), _ray(wo, Vector3(1, 0, 0), 1.2),
+		col.call("compute_fall_side", wo, Vector3(-1, 0, 0), null, -1.0), col.call("compute_fall_side", wo, Vector3(1, 0, 0), null, -1.0)])
+
+
+func _summary() -> void:
+	var col: Node = game.get_node("DeathCollapse")
+	var cam: Camera3D = game.get_node("Player/Head/Camera3D")
+	P("summary mode=%s stages=%s" % [mode, ",".join(stages)])
+	var keys: Array = t_stage.keys()
+	var parts: PackedStringArray = []
+	for k: Variant in keys:
+		parts.append("%s=%d" % [k, t_stage[k]])
+	P("times_ms " + " ".join(parts))
+	P("collapse max_roll=%.1f max_pitch=%.1f cam_y_rises=%d max_horiz=%.3f clip_frames=%d/%d arms_drop=%.2f fall_side=%.0f" % [max_roll, max_pitch, cam_y_rises, max_horiz, clip_frames, clip_checks, col.call("get_arms_drop"), col.call("get_fall_side")])
+	P("rest camera=%s" % cam.global_transform)
+	P("level start: frame1 alpha=%.3f ready_frame=%d clear_frame=%d clear-before-ready violations=%d" % [first_alpha, ready_frame, clear_frame, fade_violation])
+	P("tip_seen=%s results_shown=%s paused=%s ts=%.2f" % [tip_seen, game.get_node("RunEndScreen").call("is_shown"), paused, Engine.time_scale])
+	for g: String in gun_samples:
+		P("gun " + g)

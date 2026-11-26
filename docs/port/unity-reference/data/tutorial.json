@@ -1,0 +1,107 @@
+{
+  "start_delay_seconds": 1.5,
+  "gap_seconds": 0.6,
+  "opening_cap_seconds": 90,
+  "opening_heart_min": 40,
+  "opening_heart_max": 160,
+  "skip_hold_seconds": 1.5,
+  "skip_text": "Hold {SkipTutorial} to skip the tutorial",
+  "opening": [ "move_look", "heart_falls", "coffee", "cigarette", "shoot" ],
+  "binding_labels": [
+    { "action": "Move", "scheme": "Keyboard&Mouse", "label": "WASD" },
+    { "action": "Look", "scheme": "Keyboard&Mouse", "label": "the mouse" },
+    { "action": "Move", "scheme": "Gamepad", "label": "the left stick" },
+    { "action": "Look", "scheme": "Gamepad", "label": "the right stick" }
+  ],
+  "hints": [
+    {
+      "id": "move_look",
+      "text": "Move with {Move}, look with {Look}",
+      "targets": [],
+      "danger": false,
+      "min_seconds": 1.5,
+      "max_seconds": 0,
+      "priority": 100,
+      "holds_wave": true,
+      "requires_wave_start": false,
+      "goals": [
+        { "fact": "moved_meters", "substance": "", "amount": 3 },
+        { "fact": "turned_degrees", "substance": "", "amount": 60 }
+      ]
+    },
+    {
+      "id": "heart_falls",
+      "text": "Your heart rate keeps falling",
+      "targets": [ "heart_panel" ],
+      "danger": false,
+      "min_seconds": 5,
+      "max_seconds": 5,
+      "priority": 100,
+      "holds_wave": true,
+      "requires_wave_start": false,
+      "goals": []
+    },
+    {
+      "id": "coffee",
+      "text": "Hold {DoseCoffee} to drink coffee and raise it",
+      "targets": [ "coffee_row", "heart_panel" ],
+      "danger": false,
+      "min_seconds": 1,
+      "max_seconds": 0,
+      "priority": 100,
+      "holds_wave": true,
+      "requires_wave_start": false,
+      "goals": [
+        { "fact": "substance_held_seconds", "substance": "coffee", "amount": 1.5 }
+      ]
+    },
+    {
+      "id": "cigarette",
+      "text": "Hold {DoseCigarette} to smoke and calm it",
+      "targets": [ "cigarette_row", "heart_panel" ],
+      "danger": false,
+      "min_seconds": 1,
+      "max_seconds": 0,
+      "priority": 100,
+      "holds_wave": true,
+      "requires_wave_start": false,
+      "goals": [
+        { "fact": "substance_held_seconds", "substance": "cigarette", "amount": 1.5 }
+      ]
+    },
+    {
+      "id": "shoot",
+      "text": "Press {Attack} to shoot",
+      "targets": [ "gun_panel" ],
+      "danger": false,
+      "min_seconds": 1,
+      "max_seconds": 30,
+      "priority": 100,
+      "holds_wave": false,
+      "requires_wave_start": true,
+      "goals": [
+        { "fact": "shots_fired", "substance": "", "amount": 1 }
+      ]
+    }
+  ],
+  "look": {
+    "canvas_sorting_order": 4,
+    "font_size": 44,
+    "skip_font_size": 26,
+    "text_max_width": 1600,
+    "text_bottom_margin": 28,
+    "skip_gap": 8,
+    "skip_bar_width": 360,
+    "skip_bar_height": 6,
+    "text_color": { "r": 1, "g": 0.84, "b": 0.4, "a": 1 },
+    "skip_text_color": { "r": 0.92, "g": 0.92, "b": 0.9, "a": 0.9 },
+    "outline_color": { "r": 0, "g": 0, "b": 0, "a": 0.85 },
+    "outline_width": 0.25,
+    "box_color": { "r": 1, "g": 0.75, "b": 0.25, "a": 1 },
+    "danger_box_color": { "r": 1, "g": 0.25, "b": 0.2, "a": 1 },
+    "box_thickness": 6,
+    "box_padding": 8,
+    "pulse_hz": 1.5,
+    "pulse_min_alpha": 0.35
+  }
+}

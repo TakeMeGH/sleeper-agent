@@ -1,0 +1,95 @@
+extends SceneTree
+# Story 013 evidence probe: easing, no snap, run end, bus cutoff/pitch during and after.
+
+var look: AbilityLook
+var cam: Camera3D
+var base_fov: float
+
+func bus_state(bus_name: String) -> String:
+	var b: int = AudioServer.get_bus_index(bus_name)
+	var s: String = "%s[" % bus_name
+	for i in AudioServer.get_bus_effect_count(b):
+		var e: AudioEffect = AudioServer.get_bus_effect(b, i)
+		if not e.resource_name.begins_with("AbilityLook"):
+			continue
+		var on: bool = AudioServer.is_bus_effect_enabled(b, i)
+		var v: float = 0.0
+		if e is AudioEffectFilter:
+			v = (e as AudioEffectFilter).cutoff_hz
+		elif e is AudioEffectPitchShift:
+			v = (e as AudioEffectPitchShift).pitch_scale
+		s += "%s=%.2f%s " % [e.resource_name.trim_prefix("AbilityLook"), v, "(on)" if on else "(off)"]
+	return s + "]"
+
+func line(tag: String) -> void:
+	var v: Dictionary = look.get_current_values()
+	print("PROBE %s wS=%.3f wF=%.3f sat=%.3f con=%.3f exp=%.3f vig=%.3f ca=%.3f fov=%.2f camfov_delta=%.2f lp=%.0f hp=%.0f pitch=%.3f rect_visible=%s %s %s" % [
+		tag, look.get_weight(&"slow_motion"), look.get_weight(&"superspeed"), v[&"saturation"], v[&"contrast"],
+		v[&"exposure"], v[&"vignette"], v[&"ca"], v[&"fov_offset"], cam.fov - base_fov, v[&"lowpass_hz"],
+		v[&"highpass_hz"], v[&"pitch"], str(_rect_visible()), bus_state("SFX"), bus_state("Music")])
+
+func _rect_visible() -> bool:
+	for c in look.get_children():
+		if c is ColorRect:
+			return (c as ColorRect).visible
+	return false
+
+# Steps dt n times; returns the largest per-step change of the summed weight (snap detector).
+func run(n: int, dt: float) -> float:
+	var biggest: float = 0.0
+	var prev: float = look.get_weight(&"slow_motion") + look.get_weight(&"superspeed")
+	for i in n:
+		look.tick(dt)
+		var w: float = look.get_weight(&"slow_motion") + look.get_weight(&"superspeed")
+		biggest = maxf(biggest, absf(w - prev))
+		prev = w
+	return biggest
+
+func _init() -> void:
+	var sc: Node = load("res://src/player/test_range_look_normal.tscn").instantiate()
+	root.add_child(sc)
+	await process_frame
+	await process_frame
+	look = sc.get_node("AbilityLook")
+	cam = sc.get_node("Player/Head/Camera3D")
+	look.process_mode = Node.PROCESS_MODE_DISABLED  # only probe ticks drive it
+	base_fov = cam.fov
+	print("PROBE layer=%d data=%s" % [look.layer, look.data.resource_path])
+	line("idle")
+	# Slow motion ease in (0.5 s), sampled at 1/60 s.
+	look.on_ability_started(&"slow_motion")
+	print("PROBE slow ease-in max_step_per_frame=%.4f" % run(6, 1.0 / 60.0)); line("slow t=0.10")
+	print("PROBE slow ease-in max_step_per_frame=%.4f" % run(12, 1.0 / 60.0)); line("slow t=0.30")
+	print("PROBE slow ease-in max_step_per_frame=%.4f" % run(30, 1.0 / 60.0)); line("slow t=0.80 full")
+	look.on_ability_ended(&"slow_motion")
+	print("PROBE slow ease-out max_step_per_frame=%.4f" % run(21, 1.0 / 60.0)); line("slow out t=0.35")
+	print("PROBE slow ease-out max_step_per_frame=%.4f" % run(30, 1.0 / 60.0)); line("slow out t=0.85 neutral")
+	# Superspeed ease in (0.25 s) then run end mid-effect.
+	look.on_ability_started(&"superspeed")
+	print("PROBE speed ease-in max_step_per_frame=%.4f" % run(9, 1.0 / 60.0)); line("speed t=0.15")
+	print("PROBE speed ease-in max_step_per_frame=%.4f" % run(30, 1.0 / 60.0)); line("speed t=0.65 full")
+	look.on_run_ended(&"passed_out")
+	print("PROBE speed run-end ease-out max_step_per_frame=%.4f" % run(15, 1.0 / 60.0)); line("run end t=0.25")
+	print("PROBE speed run-end ease-out max_step_per_frame=%.4f" % run(30, 1.0 / 60.0)); line("run end t=0.75 neutral")
+	# Slow motion ended early mid-ease-in (0.2 s in).
+	look.on_ability_started(&"slow_motion")
+	run(12, 1.0 / 60.0); line("slow early t=0.20")
+	look.on_ability_ended(&"slow_motion")
+	print("PROBE slow early-end max_step_per_frame=%.4f" % run(60, 1.0 / 60.0)); line("slow early end +1.0 s neutral")
+	# Reload: free and re-add the scene; effects must not duplicate.
+	sc.queue_free()
+	await process_frame
+	print("PROBE after free: SFX effects=%d Music effects=%d" % [AudioServer.get_bus_effect_count(AudioServer.get_bus_index("SFX")), AudioServer.get_bus_effect_count(AudioServer.get_bus_index("Music"))])
+	var sc2: Node = load("res://src/player/test_range_look_normal.tscn").instantiate()
+	root.add_child(sc2)
+	await process_frame
+	print("PROBE re-added: SFX effects=%d Music effects=%d" % [AudioServer.get_bus_effect_count(AudioServer.get_bus_index("SFX")), AudioServer.get_bus_effect_count(AudioServer.get_bus_index("Music"))])
+	var sc3: Node = load("res://src/player/test_range_look_normal.tscn").instantiate()
+	sc2.queue_free()
+	await process_frame
+	root.add_child(sc3)
+	await process_frame
+	print("PROBE re-added twice: SFX effects=%d Music effects=%d" % [AudioServer.get_bus_effect_count(AudioServer.get_bus_index("SFX")), AudioServer.get_bus_effect_count(AudioServer.get_bus_index("Music"))])
+	sc3.queue_free()
+	await process_frame
+	quit()

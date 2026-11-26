@@ -1,0 +1,9 @@
+{
+  "_comment": "Background music (schema in BgmAudioConfig.cs): the combat loop plays all the time; while an enemy of boss_enemy_id is alive the boss loop fades in over crossfade_seconds and the combat loop fades out, and the other way round when the boss dies. Volumes 0 to 1 (above 0). Fades in real seconds.",
+  "combat_clip": "bgm_combat.wav",
+  "combat_volume": 0.5,
+  "boss_clip": "bgm_boss.wav",
+  "boss_volume": 0.5,
+  "boss_enemy_id": "boss",
+  "crossfade_seconds": 2.0
+}

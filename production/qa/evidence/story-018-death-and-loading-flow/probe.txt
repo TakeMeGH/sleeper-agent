@@ -1,0 +1,352 @@
+# Story 018 probe (.scratch/probes/p018.gd, run 2026-11-26, godot --headless --max-fps 60 -- <mode>)
+=== flow
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=95
+PROBE event stage_collapse at 3 ms (frame 95) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 251 ms (frame 111) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1101 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 235) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2834 ms (frame 266) alpha=1.000 ts=1.00
+PROBE event stage_results at 7983 ms (frame 575) alpha=1.000 ts=1.00
+PROBE summary mode=flow stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=3 phase_buckle=4 gun_released=86 phase_fall=251 phase_settle=900 phase_rest=1101 stage_hold=1101 stage_fade=2317 stage_tip=2834 stage_results=7983
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=6 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.422618, -0.906308, 0.0), Y: (-0.784886, 0.365998, 0.5), Z: (-0.453154, 0.211309, -0.866025), O: (-0.5, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=400 gun=(-0.181521, 0.350262, -7.648067) v=3.666 sleep=false dist_to_player=0.54
+PROBE gun ms=900 gun=(-0.126885, 0.105671, -7.480229) v=0.003 sleep=false dist_to_player=0.69
+PROBE gun ms=1400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=1900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=2400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=2900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=3400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=3900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=4400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=4900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=5400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=5900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=6400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=6900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=7400 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+PROBE gun ms=7900 gun=(-0.126894, 0.105641, -7.480321) v=0.000 sleep=true dist_to_player=0.69
+=== slowmo
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 2 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 251 ms (frame 112) alpha=0.000 ts=0.10
+PROBE event phase_rest at 1101 ms (frame 163) alpha=0.000 ts=0.10
+PROBE event stage_hold at 1102 ms (frame 163) alpha=0.000 ts=0.10
+PROBE event stage_fade at 2317 ms (frame 236) alpha=0.000 ts=0.10
+PROBE event stage_tip at 2834 ms (frame 267) alpha=1.000 ts=0.10
+PROBE event stage_results at 7967 ms (frame 575) alpha=1.000 ts=0.10
+PROBE summary mode=slowmo stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=2 phase_buckle=3 gun_released=85 phase_fall=251 phase_settle=901 phase_rest=1101 stage_hold=1102 stage_fade=2317 stage_tip=2834 stage_results=7967
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=5 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.422618, -0.906308, 0.0), Y: (-0.784886, 0.365998, 0.5), Z: (-0.453154, 0.211309, -0.866025), O: (-0.5, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=0.10
+PROBE gun ms=384 gun=(-0.174018, 1.004704, -7.847436) v=1.488 sleep=false dist_to_player=0.36
+PROBE gun ms=884 gun=(-0.176155, 0.930967, -7.808505) v=1.879 sleep=false dist_to_player=0.39
+PROBE gun ms=1384 gun=(-0.177913, 0.835036, -7.770534) v=2.283 sleep=false dist_to_player=0.43
+PROBE gun ms=1884 gun=(-0.17933, 0.717373, -7.733501) v=2.689 sleep=false dist_to_player=0.46
+PROBE gun ms=2384 gun=(-0.180452, 0.578454, -7.697384) v=3.091 sleep=false dist_to_player=0.50
+PROBE gun ms=2884 gun=(-0.181326, 0.418761, -7.662159) v=3.488 sleep=false dist_to_player=0.53
+PROBE gun ms=3384 gun=(-0.181995, 0.238779, -7.627798) v=3.877 sleep=false dist_to_player=0.56
+PROBE gun ms=3884 gun=(-0.194038, 0.15711, -7.572434) v=1.559 sleep=false dist_to_player=0.62
+PROBE gun ms=4384 gun=(-0.217505, 0.15316, -7.493582) v=1.641 sleep=false dist_to_player=0.70
+PROBE gun ms=4884 gun=(-0.211861, 0.172587, -7.421743) v=1.196 sleep=false dist_to_player=0.77
+PROBE gun ms=5384 gun=(-0.207976, 0.183782, -7.362407) v=0.767 sleep=false dist_to_player=0.82
+PROBE gun ms=5884 gun=(-0.207864, 0.196395, -7.321364) v=0.614 sleep=false dist_to_player=0.86
+PROBE gun ms=6384 gun=(-0.209664, 0.199719, -7.285517) v=0.545 sleep=false dist_to_player=0.90
+PROBE gun ms=6884 gun=(-0.213569, 0.196524, -7.251659) v=0.552 sleep=false dist_to_player=0.93
+PROBE gun ms=7384 gun=(-0.21973, 0.186266, -7.216549) v=0.630 sleep=false dist_to_player=0.97
+PROBE gun ms=7884 gun=(-0.225641, 0.171389, -7.180485) v=0.466 sleep=false dist_to_player=1.01
+=== comfort0
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 1 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 250 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2316 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 267) alpha=1.000 ts=1.00
+PROBE event stage_results at 7966 ms (frame 575) alpha=1.000 ts=1.00
+PROBE summary mode=comfort0 stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=1 phase_buckle=2 gun_released=84 phase_fall=250 phase_settle=900 phase_rest=1100 stage_hold=1101 stage_fade=2316 stage_tip=2833 stage_results=7966
+PROBE collapse max_roll=0.0 max_pitch=0.0 cam_y_rises=0 max_horiz=0.000 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (-0.0, 0.0, -1.0), O: (0.0, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=383 gun=(-0.181284, 0.382074, -7.659535) v=3.535 sleep=false dist_to_player=0.53
+PROBE gun ms=884 gun=(-0.234926, 0.174388, -7.197604) v=0.349 sleep=false dist_to_player=0.99
+PROBE gun ms=1383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=false dist_to_player=1.05
+PROBE gun ms=1883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=2383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=2883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=3383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=3883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=4383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=4883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=5383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=5883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=6383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=6883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=7383 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+PROBE gun ms=7883 gun=(-0.128017, 0.112109, -7.120594) v=0.000 sleep=true dist_to_player=1.05
+=== notip
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=95
+PROBE event stage_collapse at 2 ms (frame 95) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 251 ms (frame 111) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 235) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 266) alpha=1.000 ts=1.00
+PROBE event stage_results at 2834 ms (frame 266) alpha=1.000 ts=1.00
+PROBE summary mode=notip stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=2 phase_buckle=3 gun_released=85 phase_fall=251 phase_settle=901 phase_rest=1100 stage_hold=1101 stage_fade=2317 stage_tip=2833 stage_results=2834
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=6 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.422618, -0.906308, 0.0), Y: (-0.784886, 0.365998, 0.5), Z: (-0.453154, 0.211309, -0.866025), O: (-0.5, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=400 gun=(-0.181521, 0.339831, -7.648067) v=3.666 sleep=false dist_to_player=0.54
+PROBE gun ms=900 gun=(-0.243632, 0.175906, -7.16115) v=0.289 sleep=false dist_to_player=1.03
+PROBE gun ms=1400 gun=(-0.140826, 0.112113, -7.097523) v=0.000 sleep=false dist_to_player=1.07
+PROBE gun ms=1900 gun=(-0.140826, 0.112113, -7.097523) v=0.000 sleep=true dist_to_player=1.07
+PROBE gun ms=2400 gun=(-0.140826, 0.112113, -7.097523) v=0.000 sleep=true dist_to_player=1.07
+=== tip0
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 1 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 251 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2834 ms (frame 267) alpha=1.000 ts=1.00
+PROBE event stage_results at 2834 ms (frame 267) alpha=1.000 ts=1.00
+PROBE summary mode=tip0 stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=1 phase_buckle=2 gun_released=85 phase_fall=251 phase_settle=901 phase_rest=1101 stage_hold=1101 stage_fade=2317 stage_tip=2834 stage_results=2834
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=5 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.422618, -0.906308, 0.0), Y: (-0.784886, 0.365998, 0.5), Z: (-0.453154, 0.211309, -0.866025), O: (-0.5, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=384 gun=(-0.181284, 0.38374, -7.659535) v=3.535 sleep=false dist_to_player=0.53
+PROBE gun ms=884 gun=(-0.238815, 0.173226, -7.204155) v=0.316 sleep=false dist_to_player=0.99
+PROBE gun ms=1384 gun=(-0.130334, 0.112106, -7.123744) v=0.000 sleep=false dist_to_player=1.04
+PROBE gun ms=1884 gun=(-0.130333, 0.112103, -7.123742) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=2384 gun=(-0.130333, 0.112103, -7.123742) v=0.000 sleep=true dist_to_player=1.04
+=== skip_enter
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 1 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 250 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 267) alpha=1.000 ts=1.00
+PROBE skip input sent at 3550 ms, tip showing=true
+PROBE event stage_results at 3566 ms (frame 310) alpha=1.000 ts=1.00
+PROBE 2 s after skip: results_shown=true restarting=false same_scene=true stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+=== skip_click
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=95
+PROBE event stage_collapse at 1 ms (frame 95) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 250 ms (frame 111) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 235) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 266) alpha=1.000 ts=1.00
+PROBE skip input sent at 3550 ms, tip showing=true
+PROBE event stage_results at 3567 ms (frame 309) alpha=1.000 ts=1.00
+PROBE 2 s after skip: results_shown=true restarting=false same_scene=true stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+=== restart
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=19 ready_frame=1 violations=0
+PROBE run_end_requested passed_out frame=95
+PROBE event stage_collapse at 1 ms (frame 95) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 250 ms (frame 111) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 162) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2316 ms (frame 235) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 266) alpha=1.000 ts=1.00
+PROBE event stage_results at 7966 ms (frame 574) alpha=1.000 ts=1.00
+PROBE restart_run called alpha=1.000
+PROBE scene reloaded at 71 ms after restart call; alpha just before reload=-1.000
+PROBE new scene frame1 alpha=0.841 ready=true paused=false ts=1.00
+PROBE new scene clear at frame 23, ready at 1, clear-before-ready violations=0
+=== restart_mid
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE restart_run (mid-run) called alpha=0.000
+PROBE scene reloaded at 283 ms after restart call; alpha just before reload=0.992
+PROBE new scene frame1 alpha=0.803 ready=true paused=false ts=1.00
+PROBE new scene clear at frame 22, ready at 1, clear-before-ready violations=0
+=== wall_side
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE wall rays right=1.14 left=-1.00 fwd=-1.00
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 1 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=-1 cam_start=(-7.1, 1.601, 0.0)
+PROBE event phase_fall at 250 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2834 ms (frame 267) alpha=1.000 ts=1.00
+PROBE event stage_results at 7967 ms (frame 575) alpha=1.000 ts=1.00
+PROBE summary mode=wall_side stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=1 phase_buckle=2 gun_released=84 phase_fall=250 phase_settle=900 phase_rest=1100 stage_hold=1101 stage_fade=2317 stage_tip=2834 stage_results=7967
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=5 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=-1
+PROBE rest camera=[X: (-0.422618, 0.906308, 0.0), Y: (0.784886, 0.365998, 0.5), Z: (0.453154, 0.211309, -0.866025), O: (-6.6, 0.300004, -0.0)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=384 gun=(-7.261644, 0.369359, 0.500465) v=3.535 sleep=false dist_to_player=0.53
+PROBE gun ms=884 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=false dist_to_player=0.61
+PROBE gun ms=1384 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=1884 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=2383 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=2884 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=3384 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=3883 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=4383 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=4883 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=5384 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=5883 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=6383 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=6883 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=7383 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+PROBE gun ms=7883 gun=(-7.200713, 0.106719, 0.603597) v=0.000 sleep=true dist_to_player=0.61
+=== wall_face
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE wall rays right=-1.00 left=-1.00 fwd=1.14
+PROBE run_end_requested passed_out frame=96
+PROBE event stage_collapse at 2 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(-7.1, 1.601, 0.0)
+PROBE event phase_fall at 251 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1102 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2317 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2834 ms (frame 267) alpha=1.000 ts=1.00
+PROBE event stage_results at 7967 ms (frame 575) alpha=1.000 ts=1.00
+PROBE summary mode=wall_face stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=2 phase_buckle=3 gun_released=85 phase_fall=251 phase_settle=901 phase_rest=1101 stage_hold=1102 stage_fade=2317 stage_tip=2834 stage_results=7967
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=5 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.0, -0.906308, -0.422618), Y: (-0.5, 0.365998, -0.784886), Z: (0.866025, 0.211309, -0.453154), O: (-7.1, 0.300004, -0.5)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=384 gun=(-7.600464, 0.383379, -0.181284) v=3.535 sleep=false dist_to_player=0.53
+PROBE gun ms=884 gun=(-7.825653, 0.137066, -0.108868) v=0.614 sleep=false dist_to_player=0.73
+PROBE gun ms=1384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=false dist_to_player=0.72
+PROBE gun ms=1884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=2384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=2884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=3384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=3884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=4384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=4884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=5384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=5884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=6384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=6884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=7384 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+PROBE gun ms=7884 gun=(-7.818551, 0.106714, -0.078122) v=0.000 sleep=true dist_to_player=0.72
+=== hit_left
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE recorded hit from the left at frame 60
+PROBE run_end_requested heart_attack frame=96
+PROBE event stage_collapse at 1 ms (frame 96) alpha=0.000 ts=1.00
+PROBE crosshair_visible_after_end=false
+PROBE fall_side=1 cam_start=(0.0, 1.601, -8.16)
+PROBE event phase_fall at 250 ms (frame 112) alpha=0.000 ts=1.00
+PROBE event phase_rest at 1100 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_hold at 1101 ms (frame 163) alpha=0.000 ts=1.00
+PROBE event stage_fade at 2316 ms (frame 236) alpha=0.000 ts=1.00
+PROBE event stage_tip at 2833 ms (frame 267) alpha=1.000 ts=1.00
+PROBE event stage_results at 7966 ms (frame 575) alpha=1.000 ts=1.00
+PROBE summary mode=hit_left stages=stage_collapse,phase_buckle,gun_released,phase_fall,phase_settle,phase_rest,stage_hold,stage_fade,stage_tip,stage_results
+PROBE times_ms stage_collapse=1 phase_buckle=2 gun_released=84 phase_fall=250 phase_settle=900 phase_rest=1100 stage_hold=1101 stage_fade=2316 stage_tip=2833 stage_results=7966
+PROBE collapse max_roll=65.0 max_pitch=30.0 cam_y_rises=5 max_horiz=0.500 clip_frames=0/67 arms_drop=0.80 fall_side=1
+PROBE rest camera=[X: (-0.422618, -0.906308, 0.0), Y: (-0.784886, 0.365998, 0.5), Z: (-0.453154, 0.211309, -0.866025), O: (-0.5, 0.300004, -8.16)]
+PROBE level start: frame1 alpha=1.000 ready_frame=1 clear_frame=20 clear-before-ready violations=0
+PROBE tip_seen=true results_shown=true paused=true ts=1.00
+PROBE gun ms=383 gun=(-0.181284, 0.382546, -7.659535) v=3.535 sleep=false dist_to_player=0.53
+PROBE gun ms=883 gun=(-0.237057, 0.173573, -7.202077) v=0.327 sleep=false dist_to_player=0.99
+PROBE gun ms=1383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=false dist_to_player=1.04
+PROBE gun ms=1883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=2383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=2883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=3383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=3883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=4383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=4883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=5383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=5883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=6383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=6883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=7383 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+PROBE gun ms=7883 gun=(-0.128372, 0.112116, -7.124345) v=0.000 sleep=true dist_to_player=1.04
+=== fallside
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE fallside origin=(0.0, 1.601, -8.16) right=(-1.0, 0.0, 0.0) rays right=-1.00 left=-1.00
+PROBE fallside run0 no_hit=1 hit_right_recent=-1 hit_left_recent=1 hit_right_old=1 hit_ahead=1
+PROBE fallside run1 no_hit=1 hit_right_recent=-1 hit_left_recent=1 hit_right_old=1 hit_ahead=1
+PROBE fallside run2 no_hit=1 hit_right_recent=-1 hit_left_recent=1 hit_right_old=1 hit_ahead=1
+PROBE fallside wall origin=(-7.2, 1.601, 0.0) ray -x=1.04 +x=-1.00 -> side(right=-x)=-1 side(right=+x)=1
+=== loadfail
+PROBE layers fade=20 tip=25 results=30 hud=3
+ERROR: LEVEL scene 0 is not a LevelBase
+ERROR: LEVEL not ready (level scene failed to load); fading in anyway.
+PROBE frame1 alpha=1.000 ready=false
+PROBE level clear frame=20 ready_frame=-1 violations=0
+PROBE loadfail at frame 120: alpha=0.000 ready=false clear_frame=20
+=== travel
+PROBE layers fade=20 tip=25 results=30 hud=3
+PROBE level_loaded canteen visit=0 frame=0 alpha=1.000
+PROBE frame1 alpha=1.000 ready=true
+PROBE level clear frame=20 ready_frame=1 violations=0
+PROBE travel start alpha=0.000
+PROBE level_loaded plaza visit=1 frame=186 alpha=1.000
+PROBE travel done frame=214 max_alpha=1.000 clear-before-ready violations=0 level=plaza

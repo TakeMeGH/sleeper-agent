@@ -1,0 +1,152 @@
+# Story 012 audio probe log (2026-11-26). Probes: .scratch/probes/p012r.gd (test_range: real guns/reload/substances/heart), p012a.gd (kill blast, dry click, test_arena_boss music/footsteps/landing/run end), p012.gd (programmer's direct-call probe).
+## p012r.gd
+PROBE buses count=3 names=["Master", "SFX", "Music"] send1=Master send2=Master
+PROBE voices3d_cap=8 pool3d_children=8
+PROBE player_buses=["AudioStreamPlayer:SFX", "AudioStreamPlayer3D:SFX", "music:Music", "heart:SFX", "feet:SFX"]
+PROBE music_at_start event=music_combat_start stream=bgm_combat.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=hit stream=flesh_hit_05.wav vol_db=-1.94 pos=(0.0, 1.6, -17.65359)
+PROBE gun=pistol shots event=shot_pistol stream=pistol.wav vol_db=-2.06 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=shot_tail_pistol stream=pistol_tail_03.wav vol_db=-5.53 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=hit stream=flesh_hit_06.wav vol_db=-1.94 pos=(0.0, 1.6, -17.65359)
+PROBE gun=pistol shots event=shot_pistol stream=pistol.wav vol_db=-2.36 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=shot_tail_pistol stream=pistol_tail_04.wav vol_db=-5.83 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=hit stream=flesh_hit_04.wav vol_db=-1.94 pos=(0.0, 1.6, -17.65359)
+PROBE gun=pistol shots event=shot_pistol stream=pistol.wav vol_db=-1.28 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=shot_tail_pistol stream=pistol_tail_02.wav vol_db=-6.4 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=hit stream=flesh_hit_02.wav vol_db=-1.94 pos=(0.0, 1.6, -17.65359)
+PROBE gun=pistol shots event=shot_pistol stream=pistol.wav vol_db=-1.28 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=shot_tail_pistol stream=pistol_tail_01.wav vol_db=-6.5 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=hit stream=flesh_hit_03.wav vol_db=-1.94 pos=(0.0, 1.6, -17.65359)
+PROBE gun=pistol shots event=shot_pistol stream=pistol.wav vol_db=-2.5 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol shots event=shot_tail_pistol stream=pistol_tail_04.wav vol_db=-6.6 pos=(0.0, 0.0, 0.0)
+PROBE gun=pistol reload frame=1 progress=0.19 event=reload_pistol_mag_out stream=pistol_mag_out_01.wav
+PROBE gun=pistol reload frame=9 progress=0.38 event=reload_pistol_mag_in stream=pistol_mag_in_01.wav
+PROBE gun=pistol reload frame=27 progress=0.75 event=reload_pistol_rack stream=pistol_slide_rack_01.wav
+PROBE gun=smg shots event=shot_smg stream=smg.wav vol_db=-2.89 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_tail_smg stream=smg_tail_02.wav vol_db=-8.69 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_smg stream=smg.wav vol_db=-3.34 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_tail_smg stream=smg_tail_03.wav vol_db=-8.86 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_smg stream=smg.wav vol_db=-2.84 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_tail_smg stream=smg_tail_01.wav vol_db=-8.57 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_smg stream=smg.wav vol_db=-3.03 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_tail_smg stream=smg_tail_02.wav vol_db=-8.41 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_smg stream=smg.wav vol_db=-2.51 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg shots event=shot_tail_smg stream=smg_tail_04.wav vol_db=-8.62 pos=(0.0, 0.0, 0.0)
+PROBE gun=smg reload frame=1 progress=0.12 event=reload_smg_mag_out stream=smg_mag_out_01.wav
+PROBE gun=smg reload frame=26 progress=0.47 event=reload_smg_mag_in stream=smg_mag_in_01.wav
+PROBE gun=smg reload frame=45 progress=0.74 event=reload_smg_rack stream=smg_bolt_rack_01.wav
+PROBE gun=shotgun shots event=hit stream=flesh_hit_01.wav vol_db=-1.94 pos=(-0.300652, 0.342563, -17.74254)
+PROBE gun=shotgun shots event=surface stream=bfh1_hit_08.ogg vol_db=-6.02 pos=(-0.663322, 0.0, -19.86891)
+PROBE gun=shotgun shots event=surface stream=bfh1_hit_05.ogg vol_db=-6.02 pos=(-1.304434, 0.0, -21.06786)
+PROBE gun=shotgun shots event=shot_shotgun stream=shotgun_close_01.wav vol_db=-0.98 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_tail_shotgun stream=shotgun_tail_03.wav vol_db=-5.51 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-14.44 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=surface stream=bfh1_hit_09.ogg vol_db=-6.02 pos=(1.252761, 0.0, -26.42439)
+PROBE gun=shotgun shots event=hit stream=flesh_hit_03.wav vol_db=-1.94 pos=(-0.168693, 1.725899, -17.84077)
+PROBE gun=shotgun shots event=shot_shotgun stream=shotgun_close_04.wav vol_db=-0.36 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_tail_shotgun stream=shotgun_tail_01.wav vol_db=-4.42 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-14.35 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=surface stream=bfh1_rock_hit_01.ogg vol_db=-6.02 pos=(-0.687574, 0.0, -19.04059)
+PROBE gun=shotgun shots event=surface stream=bfh1_hit_05.ogg vol_db=-6.02 pos=(-0.360852, 0.0, -16.53606)
+PROBE gun=shotgun shots event=shot_shotgun stream=shotgun_close_03.wav vol_db=-0.36 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_tail_shotgun stream=shotgun_tail_03.wav vol_db=-5.84 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-14.89 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=hit stream=flesh_hit_04.wav vol_db=-1.94 pos=(-0.140416, 1.047028, -17.62546)
+PROBE gun=shotgun shots event=shot_shotgun stream=shotgun_close_04.wav vol_db=-1.38 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_tail_shotgun stream=shotgun_tail_04.wav vol_db=-6.07 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-14.89 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=surface stream=bfh1_rock_breaking_03.ogg vol_db=-6.02 pos=(-0.549366, 0.0, -24.1342)
+PROBE gun=shotgun shots event=shot_shotgun stream=shotgun_close_01.wav vol_db=-1.46 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_tail_shotgun stream=shotgun_tail_03.wav vol_db=-4.7 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun shots event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-14.04 pos=(0.0, 0.0, 0.0)
+PROBE gun=shotgun reload frame=9 progress=0.16 event=reload_shotgun_shell stream=shotgun_shell_02.wav
+PROBE gun=shotgun reload frame=71 progress=0.73 event=reload_shotgun_rack stream=shotgun_pump_01.wav
+PROBE consume coffee held playing=true level=0.14
+PROBE consume coffee after release playing=false
+PROBE consume cigarette held playing=true
+PROBE substance event=consume_start stream=ngopi.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE substance event=substance_taken stream=substance_taken.wav vol_db=-1.94 pos=(0.0, 0.0, 0.0)
+PROBE substance event=consume_stop stream=ngopi.wav vol_db=-19.14 pos=(0.0, 0.0, 0.0)
+PROBE substance event=consume_start stream=ngudud.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE substance event=consume_stop stream=ngudud.wav vol_db=-1.94 pos=(0.0, 0.0, 0.0)
+PROBE heart rate=80.0 low_lin=0.0 low_db=-80.0 low_playing=false high_lin=0.0 high_db=-80.0 high_playing=false
+PROBE heart rate=30.0 low_lin=0.48 low_db=-6.4 low_playing=true high_lin=0.0 high_db=-80.0 high_playing=false
+PROBE heart rate=10.0 low_lin=0.8 low_db=-1.9 low_playing=true high_lin=0.0 high_db=-80.0 high_playing=false
+PROBE heart rate=150.0 low_lin=0.0 low_db=-80.0 low_playing=false high_lin=0.444 high_db=-7.0 high_playing=true
+PROBE heart rate=190.0 low_lin=0.0 low_db=-80.0 low_playing=false high_lin=0.8 high_db=-1.9 high_playing=true
+PROBE heart event=heart_low_start stream=darah_rendah.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE heart event=heart_low_stop stream=darah_rendah.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE heart event=heart_low_start stream=darah_rendah.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE heart event=heart_high_start stream=darah_tinggi.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE heart event=heart_low_stop stream=darah_rendah.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+## p012a.gd
+PROBE dummy DummyA at (-4.0, 0.0, -12.0) dead=false
+PROBE dummy DummyB at (0.0, 0.0, -18.0) dead=false
+PROBE dummy DummyC at (5.0, 0.0, -25.0) dead=false
+PROBE raw_shot_hit collider=DummyB damageable=true killed=true
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE raw_shot_hit collider=DummyB damageable=false killed=false
+PROBE shotgun blast pellets=8 hit=0 kill=1 surface=0
+PROBE shotgun_kill_blast event=kill stream=kill_burst_03.wav vol_db=-0.92 pos=(-0.014687, 1.473592, -17.6071)
+PROBE shotgun_kill_blast event=shot_shotgun stream=shotgun_close_02.wav vol_db=-0.6 pos=(0.0, 0.0, 0.0)
+PROBE shotgun_kill_blast event=shot_tail_shotgun stream=shotgun_tail_02.wav vol_db=-5.29 pos=(0.0, 0.0, 0.0)
+PROBE shotgun_kill_blast event=shot_thump_shotgun stream=shotgun_thump_01.wav vol_db=-13.53 pos=(0.0, 0.0, 0.0)
+PROBE smg_empty_no_spare event=dry_click stream=dry_click_01.wav vol_db=-3.1 pos=(0.0, 0.0, 0.0)
+PROBE smg_empty_no_spare event=dry_click stream=dry_click_02.wav vol_db=-3.1 pos=(0.0, 0.0, 0.0)
+PROBE boss_alive=true track=boss after_ms=2128
+PROBE music during boss combat_level=0.0 boss_level=1.0 boss_db=-6.0 boss_playing=true
+PROBE bosses_alive=1
+PROBE music after boss death track=combat combat_level=1.0 boss_level=0.0 boss_playing=false combat_playing=true
+PROBE music event=music_combat_start stream=bgm_combat.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE music event=crossfade_to_boss stream=bgm_boss.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE music event=crossfade_to_combat stream=bgm_combat.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE walking is_walking=true playing=true level=1.0 speed=5.0
+PROBE stopped is_walking=false playing=false
+PROBE after dive landing_count=1
+PROBE after 4m fall landing_count=2
+PROBE after 0.3m drop landing_count=2
+PROBE feet event=footsteps_start stream=footstep_for_walking.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE feet event=footsteps_stop stream=footstep_for_walking.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE feet event=landing stream=drop_from_heights.wav vol_db=-1.94 pos=(0.0, 0.0, 0.0)
+PROBE feet event=landing stream=drop_from_heights.wav vol_db=-1.94 pos=(0.0, 0.0, 0.0)
+PROBE before end high_playing=true high_lin=0.18
+PROBE after run end has_ended=true low_playing=false high_playing=false
+PROBE heart_end event=heart_run_ended stream= vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+PROBE heart_end event=heart_high_stop stream=darah_tinggi.wav vol_db=-80.0 pos=(0.0, 0.0, 0.0)
+## p012.gd
+PROBE p012 [godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PROBE p012 rate 80.0 levels (0.0, 0.0) lin (0.0, 0.0)
+PROBE p012 rate 30.0 levels (0.6, 0.0) lin (0.48, 0.0)
+PROBE p012 rate 10.0 levels (1.0, 0.0) lin (0.8, 0.0)
+PROBE p012 rate 150.0 levels (0.0, 0.555556) lin (0.0, 0.444444)
+PROBE p012 rate 190.0 levels (0.0, 1.0) lin (0.0, 0.8)
+PROBE p012 hit=3 kill=3 surface=6
+PROBE p012 { &"event": &"hit", &"stream": "res://assets/third_party/independent_nu_wet_squish/flesh_hit_02.wav", &"volume_db": -1.93820023536682, &"position": (1.0, 0.0, 1.0) }
+PROBE p012 { &"event": &"kill", &"stream": "res://assets/third_party/independent_nu_extreme_splatter/kill_burst_02.wav", &"volume_db": -0.91514980792999, &"position": (1.0, 0.0, 1.0) }
+PROBE p012 { &"event": &"surface", &"stream": "res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_hit_09.ogg", &"volume_db": -6.02059984207153, &"position": (2.0, 0.0, 1.0) }
+PROBE p012 { &"event": &"surface", &"stream": "res://assets/third_party/rubberduck_breaking_falling_hit/bfh1_rock_hit_01.ogg", &"volume_db": -6.02059984207153, &"position": (2.0, 0.0, 1.0) }
+PROBE p012 { &"event": &"shot_shotgun", &"stream": "res://assets/third_party/free_firearm_sound_library/layers/shotgun_close_03.wav", &"volume_db": -0.38255813717842, &"position": (0.0, 0.0, 0.0) }
+PROBE p012 { &"event": &"shot_tail_shotgun", &"stream": "res://assets/third_party/free_firearm_sound_library/layers/shotgun_tail_02.wav", &"volume_db": -5.49713706970215, &"position": (0.0, 0.0, 0.0) }
+PROBE p012 consume playing true
+PROBE p012 after fade false
+PROBE p012 taken 1
+PROBE p012 heart low 1.0 db -1.93820023536682 high 0.0
+PROBE p012 after end low playing false
+PROBE p012 music boss boss 1.0 combat 0.0
+PROBE p012 music combat boss 0.0 boss playing false combat 1.0
+PROBE p012 steps true
+PROBE p012 steps false
+PROBE p012 landing 1
+PROBE p012 footsteps_start res://assets/audio/sfx/footstep_for_walking.wav
+PROBE p012 footsteps_stop res://assets/audio/sfx/footstep_for_walking.wav
+PROBE p012 landing res://assets/audio/sfx/drop_from_heights.wav
+PROBE p012    at: cleanup (core/object/object.cpp:2536)
+PROBE p012    at: clear (core/io/resource.cpp:822)
+PROBE listener root.audio_listener_3d=true root.disable_3d=true root_current_camera_is_player_cam=true
+PROBE listener subviewport ViewViewport audio_listener_3d=false
+PROBE listener subviewport WorldViewport audio_listener_3d=false

@@ -1,0 +1,26 @@
+PROBE run1 start heart=78.9 ended=false level=canteen visit=0 wave=1 kills=0 time=0.35 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE run1 killed_by_probe=3
+PROBE run1 before-end heart=90.0 ended=false level=canteen visit=0 wave=1 kills=3 time=2.46 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE screen appeared after 5.0 s (countdown 5 s)
+PROBE run1 results: reason=passed_out kills=3 wave=1 time=7.47 time_frozen=true enemies_before=3 enemies_after_1.5s=3 spawner_wave=1 best={ "time": 7.46801000000008, "wave": 1, "kills": 3 } new_best=true paused=true mouse_mode=0 (0=VISIBLE,2=CAPTURED) player_moved=false
+PROBE run1 screen text=["YOUR BODY GAVE OUT", "YOU PASSED OUT", "TIME SURVIVED", "0:07", "WAVE REACHED", "1", "KILLS", "3", "SESSION BEST: 0:07  -  wave 1  -  3 kills", "NEW BEST", "Press Enter (keyboard) or A / Start (gamepad) to play again"]
+PROBE run1 set time_scale 0.3 (as if mid slow motion) then restart_run()
+PROBE run1 after-restart heart=79.1 ended=false level=canteen visit=0 wave=1 kills=0 time=0.3 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE run2 killed_by_probe=5
+PROBE screen appeared after 5.0 s (countdown 5 s)
+PROBE run2 results: reason=heart_attack kills=5 wave=1 time=11.81 time_frozen=true enemies_before=1 enemies_after_1.5s=1 spawner_wave=1 best={ "time": 11.8095243333333, "wave": 1, "kills": 5 } new_best=true paused=true mouse_mode=0 (0=VISIBLE,2=CAPTURED) player_moved=false
+PROBE run2 screen text=["YOUR BODY GAVE OUT", "HEART ATTACK", "TIME SURVIVED", "0:11", "WAVE REACHED", "1", "KILLS", "5", "SESSION BEST: 0:11  -  wave 1  -  5 kills", "NEW BEST", "Press Enter (keyboard) or A / Start (gamepad) to play again"]
+PROBE run2 set time_scale 0.3 (as if mid slow motion) then restart_run()
+PROBE run2 after-restart heart=79.1 ended=false level=canteen visit=0 wave=1 kills=0 time=0.3 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE run3 reached spawner wave=2 after 8.75 s
+PROBE screen appeared after 5.0 s (countdown 5 s)
+PROBE run3 results: reason=passed_out kills=6 wave=2 time=14.08 time_frozen=true enemies_before=10 enemies_after_1.5s=10 spawner_wave=2 best={ "time": 14.0772803333327, "wave": 2, "kills": 6 } new_best=true paused=true mouse_mode=0 (0=VISIBLE,2=CAPTURED) player_moved=false
+PROBE run3 screen text=["YOUR BODY GAVE OUT", "YOU PASSED OUT", "TIME SURVIVED", "0:14", "WAVE REACHED", "2", "KILLS", "6", "SESSION BEST: 0:14  -  wave 2  -  6 kills", "NEW BEST", "Press Enter (keyboard) or A / Start (gamepad) to play again"]
+PROBE run3 set time_scale 0.3 (as if mid slow motion) then restart_run()
+PROBE run3 after-restart heart=79.1 ended=false level=canteen visit=0 wave=1 kills=0 time=0.3 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE screen appeared after 5.25 s (countdown 5 s)
+PROBE run4 results: reason=passed_out kills=0 wave=1 time=5.31 time_frozen=true enemies_before=6 enemies_after_1.5s=6 spawner_wave=1 best={ "time": 14.0772803333327, "wave": 2, "kills": 6 } new_best=false paused=true mouse_mode=0 (0=VISIBLE,2=CAPTURED) player_moved=false
+PROBE run4 screen text=["YOUR BODY GAVE OUT", "YOU PASSED OUT", "TIME SURVIVED", "0:05", "WAVE REACHED", "1", "KILLS", "0", "SESSION BEST: 0:14  -  wave 2  -  6 kills", "Press Enter (keyboard) or A / Start (gamepad) to play again"]
+PROBE run4 set time_scale 0.3 (as if mid slow motion) then restart_run()
+PROBE run4 after-restart heart=79.2 ended=false level=canteen visit=0 wave=1 kills=0 time=0.3 gun_index=0 ammo=["pistol 12/0", "smg 30/90", "shotgun 6/24"] coffee=7 cig=3 paused=false time_scale=1.0 mouse_mode=2 screen_shown=false
+PROBE final best after 4 runs={ "time": 14.0772803333327, "wave": 2, "kills": 6 } (memory only; user:// files: [])

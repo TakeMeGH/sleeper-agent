@@ -1,0 +1,18 @@
+extends SceneTree
+func _initialize() -> void:
+	var s: Node = load("res://src/player/test_range.tscn").instantiate()
+	root.add_child(s)
+	await create_timer(0.2).timeout
+	var l: DangerCountdownLabel = s.get_node("Hud/DangerCountdown")
+	var h: HeartRate = s.get_node("Player/HeartRate")
+	var p: PlayerController = s.get_node("Player")
+	print("PROBE no-source take_hit begin")
+	p.take_hit(0.0, Vector3.ZERO)
+	print("PROBE no-source take_hit end")
+	h.change_rate(-1000.0)
+	await create_timer(1.2).timeout
+	print("PROBE live countdown shown=%s text='%s' left=%.2f" % [l.is_shown(), l.get_shown_text(), h.get_countdown_left()])
+	h.change_rate(80.0 - h.get_rate())
+	await create_timer(0.2).timeout
+	print("PROBE after recovery rate=%.0f countdown_left=%.2f shown=%s" % [h.get_rate(), h.get_countdown_left(), l.is_shown()])
+	quit()

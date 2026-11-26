@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="5_ed"]
+[ext_resource type="Resource" path="res://assets/data/enemies/melee.tres" id="2_melee"]
+[ext_resource type="Resource" path="res://assets/data/enemies/boss.tres" id="3_boss"]
+[ext_resource type="Script" path="res://.scratch/feel/scenes/cap_camera.gd" id="9_cam"]
+
+[node name="Cap" instance=ExtResource("1_game")]
+start_level_id = &"canteen"
+debug_open_exit_immediately = true
+debug_keep_heart_rate = 70.0
+debug_override_player_pose = true
+debug_player_position = Vector3(-0.3, 0.05, -10.0)
+debug_player_yaw_degrees = 180.0
+debug_spawn_kinds = Array[ExtResource("5_ed")]([ExtResource("2_melee")])
+debug_spawn_positions = PackedVector3Array(-1.71, 0.05, -1.2)
+
+[node name="CapCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 2.8, -4.6)
+fov = 60.0
+script = ExtResource("9_cam")
+look_at_point = Vector3(-1.9, 0.0, -5.4)

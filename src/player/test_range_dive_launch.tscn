@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+
+[node name="TestRangeDiveLaunch" instance=ExtResource("1_base")]
+debug_gun_index = 1
+debug_dive_after_frames = 10
+debug_dive_input = Vector2(1, -1)
+debug_fire_during_dive = true

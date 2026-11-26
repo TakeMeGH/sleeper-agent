@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/ui/screen_effects/ability_look.gd" id="20_look"]
+[ext_resource type="Script" path="res://src/ui/screen_effects/heart_rate_screen.gd" id="22_hrs"]
+[ext_resource type="Resource" path="res://assets/data/heart/heart_rate_screen.tres" id="23_hrsdata"]
+[ext_resource type="Resource" path="res://assets/data/player/ability_look.tres" id="21_lookdata"]
+[ext_resource type="PackedScene" path="res://src/ui/hud/crosshair.tscn" id="99_cross"]
+[ext_resource type="Script" path="res://src/ui/hud/hit_arcs.gd" id="97_arcs"]
+[ext_resource type="Script" path="res://src/ui/hud/danger_countdown_label.gd" id="96_cdl"]
+[ext_resource type="Resource" path="res://assets/data/ui/hit_arcs.tres" id="95_arcsdata"]
+[ext_resource type="Script" path="res://src/player/test_range.gd" id="1_range"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://src/player/target_dummy.tscn" id="3_dummy"]
+[ext_resource type="PackedScene" path="res://src/ui/hud/hud.tscn" id="4_hud"]
+[ext_resource type="Script" path="res://src/run/run_state.gd" id="5_run"]
+
+[sub_resource type="Environment" id="Environment_r"]
+background_mode = 1
+background_color = Color(0.12, 0.13, 0.16, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.6, 0.7, 1)
+ambient_light_energy = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f"]
+size = Vector3(60, 1, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f"]
+size = Vector3(60, 1, 60)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_b"]
+size = Vector3(2, 2, 2)
+
+[node name="TestRange" type="Node3D"]
+script = ExtResource("1_range")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_r")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.25, 0.433, 0, 0.866, 0.5, -0.5, -0.433, 0.75, 0, 8, 0)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_f")
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_f")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="BoxA" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxA"]
+shape = SubResource("BoxShape3D_b")
+
+[node name="Mesh" type="MeshInstance3D" parent="BoxA"]
+mesh = SubResource("BoxMesh_b")
+
+[node name="BoxB" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -9)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxB"]
+shape = SubResource("BoxShape3D_b")
+
+[node name="Mesh" type="MeshInstance3D" parent="BoxB"]
+mesh = SubResource("BoxMesh_b")
+
+[node name="BoxC" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxC"]
+shape = SubResource("BoxShape3D_b")
+
+[node name="Mesh" type="MeshInstance3D" parent="BoxC"]
+mesh = SubResource("BoxMesh_b")
+
+[node name="DummyA" parent="." instance=ExtResource("3_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -12)
+
+[node name="DummyB" parent="." instance=ExtResource("3_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -18)
+
+[node name="DummyC" parent="." instance=ExtResource("3_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -25)
+
+[node name="RunState" type="Node" parent="."]
+script = ExtResource("5_run")
+
+[node name="StatusBar" parent="." node_paths=PackedStringArray("camera", "heart", "substances", "holder", "run_state", "viewmodel_container", "crosshair", "shift_ability") instance=ExtResource("4_hud")]
+camera = NodePath("../Player/Head/Camera3D")
+heart = NodePath("../Player/HeartRate")
+substances = NodePath("../Player/SubstanceInventory")
+holder = NodePath("../Player/Head/Camera3D/WeaponHolder")
+run_state = NodePath("../RunState")
+viewmodel_container = NodePath("../Player/Head/Camera3D/Viewmodel/ViewLayer/ViewContainer")
+crosshair = NodePath("../Hud/Crosshair")
+shift_ability = NodePath("../Player/ShiftAbility")
+
+[node name="AbilityLook" type="CanvasLayer" parent="." node_paths=PackedStringArray("shift_ability", "heart", "camera", "hud")]
+script = ExtResource("20_look")
+data = ExtResource("21_lookdata")
+shift_ability = NodePath("../Player/ShiftAbility")
+heart = NodePath("../Player/HeartRate")
+camera = NodePath("../Player/Head/Camera3D")
+hud = NodePath("../StatusBar")
+
+[node name="HeartRateScreen" type="CanvasLayer" parent="." node_paths=PackedStringArray("heart", "camera", "hud", "ability_look")]
+script = ExtResource("22_hrs")
+data = ExtResource("23_hrsdata")
+heart = NodePath("../Player/HeartRate")
+camera = NodePath("../Player/Head/Camera3D")
+hud = NodePath("../StatusBar")
+ability_look = NodePath("../AbilityLook")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="Crosshair" parent="Hud" node_paths=PackedStringArray("gun_feel") instance=ExtResource("99_cross")]
+anchor_top = 0.4
+anchor_bottom = 0.4
+gun_feel = NodePath("../../Player/Head/Camera3D/GunFeel")
+
+[node name="HitArcs" type="Control" parent="Hud" node_paths=PackedStringArray("player", "camera", "heart", "crosshair")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("97_arcs")
+data = ExtResource("95_arcsdata")
+player = NodePath("../../Player")
+camera = NodePath("../../Player/Head/Camera3D")
+heart = NodePath("../../Player/HeartRate")
+crosshair = NodePath("../Crosshair")
+
+[node name="DangerCountdown" type="Label" parent="Hud" node_paths=PackedStringArray("hud", "heart", "crosshair")]
+layout_mode = 0
+script = ExtResource("96_cdl")
+data = ExtResource("95_arcsdata")
+hud = NodePath("../../StatusBar")
+heart = NodePath("../../Player/HeartRate")
+crosshair = NodePath("../Crosshair")

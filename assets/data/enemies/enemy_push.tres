@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="EnemyPushData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/ai/enemy_push_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+push_speed_factor = 0.85
+push_force = 450.0
+body_mass = 80.0
+impact_fraction = 0.45
+boss_push_factor = 3.0
+push_keep_gap = 0.15
+push_hold_gap = 0.06
+push_close_gain = 10.0
+push_close_speed = 0.35
+push_lean_degrees = 12.0
+push_lean_blend_seconds = 0.2
+push_min_alignment = 0.4
+push_hold_alignment = 0.2
+min_push_speed = 0.3
+stuck_seconds = 1.0
+stuck_min_progress = 0.6
+wants_move_speed = 1.0
+blocker_memory_seconds = 2.0
+detour_timeout_seconds = 4.0
+detour_arrive_distance = 0.6
+detour_max_height_error = 0.2
+detour_clear_height = 0.9
+detour_clearance = 0.4
+detour_pass_distance = 1.0
+detour_backoff_distance = 1.5
+detour_near_prop_range = 1.0
+stuck_window_seconds = 0.4

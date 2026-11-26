@@ -1,0 +1,13 @@
+Reviewed-Content-Hash: src/player/shift_ability.gd 305ac108a19809b6f6f9cf50296ff3274d5bc432
+Reviewed-Content-Hash: src/player/shift_ability_data.gd 2be0a9418a18d5c301e79c7039f697cad56c8b94
+Reviewed-Content-Hash: assets/data/player/shift_ability.tres fe0073dede84be1f726b41493f820ca928de09f4
+Reviewed-Content-Hash: src/player/test_range_shift_slow.tscn 788bf45112b9cb787bd298d91317a4aa9176eb36
+Reviewed-Content-Hash: project.godot 3d964a997bce81414ad389ef2b46f50f5337fc56
+Reviewed-Content-Hash: src/player/player.tscn e0aa5b242f3ce793a9c080bcc865e6f64164a44c
+Reviewed-Content-Hash: src/player/player_controller.gd 02f22efafd981c2d288554d0cbfc50f0cc3a32a7
+Reviewed-Content-Hash: src/heart/heart_rate.gd abc25dcced6bba494a346ed31b96bde10d24a867
+Reviewed-Content-Hash: src/player/test_range.gd 17600277cd90dce85eed7e5e718e803ad30a2570
+Reviewed-Content-Hash: src/player/test_range.tscn 1e96e8ebadc95b874d6273a0e72d1d94e99ab814
+Reviewed-Content-Hash: src/ui/hud/hud.gd 5cde9393d9b0dfab6f910e102f4516c7a615e7ea
+Reviewed-Content-Hash: src/ui/hud/hud_data.gd 3979067ee68a9e0d3fc09f5ddda7f32476f3dc0e
+Reviewed-Content-Hash: assets/data/ui/hud.tres 662f6d17236a9f2308af34094728aa254fbcc0a9

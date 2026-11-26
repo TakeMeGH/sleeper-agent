@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/run/game.tscn" id="1_game"]
+[ext_resource type="Script" path="res://src/ai/test_drops_spawner.gd" id="2_spawner"]
+[ext_resource type="Resource" path="res://assets/data/drops/drops.tres" id="3_drops"]
+
+[node name="TestDropsCanteen" instance=ExtResource("1_game")]
+start_level_id = &"canteen"
+debug_open_exit_immediately = true
+debug_keep_heart_rate = 70.0
+debug_override_player_pose = true
+debug_player_position = Vector3(-0.3, 0.05, -10.0)
+debug_player_yaw_degrees = 180.0
+
+[node name="TestDropsSpawner" type="Node" parent="."]
+script = ExtResource("2_spawner")
+drop_data = ExtResource("3_drops")
+kinds = Array[StringName]([&"smg", &"shotgun", &"coffee", &"cigarette"])
+positions = PackedVector3Array(-1.2, 0.5, -7.8, -0.6, 0.5, -7.8, 0.0, 0.5, -7.8, 0.6, 0.5, -7.8)

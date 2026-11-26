@@ -1,0 +1,6 @@
+{
+    "freeze_time_scale": 0,
+    "kill_duration": 0.05,
+    "shotgun_kill_duration": 0.09,
+    "max_duration": 0.12
+}

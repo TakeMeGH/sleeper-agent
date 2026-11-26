@@ -1,0 +1,8 @@
+PROBE pistol spare_display=-1 (expect -1 endless)
+PROBE smg mag=30 spare=90; shotgun mag=6 spare=24
+PROBE shotgun one shot -> 8 pellet hits on dummy at 4 m, damage 120.0
+PROBE shotgun at 60 m -> 0 hits, damage per pellet 0.0 (expect same as near: no falloff)
+PROBE pistol emptied: reloading=true
+PROBE pistol after 110 frames: mag=12 reloading=false spare_display=-1
+PROBE smg add_spare_ammo(500) added=90 spare=180 (cap)
+PROBE pistol add_spare_ammo(10) added=0 (expect 0)

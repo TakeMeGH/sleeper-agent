@@ -1,0 +1,13 @@
+{
+    "health": 50,
+    "move_speed": 3.5,
+    "reach": 2.0,
+    "damage": 15,
+    "windup_seconds": 0.6,
+    "swing_seconds": 0.25,
+    "swing_hit_fraction": 0.5,
+    "attack_interval": 1.8,
+    "pose_recover_seconds": 0.25,
+    "repath_interval": 0.25,
+    "navmesh_snap_distance": 2
+}

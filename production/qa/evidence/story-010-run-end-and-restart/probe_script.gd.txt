@@ -1,0 +1,113 @@
+extends SceneTree
+## Story 010 probe: kills, wave, time, session best (memory), restart reset, time_scale, mouse mode.
+
+var g: Node
+
+func _initialize() -> void:
+	_run()
+
+func _rs() -> Node:
+	return g.get_node("RunState")
+
+func _scr() -> Node:
+	return g.get_node("RunEndScreen")
+
+func _state(tag: String) -> void:
+	var p: Node = g.get_node("Player")
+	var holder: Node = p.get_node("Head/Camera3D/WeaponHolder")
+	var ammo: Array[String] = []
+	for gun in holder.get("guns"):
+		ammo.append("%s %d/%d" % [gun.data.gun_id, gun.magazine, gun.spare])
+	var subs: Node = p.get_node("SubstanceInventory")
+	print("PROBE ", tag, " heart=", snappedf(float(p.get_node("HeartRate").call("get_rate")), 0.1),
+		" ended=", _rs().call("has_ended"), " level=", g.call("get_current_level_id"), " visit=", g.call("get_visit_index"),
+		" wave=", _rs().call("get_wave"), " kills=", _rs().call("get_kills"), " time=", snappedf(float(_rs().call("get_time_survived")), 0.01),
+		" gun_index=", holder.get("current_index"), " ammo=", ammo, " coffee=", subs.call("get_count", &"coffee"), " cig=", subs.call("get_count", &"cigarette"),
+		" paused=", paused, " time_scale=", Engine.time_scale, " mouse_mode=", Input.mouse_mode, " screen_shown=", _scr().call("is_shown"))
+
+func _kill_some(rounds: int) -> int:
+	var killed := 0
+	for i in rounds:
+		var t := 0.0
+		while get_nodes_in_group(&"enemies").is_empty() and t < 10.0:
+			await create_timer(0.2).timeout
+			t += 0.2
+		killed += get_nodes_in_group(&"enemies").size()
+		g.call("debug_kill_enemies")
+		await create_timer(0.3).timeout
+	return killed
+
+func _end(reason: StringName) -> void:
+	# Heart attack: hold the rate above 190 with the existing debug keep (the rate drops on its own).
+	g.set("debug_keep_heart_rate", 0.0 if reason == &"passed_out" else 245.0)
+	var heart: Node = g.get_node("Player/HeartRate")
+	heart.call("change_rate", -1000.0 if reason == &"passed_out" else 1000.0)
+	var t := 0.0
+	while not _scr().call("is_shown") and t < 8.0:
+		await create_timer(0.25).timeout
+		t += 0.25
+		if fmod(t, 1.0) == 0.0:
+			print("PROBE   waiting t=", t, " rate=", snappedf(float(heart.call("get_rate")), 0.1), " zone=", heart.call("get_zone"), " countdown=", snappedf(float(heart.call("get_countdown_left")), 0.01), " ts=", Engine.time_scale, " keep=", g.get("debug_keep_heart_rate"))
+	print("PROBE screen appeared after ", t, " s (countdown 5 s)")
+
+func _results(tag: String) -> void:
+	var t0: float = _rs().call("get_time_survived")
+	var e0: int = get_nodes_in_group(&"enemies").size()
+	var pos0: Vector3 = (g.get_node("Player") as Node3D).global_position
+	await create_timer(1.5).timeout
+	var t1: float = _rs().call("get_time_survived")
+	print("PROBE ", tag, " results: reason=", _rs().call("get_end_reason"), " kills=", _rs().call("get_kills"), " wave=", _rs().call("get_wave"),
+		" time=", snappedf(t1, 0.01), " time_frozen=", is_equal_approx(t0, t1), " enemies_before=", e0, " enemies_after_1.5s=", get_nodes_in_group(&"enemies").size(),
+		" spawner_wave=", g.get_node("WaveSpawner").call("get_wave"), " best=", _rs().call("get_session_best"), " new_best=", _rs().call("was_new_best"),
+		" paused=", paused, " mouse_mode=", Input.mouse_mode, " (0=VISIBLE,2=CAPTURED)", " player_moved=", not pos0.is_equal_approx((g.get_node("Player") as Node3D).global_position))
+	var labels: Array[String] = []
+	for n in _scr().find_children("*", "Label", true, false):
+		if (n as Label).text != "" and (n as Label).is_visible_in_tree():
+			labels.append((n as Label).text)
+	print("PROBE ", tag, " screen text=", labels)
+
+func _restart(tag: String) -> void:
+	Engine.time_scale = 0.3
+	print("PROBE ", tag, " set time_scale 0.3 (as if mid slow motion) then restart_run()")
+	_scr().call("restart_run")
+	await create_timer(0.3, true, false, true).timeout
+	g = current_scene
+	_state(tag + " after-restart")
+
+func _run() -> void:
+	RunState.clear_session_best()
+	change_scene_to_packed(load("res://src/run/game.tscn"))
+	await create_timer(0.5).timeout
+	g = current_scene
+	g.set("debug_keep_heart_rate", 90.0)
+	_state("run1 start")
+	print("PROBE run1 killed_by_probe=", await _kill_some(3))
+	_state("run1 before-end")
+	await _end(&"passed_out")
+	await _results("run1")
+	await _restart("run1")
+	# Run 2: survive longer, more kills, heart attack -> new best expected.
+	g.set("debug_keep_heart_rate", 90.0)
+	print("PROBE run2 killed_by_probe=", await _kill_some(5))
+	await create_timer(3.0).timeout
+	await _end(&"heart_attack")
+	await _results("run2")
+	await _restart("run2")
+	# Run 3: clear wave 1 so the wave reached is 2, then end -> shorter time than run 2 decides best.
+	g.set("debug_keep_heart_rate", 90.0)
+	var tw := 0.0
+	while int(g.get_node("WaveSpawner").call("get_wave")) < 2 and tw < 40.0:
+		g.call("debug_kill_enemies")
+		await create_timer(0.25).timeout
+		tw += 0.25
+	print("PROBE run3 reached spawner wave=", g.get_node("WaveSpawner").call("get_wave"), " after ", tw, " s")
+	await _end(&"passed_out")
+	await _results("run3")
+	await _restart("run3")
+	# Run 4: short run with no kills -> best kept, new_best false.
+	await _end(&"passed_out")
+	await _results("run4")
+	await _restart("run4")
+	var best: Dictionary = _rs().call("get_session_best")
+	print("PROBE final best after 4 runs=", best, " (memory only; user:// files: ", DirAccess.get_files_at("user://"), ")")
+	quit()

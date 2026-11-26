@@ -1,0 +1,31 @@
+# p003 run windowed (--windowed, so the mouse can be captured for the live firing check): .scratch/probes/p003.gd
+PROBE start counts coffee=7 cigarette=3 (data start 7/3, max 9/5), sec/unit 3.0/3.0
+PROBE ramp at held 0.0 s: coffee 3.00 bpm/s, cigarette -2.00 bpm/s
+PROBE ramp at held 0.5 s: coffee 6.50 bpm/s, cigarette -5.00 bpm/s
+PROBE ramp at held 1.0 s: coffee 10.00 bpm/s, cigarette -8.00 bpm/s
+PROBE ramp at held 2.0 s: coffee 35.00 bpm/s, cigarette -19.00 bpm/s
+PROBE ramp at held 3.0 s: coffee 60.00 bpm/s, cigarette -30.00 bpm/s
+PROBE ramp at held 5.0 s: coffee 60.00 bpm/s, cigarette -30.00 bpm/s
+PROBE coffee held second 1: +6.44 bpm (rate 86.44)
+PROBE coffee held second 2: +22.29 bpm (rate 108.73)
+PROBE coffee held second 3: +47.29 bpm (rate 156.02)
+PROBE after 3.0 s held: coffee count=7 progress=1.00 consuming=true
+PROBE still held at 3.5 s, one frame: +1.000 bpm (ramp continues, expect ~60*dt=1.000)
+PROBE released: consuming=false progress kept=0.17
+PROBE re-pressed, first frame: +0.050 bpm (expect 3*dt=0.050 -> ramp reset)
+PROBE before split holds: count=6 progress=0.178
+PROBE after two 1 s holds: count=6 progress=0.844
+PROBE cigarette held 1 s from 150: -4.95 bpm change
+PROBE cigarette held 12 s: count=0 consuming=false signals=["consume_started(cigarette)", "count_changed(cigarette,2)", "count_changed(cigarette,1)", "count_changed(cigarette,0)", "consume_ended(cigarette)"]
+PROBE count 0, held 2 s: rate change=0.000 signals=[] consuming=false
+PROBE add_substance(cigarette,2) -> 2, count=2
+PROBE add_substance(cigarette,10) -> 3, count=5 (cap 5)
+PROBE add_substance(cigarette,1) when full -> 0
+PROBE add_substance(beer,1) -> 0 ; add_substance(coffee,0) -> 0
+PROBE add signals=["count_changed(cigarette,2)", "count_changed(cigarette,5)"]
+PROBE after add, cigarette consumable again: consuming=true
+PROBE coffee first then both held: coffee=true cigarette=false
+PROBE live: mouse_mode=2 (2=captured)
+PROBE live: holding coffee 65 frames: consuming=true coffee progress=0.36, shots fired with fire held=12, horizontal move=5.00 m
+PROBE live: jump pressed while holding coffee -> velocity.y=4.50 consuming=true
+PROBE live: released -> consuming=false

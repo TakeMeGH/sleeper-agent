@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+
+[node name="TestRangeHoldCigarette" instance=ExtResource("1_base")]
+debug_hold_action = &"dose_cigarette"

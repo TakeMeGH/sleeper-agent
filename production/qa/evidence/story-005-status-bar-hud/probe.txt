@@ -1,0 +1,7 @@
+PROBE start gun=PISTOL ammo=12/∞ coffee_row=7 cig_row=3
+PROBE getters coffee=7 cigarette=3
+PROBE after switch_to(1) gun=SMG ammo=30/90
+PROBE add_spare_ammo smg +10
+PROBE after add_spare ammo=30/100 (gun magazine=30)
+PROBE after add_substance cigarette row=4 getter=4
+PROBE no-state-change rate 79.20->79.20 coffee 7->7 mag 30->30

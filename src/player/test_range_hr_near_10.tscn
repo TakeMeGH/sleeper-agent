@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/player/test_range.tscn" id="1_base"]
+
+[node name="TestRangeHrNear10" instance=ExtResource("1_base")]
+debug_heart_rate = 14.0

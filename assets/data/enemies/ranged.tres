@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+[ext_resource type="Resource" path="res://assets/data/enemies/visual_ranged.tres" id="9_vis"]
+
+[ext_resource type="Script" path="res://src/ai/enemy_data.gd" id="1_ed"]
+
+[resource]
+script = ExtResource("1_ed")
+id = &"ranged"
+kind = 1
+display_name = "Gunman"
+health = 35.0
+move_speed = 3.8
+damage = 6.0
+body_color = Color(0.25, 0.45, 0.85, 1)
+repath_interval = 0.25
+band_min = 8.0
+band_max = 15.0
+spot_arrive_distance = 0.4
+no_line_wait_seconds = 0.8
+spot_check_height = 1.4
+aim_seconds = 0.6
+fire_rate = 1.6
+spread_degrees = 3.0
+shot_range = 30.0
+magazine_size = 6
+reload_seconds = 2.2
+ammo_drop_chance = 0.25
+ammo_weights = PackedFloat32Array(1, 1)
+dose_drop_chance = 0.5
+dose_weights = PackedFloat32Array(3, 1)
+visual = ExtResource("9_vis")
